@@ -17,23 +17,6 @@
             required: true,
         }
     });
-    const productSchema= new Schema({
-        name: {
-            type: String,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true,
-        },
-        price: {
-            type: Number,
-            required: true,
-        },
-        productId: {
-            type: Number,
-            required: true,
-        }
-    })
+    
     const UserModel = mongoose.model('users', UserSchema);
     module.exports = UserModel;

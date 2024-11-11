@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const AuthRouter = require('./Routes/AuthRouter');
-const ProductRouter = require('./Routes/ProductRouter');
+// const ProductRouter = require('./Routes/ProductRouter');
 app.use(cors());
 
 app.use(bodyParser.json());
@@ -16,7 +16,7 @@ app.get('/ping', (req, res) => {
 });
 
 app.use('/auth', AuthRouter);
-app.use('/products',ProductRouter);
+// app.use('/products',ProductRouter);
 // app.use('/products',(req,res)=>{
 //     res.send({
 //         "message":"hey there"})
