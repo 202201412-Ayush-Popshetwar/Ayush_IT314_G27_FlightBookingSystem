@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { handleError, handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
 import { Button, Card } from 'react-bootstrap';
-
+import Header from './header_for_home';
 const Home = () => {
   const [loggedInUser, setLoggedInUser] = useState('');
   const [products, setProducts] = useState([]);
@@ -80,13 +80,10 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Welcome {loggedInUser}</h1>
-      {/* Render only if loggedInUser is available */}
-      {loggedInUser && (
-        <>
-          <button onClick={handleLogout}>Logout</button>
-        </>
-      )}
+      <Header loggedInUser={loggedInUser} handleLogout={handleLogout} />
+
+     
+      
 
       {/* Search Input */}
       <div>

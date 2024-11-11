@@ -1,11 +1,12 @@
 
 import { Navigate, Route, Routes } from "react-router-dom";
-import Login from "./pages/login";
-import Home from "./pages/home";
-import Signup from "./pages/signup";
-import Checkout from "./pages/checkoutPage";
+import Login from "./components/login";
+import Home from "./components/home";
+import Signup from "./components/signup";
+import Checkout from "./components/checkoutPage";
 import { useState, useEffect } from "react";
 import RefrshHandler from "./RefreshHandler";
+import Footer from './components/footer.jsx'
 
 function App() {
   // Initially, check if the user is authenticated by looking at localStorage
@@ -26,7 +27,9 @@ function App() {
   };
 
   return (
+    <div>
     <div className="App">
+      
       <RefrshHandler setAuthenticated={setAuthenticated}/>
     <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
@@ -35,6 +38,8 @@ function App() {
       <Route path="/signup" element={<Signup />} />
       <Route path="/checkout" element={<Checkout setAuthenticated={setAuthenticated} />} />
     </Routes>
+    </div>
+    <Footer/>
     </div>
       
   );

@@ -1,0 +1,108 @@
+/* Base styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Container styling */
+.container {
+    max-width: 400px;
+    margin: auto;
+    padding: 2rem;
+    background-color: #f7f7f7;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    margin-top: 5%;
+}
+
+/* Form heading */
+.container h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: #004080;
+}
+
+/* Label styling */
+form div label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.3rem;
+    text-align: left;
+}
+
+/* Input field styling */
+form div input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+form div input:focus {
+    border-color: #004080;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 64, 128, 0.2);
+}
+
+/* Toggle password visibility */
+form div span {
+    position: absolute;
+    right: 1rem;
+    top: 3.1rem;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Button styling */
+button {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #004080;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #003366;
+}
+
+/* Link styling */
+form span {
+    display: block;
+    margin-top: 1rem;
+    color: #004080;
+    font-size: 0.9rem;
+}
+
+form span a {
+    color: #004080;
+    text-decoration: underline;
+}
+
+form span a:hover {
+    color: #003366;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 500px) {
+    .container {
+        padding: 1.5rem;
+    }
+    .container h1 {
+        font-size: 1.8rem;
+    }
+    form div input,
+    button {
+        font-size: 0.9rem;
+    }
+}
