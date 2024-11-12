@@ -1,31 +1,41 @@
-const express = require('express');
+import express from 'express';
 const app = express();
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const AuthRouter = require('./Routes/AuthRouter');
-// const ProductRouter = require('./Routes/ProductRouter');
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import AuthRouter from './Routes/AuthRouter.js';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import './Models/db.js';
+import records from "./Routes/record.js";
+//import ProductRouter from './Routes/ProductRouter';
+ const PORT = process.env.PORT || 5050;
+ dotenv.config()
 app.use(cors());
-
+app.use(express.json());
+app.use("/record", records);
 app.use(bodyParser.json());
 
-require('./Models/db');
-const PORT =  8090;
+//----------------------New code-------------------------
 
-app.get('/ping', (req, res) => {
-    res.send('PONG');
-});
+const connect = async() =>{
+    try 
+    {
+        await mongoose.connect(String(process.env.ATLAS_URI));
+        console.log("Connected to MongoDB")
+    } 
+    catch (error) 
+    {
+        throw error;
+    }
+}
+mongoose.connection.on("Disconnected",()=>{console.log("MongoDB Disconnected")})
+mongoose.connection.on("Connected",()=>{console.log("MongoDB Connected")})
 
-app.use('/auth', AuthRouter);
-// app.use('/products',ProductRouter);
-// app.use('/products',(req,res)=>{
-//     res.send({
-//         "message":"hey there"})
-// });
 
-app.use('/checkout',(req,res)=>{
-    res.send({
-        "message":"checkout page"})
-});
-app.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`)
+app.get("/" , (req,res)=>{
+    res.send("hello first request")
 })
+
+app.listen(PORT,()=>{
+    connect()
+    console.log("Connected to Backend")})
