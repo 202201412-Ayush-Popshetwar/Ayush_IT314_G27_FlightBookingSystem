@@ -3,6 +3,7 @@ import List from "./components/List";
 import Flight from "./components/Flight";
 import Login from "./components/login.jsx";
 import Signup from "./components/signup.jsx";
+import Profile from "./components/profile.jsx";
 import { useState, useEffect } from "react";
 import RefrshHandler from "./RefreshHandler.jsx";
 import {
@@ -37,6 +38,7 @@ function App() {
 
         <Route path="/login" element={<Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} />} /> {/* Pass setAuthenticated */}
         <Route path="/signup" element={<Signup />} />
+        <Route path="/profile" element={<Profile/>}/>
       </Routes>
     </BrowserRouter>
   );

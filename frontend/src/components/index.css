@@ -204,43 +204,86 @@
     border-radius: 5px;
     cursor: pointer;
 }
-
-
 .navbar {
-    height: 50px;
-    background-color: #003580;
-    display: flex;
-    justify-content: center;
+    background-color: #0056b3;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
 }
-
 .navContainer {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    max-width: 1024px;
-    width: 100%;
-    color: white;
+    align-items: center;
+    width: 98%; 
+}
+
+.logoContainer {
+    display: flex;
+    align-items: center;
 }
 
 .logo {
-    height: 40px;
     width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    border-radius: 10px;
+}
+
+.logoText {
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+}
+
+.navButtons {
+    display: flex;
+    align-items: center;
+    margin-left: auto; 
+    justify-content: flex-end; 
+    position: relative;
 }
 
 .navButton {
-    padding: 5px 10px;
-    color: #003580;
-    background-color: #f9f9f9;
+    color: #fff;
+    padding: 10px 15px;
     border: none;
     cursor: pointer;
-    border-radius: 4px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-left: 10px;
 }
 
-.logo {
-    height: 40px;
-    width: 40px;
+.navButton:hover {
+    background-color: #0056b3;
 }
 
+.dropdown {
+    position: relative;
+}
+
+.dropdownMenu {
+    position: absolute;
+    top: 100%;
+    background-color: #0056b3;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+    z-index: 1000;
+}
+
+.dropdownItem {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.dropdownItem:hover {
+    background-color: #007BFF;
+    color: #fff;
+}
 
 .rList {
     width: 100%;
@@ -273,21 +316,6 @@
     font-weight: 300;
 }
 
-.logoContainer {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Adds spacing between the logo image and text */
-}
-.logoText {
-    font-weight: 500;
-    font-size: 1.5rem;
-}
-
-.navButtons {
-    display: flex;
-    gap: 10px;
-    margin-left: auto;
-}
 /* Center the form on the page */
 .container {
     max-width: 400px;
@@ -301,7 +329,7 @@
 
 h1 {
     font-size: 24px;
-    color: #ff0000;
+    color: #ffff;
     margin-bottom: 1.5rem;
 }
 

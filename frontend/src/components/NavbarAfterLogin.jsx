@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
-import { handleError, handleSuccess } from '../utils';
+import { handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
 
-const Navbar = ({setAuthenticated}) => {
-    const navigate = useNavigate();  // Hook for navigation
+const Navbar = ({ setAuthenticated }) => {
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
+    const [loggedInUser,setLoggedInUser] = useState('');
+    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
+    const handleLogout = () => {
+        handleSuccess('User Logged out');
+        setTimeout(() => {
+            setAuthenticated(false);
+            localStorage.removeItem('token');
+            localStorage.removeItem('loggedInUser');
+            navigate('/login');
+        }, 1000);
+    };
+
+    useEffect(() => {
+        const user = localStorage.getItem('loggedInUser');
+        if (user) {
+          setLoggedInUser(user);
+    }
+    },[]);
     return (
         <div className="navbar">
             <div className="navContainer">
@@ -15,33 +34,32 @@ const Navbar = ({setAuthenticated}) => {
                     <h2 className="logoText">SkyLynx</h2>
                 </div>
                 <div className="navButtons">
-                    <button 
-                        className="navButton" 
-                        onClick={() => navigate("/signup")}
-                    >
-                        User Profile
-                    </button>
-                    <button 
-                        className="navButton" 
-                        onClick={() =>{
-                            
-                            handleSuccess('User Logged out');
-                            setTimeout(() => {
-                                setAuthenticated(false)
-                                localStorage.removeItem('token');
-                                localStorage.removeItem('loggedInUser');
-                                setLoggedInUser('');
-                                navigate('/login');
-                            }, 1000);
-                        }}
-                    >
-                        Logout
-                    </button>
+                    <div className="dropdown">
+                        <button className="navButton" onClick={toggleDropdown}>
+                            Hello, {loggedInUser} ▼
+                        </button>
+                        {dropdownOpen && (
+                            <div className="dropdownMenu">
+                                <button 
+                                    className="dropdownItem" 
+                                    onClick={() => navigate("/profile")}
+                                >
+                                    User Profile
+                                </button>
+                                <button 
+                                    className="dropdownItem" 
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </button>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
-            <ToastContainer/>
+            <ToastContainer />
         </div>
     );
-}
+};
 
 export default Navbar;
