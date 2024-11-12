@@ -1,13 +1,11 @@
-
+// Login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
-import './index.css'
+import './index.css';
 
-
-function Login({ setAuthenticated }) { // Get setAuthenticated prop
-
+function Login({isAuthenticated, setAuthenticated }) {
     const [loginInfo, setLoginInfo] = useState({
         email: '',
         password: ''
@@ -17,9 +15,7 @@ function Login({ setAuthenticated }) { // Get setAuthenticated prop
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        const copyLoginInfo = { ...loginInfo };
-        copyLoginInfo[name] = value;
-        setLoginInfo(copyLoginInfo);
+        setLoginInfo({ ...loginInfo, [name]: value });
     };
 
     const handleLogin = async (e) => {
@@ -32,9 +28,7 @@ function Login({ setAuthenticated }) { // Get setAuthenticated prop
             const url = `http://localhost:8090/auth/login`;
             const response = await fetch(url, {
                 method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(loginInfo)
             });
             const result = await response.json();
@@ -43,23 +37,23 @@ function Login({ setAuthenticated }) { // Get setAuthenticated prop
                 handleSuccess(message);
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', name);
-                setAuthenticated(true);  // Set authentication to true
-                setTimeout(() => {
-                    navigate('/home');
-                }, 1000);
+                setAuthenticated(true);
+               setTimeout(() => {
+                navigate('/');
+               }, 1000);
             } else if (error) {
-                const details = error?.details[0].message;
-                handleError(details);
-            } else if (!success) {
+                console.log('r');
+                handleError(error?.details[0].message);
+            } else {
+                console.log('q');
                 handleError(message);
             }
         } catch (err) {
-            handleError(err);
+            handleError(err.message);
         }
     };
 
     return (
-        <div>
         <div className='container'>
             <h1>Login</h1>
             <form onSubmit={handleLogin}>
@@ -84,12 +78,9 @@ function Login({ setAuthenticated }) { // Get setAuthenticated prop
                     />
                 </div>
                 <button type='submit'>Login</button>
-                <span>Don't have an account?
-                    <Link to="/signup">Signup</Link>
-                </span>
+                <span>Don't have an account? <Link to="/signup">Signup</Link></span>
             </form>
             <ToastContainer />
-        </div>
         </div>
     );
 }

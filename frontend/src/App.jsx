@@ -21,21 +21,21 @@ function App() {
     const token = localStorage.getItem('token');
     if (token) {
       setAuthenticated(true);
+     
     }
+    
   }, []);
-  const PrivateRoute = ({ element }) => {
-    return isAuthenticated ? element : <Navigate to="/login" />;
-  };
+  
 
   return (
     <BrowserRouter>
       <RefrshHandler setAuthenticated={setAuthenticated} />
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home  isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated}/>} />
         <Route path="/flights" element={<List />} />
         <Route path="/flights/:id" element={<Flight />} />
 
-        <Route path="/login" element={<Login setAuthenticated={setAuthenticated} />} /> {/* Pass setAuthenticated */}
+        <Route path="/login" element={<Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} />} /> {/* Pass setAuthenticated */}
         <Route path="/signup" element={<Signup />} />
       </Routes>
     </BrowserRouter>

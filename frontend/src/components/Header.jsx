@@ -58,7 +58,7 @@ const Header = ({type}) => {
                 <>    
                 <h1 className="headerTitle">Fly Smart – Find Cheap and Comfortable Flights for Every Journey!</h1>
                 <p className="headerDesc">Enjoy affordable fares, earn rewards on every booking - Unlock instant savings of 10% with a Free SkyLynx Account</p>
-                <button className="headerBtn">Sign In / Register</button>
+                
                 <div className="headerSearch">
                     <div onClick={()=>{setOpenOptions(false);setOpenDate(false)}} className="headerSearchItem">
                         <FontAwesomeIcon icon={faPlaneDeparture} className="headerIcon" />
