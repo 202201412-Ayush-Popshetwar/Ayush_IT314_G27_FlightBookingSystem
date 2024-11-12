@@ -1,7 +1,7 @@
 
-const jwt = require('jsonwebtoken');
-const JWT_SECRET="aeqwerq12412";
-const ensureAuthenticated = (req, res, next) => {
+import jwt from 'jsonwebtoken';
+import JWT_SECRET from "aeqwerq12412";
+import ensureAuthenticated from (req, res, next) => {
     const auth = req.headers['authorization'];
     if (!auth) {
         return res.status(403)
