@@ -1,8 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
+import { handleError, handleSuccess } from '../utils';
+import { ToastContainer } from 'react-toastify';
 
-const Navbar = () => {
+const Navbar = ({setAuthenticated}) => {
     const navigate = useNavigate();  // Hook for navigation
 
     return (
@@ -17,16 +19,27 @@ const Navbar = () => {
                         className="navButton" 
                         onClick={() => navigate("/signup")}
                     >
-                        Register
+                        User Profile
                     </button>
                     <button 
                         className="navButton" 
-                        onClick={() => navigate("/login")}
+                        onClick={() =>{
+                            
+                            handleSuccess('User Logged out');
+                            setTimeout(() => {
+                                setAuthenticated(false)
+                                localStorage.removeItem('token');
+                                localStorage.removeItem('loggedInUser');
+                                setLoggedInUser('');
+                                navigate('/login');
+                            }, 1000);
+                        }}
                     >
-                        Login
+                        Logout
                     </button>
                 </div>
             </div>
+            <ToastContainer/>
         </div>
     );
 }

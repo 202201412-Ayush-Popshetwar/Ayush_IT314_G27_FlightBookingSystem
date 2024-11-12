@@ -1,3 +1,4 @@
+// Home.jsx
 import Featured from "./Featured";
 import Header from "./Header";
 import MailList from "./MailList";
@@ -5,12 +6,14 @@ import Navbar from "./Navbar";
 import RecommendList from "./recommendList";
 import CarouselList from "./CarouselList";
 import "./index.css";
+import NavbarAfterLogin from './NavbarAfterLogin'
+const Home = ({ isAuthenticated,setAuthenticated }) => {
 
-
-const Home = () => {
+    
     return (
         <div>
-            <Navbar />
+            {!isAuthenticated &&  <Navbar />}
+            {isAuthenticated && <NavbarAfterLogin setAuthenticated={setAuthenticated}/>}
             <Header />
             <CarouselList />
             <div className="homeContainer">
