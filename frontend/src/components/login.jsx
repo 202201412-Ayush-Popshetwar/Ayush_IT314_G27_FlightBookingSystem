@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
 import './index.css';
+import Navbar from './Navbar';
+import Header from './Header';
 
 function Login({ isAuthenticated, setAuthenticated }) {
     const [loginInfo, setLoginInfo] = useState({
@@ -51,6 +53,9 @@ function Login({ isAuthenticated, setAuthenticated }) {
     };
 
     return (
+        <div>
+            <Navbar/>
+            <Header type="list"/>
         <div className='login-background'>
             <div className='login-container'>
                 <h1>Login</h1>
@@ -82,6 +87,7 @@ function Login({ isAuthenticated, setAuthenticated }) {
                 </form>
             </div>
             <ToastContainer />
+        </div>
         </div>
     );
 }

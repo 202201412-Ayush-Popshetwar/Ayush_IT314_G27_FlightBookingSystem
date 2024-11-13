@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
 import './index.css';
-
+import Navbar from './Navbar';
+import Header from './Header';
 function Signup() {
     const [signupInfo, setSignupInfo] = useState({
         name: '',
@@ -70,6 +71,9 @@ function Signup() {
     };
 
     return (
+        <div>
+            <Navbar/>
+            <Header type="list"/>
         <div className='login-background'>
             <div className='login-container'>
                 <h1>Signup</h1>
@@ -134,6 +138,7 @@ function Signup() {
                 </form>
                 <ToastContainer />
             </div>
+        </div>
         </div>
     );
 }
