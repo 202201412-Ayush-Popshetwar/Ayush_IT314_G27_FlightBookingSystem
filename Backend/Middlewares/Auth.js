@@ -18,4 +18,4 @@ import ensureAuthenticated from (req, res, next) => {
     }
 }
 
-module.exports = ensureAuthenticated;
+export default ensureAuthenticated;

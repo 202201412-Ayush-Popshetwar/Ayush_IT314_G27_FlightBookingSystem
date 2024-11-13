@@ -15,7 +15,7 @@ router.get('/ping', (req, res) => {
   res.send('PONG');
 });
 
-router.use('/auth', AuthRouter);
+
 //app.use('/products',ProductRouter);
 router.use('/products',(req,res)=>{
   res.send({
@@ -33,7 +33,7 @@ router.get("/", async (req, res) => {
   res.send(results).status(200);
 });
 
-// This section will help you get a single record by id
+//This section will help you get a single record by id
 router.get("/:id", async (req, res) => {
   let collection = await db.collection("Flights");
   let query = { _id: new ObjectId(req.params.id) };

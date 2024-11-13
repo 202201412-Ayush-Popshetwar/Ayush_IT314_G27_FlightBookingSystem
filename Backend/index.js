@@ -13,6 +13,7 @@ import records from "./Routes/record.js";
 app.use(cors());
 app.use(express.json());
 app.use("/record", records);
+app.use("/auth",AuthRouter);
 app.use(bodyParser.json());
 
 //----------------------New code-------------------------
