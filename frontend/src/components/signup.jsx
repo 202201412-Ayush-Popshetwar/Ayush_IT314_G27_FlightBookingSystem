@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
-// import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 import './index.css';
+
 function Signup() {
     const [signupInfo, setSignupInfo] = useState({
         name: '',
@@ -70,64 +70,70 @@ function Signup() {
     };
 
     return (
-        <div>
-        <div className='container'>
-            <h1>Signup</h1>
-            <form onSubmit={handleSignup}>
-                <div>
-                    <label htmlFor='name'>Name</label>
-                    <input
-                        onChange={handleChange}
-                        type='text'
-                        name='name'
-                        autoFocus
-                        placeholder='Enter your name...'
-                        value={signupInfo.name}
-                    />
-                </div>
-                <div>
-                    <label htmlFor='email'>Email</label>
-                    <input
-                        onChange={handleChange}
-                        type='email'
-                        name='email'
-                        placeholder='Enter your email...'
-                        value={signupInfo.email}
-                    />
-                </div>
-                <div style={{ position: 'relative' }}>
-                    <label htmlFor='password'>Password</label>
-                    <input
-                        onChange={handleChange}
-                        type={showPassword ? 'text' : 'password'}
-                        name='password'
-                        placeholder='Enter your password...'
-                        value={signupInfo.password}
-                    />
-                    {/* <span onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '10px', top: '35px', cursor: 'pointer' }}>
-                        {showPassword ? <FaEyeSlash /> : <FaEye />} */}
-                    {/* </span> */}
-                </div>
-                <div style={{ position: 'relative' }}>
-                    <label htmlFor='confirmPassword'>Confirm Password</label>
-                    <input
-                        onChange={handleChange}
-                        type={showConfirmPassword ? 'text' : 'password'}
-                        name='confirmPassword'
-                        placeholder='Confirm your password...'
-                        value={signupInfo.confirmPassword}
-                    />
-                    {/* <span onClick={toggleConfirmPasswordVisibility} style={{ position: 'absolute', right: '10px', top: '35px', cursor: 'pointer' }}>
-                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />} */}
-                    {/* </span> */}
-                </div>
-                <button type='submit'>Signup</button>
-                <span>Already have an account?
-                    <Link to="/login">Login</Link>
-                </span>
-            </form>
-            <ToastContainer />
-        </div>
+        <div className='login-background'>
+            <div className='login-container'>
+                <h1>Signup</h1>
+                <form onSubmit={handleSignup}>
+                    <div>
+                        <label htmlFor='name' className='login-label'>Name</label>
+                        <input
+                            onChange={handleChange}
+                            type='text'
+                            name='name'
+                            autoFocus
+                            placeholder='Enter your name...'
+                            value={signupInfo.name}
+                            className='login-input'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='email' className='login-label'>Email</label>
+                        <input
+                            onChange={handleChange}
+                            type='email'
+                            name='email'
+                            placeholder='Enter your email...'
+                            value={signupInfo.email}
+                            className='login-input'
+                        />
+                    </div>
+                    <div style={{ position: 'relative' }}>
+                        <label htmlFor='password' className='login-label'>Password</label>
+                        <input
+                            onChange={handleChange}
+                            type={showPassword ? 'text' : 'password'}
+                            name='password'
+                            placeholder='Enter your password...'
+                            value={signupInfo.password}
+                            className='login-input'
+                        />
+                        {/* Uncomment the following for toggling visibility icons
+                        <span onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '10px', top: '35px', cursor: 'pointer' }}>
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                        */}
+                    </div>
+                    <div style={{ position: 'relative' }}>
+                        <label htmlFor='confirmPassword' className='login-label'>Confirm Password</label>
+                        <input
+                            onChange={handleChange}
+                            type={showConfirmPassword ? 'text' : 'password'}
+                            name='confirmPassword'
+                            placeholder='Confirm your password...'
+                            value={signupInfo.confirmPassword}
+                            className='login-input'
+                        />
+                        {/* Uncomment the following for toggling visibility icons
+                        <span onClick={toggleConfirmPasswordVisibility} style={{ position: 'absolute', right: '10px', top: '35px', cursor: 'pointer' }}>
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                        </span>
+                        */}
+                    </div>
+                    <button type='submit' className='login-button'>Signup</button>
+                    <span>Already have an account? <Link to="/login">Login</Link></span>
+                </form>
+                <ToastContainer />
+            </div>
         </div>
     );
 }
