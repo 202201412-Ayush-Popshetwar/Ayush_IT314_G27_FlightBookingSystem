@@ -6,6 +6,7 @@ import Signup from "./components/signup.jsx";
 import Profile from "./components/profile.jsx";
 import { useState, useEffect } from "react";
 import RefrshHandler from "./RefreshHandler.jsx";
+import FAQ from "./components/FAQ.jsx";
 import {
   Navigate,
   BrowserRouter,
@@ -39,6 +40,7 @@ function App() {
         <Route path="/login" element={<Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} />} /> {/* Pass setAuthenticated */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/profile" element={<Profile/>}/>
+        <Route path='/faq' element={<FAQ isAuthenticated={isAuthenticated}  />} />
       </Routes>
     </BrowserRouter>
   );

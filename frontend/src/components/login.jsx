@@ -1,11 +1,10 @@
-// Login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
 import './index.css';
 
-function Login({isAuthenticated, setAuthenticated }) {
+function Login({ isAuthenticated, setAuthenticated }) {
     const [loginInfo, setLoginInfo] = useState({
         email: '',
         password: ''
@@ -38,14 +37,12 @@ function Login({isAuthenticated, setAuthenticated }) {
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', name);
                 setAuthenticated(true);
-               setTimeout(() => {
-                navigate('/');
-               }, 1000);
+                setTimeout(() => {
+                    navigate('/');
+                }, 1000);
             } else if (error) {
-                console.log('r');
                 handleError(error?.details[0].message);
             } else {
-                console.log('q');
                 handleError(message);
             }
         } catch (err) {
@@ -54,32 +51,36 @@ function Login({isAuthenticated, setAuthenticated }) {
     };
 
     return (
-        <div className='container'>
-            <h1>Login</h1>
-            <form onSubmit={handleLogin}>
-                <div>
-                    <label htmlFor='email'>Email</label>
-                    <input
-                        onChange={handleChange}
-                        type='email'
-                        name='email'
-                        placeholder='Enter your email...'
-                        value={loginInfo.email}
-                    />
-                </div>
-                <div>
-                    <label htmlFor='password'>Password</label>
-                    <input
-                        onChange={handleChange}
-                        type='password'
-                        name='password'
-                        placeholder='Enter your password...'
-                        value={loginInfo.password}
-                    />
-                </div>
-                <button type='submit'>Login</button>
-                <span>Don't have an account? <Link to="/signup">Signup</Link></span>
-            </form>
+        <div className='login-background'>
+            <div className='login-container'>
+                <h1>Login</h1>
+                <form onSubmit={handleLogin}>
+                    <div>
+                        <label htmlFor='email' className='login-label'>Email</label>
+                        <input
+                            onChange={handleChange}
+                            type='email'
+                            name='email'
+                            placeholder='Enter your email...'
+                            value={loginInfo.email}
+                            className='login-input'
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor='password' className='login-label'>Password</label>
+                        <input
+                            onChange={handleChange}
+                            type='password'
+                            name='password'
+                            placeholder='Enter your password...'
+                            value={loginInfo.password}
+                            className='login-input'
+                        />
+                    </div>
+                    <button type='submit' className='login-button'>Login</button>
+                    <span>Don't have an account? <Link to="/signup">Signup</Link></span>
+                </form>
+            </div>
             <ToastContainer />
         </div>
     );
