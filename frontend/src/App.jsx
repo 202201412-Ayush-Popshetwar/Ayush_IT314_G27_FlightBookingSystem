@@ -23,31 +23,23 @@ import { Last } from "react-bootstrap/esm/PageItem.js";
 
 
 function App() {
-  const [isAuthenticated, setAuthenticated] = useState(false);
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setAuthenticated(true);
-     
-    }
-    
-  }, []);
+  const [loggedInUser, setLoggedInUser] = useState('');
   
-
+  
   return (
     <BrowserRouter>
-      <RefrshHandler setAuthenticated={setAuthenticated} />
+      <RefrshHandler setLoggedInUser ={setLoggedInUser} />
       <Routes>
-        <Route path="/" element={<Home  isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated}/>} />
+        <Route path="/" element={<Home loggedInUser={loggedInUser}/>} />
         <Route path="/flights" element={<List />} />
         <Route path="/flights/:id" element={<Flight />} />
-        <Route path="/login" element={<Login isAuthenticated={isAuthenticated} setAuthenticated={setAuthenticated} />} /> {/* Pass setAuthenticated */}
+        <Route path="/login" element={<Login loggedInUser={loggedInUser} />} /> 
         <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile/>}/>
-        <Route path='/faq' element={<FAQ isAuthenticated={isAuthenticated}  />} />
-        <Route path='booking' element={<Booking/>} />
-        <Route path='/payment' element={<Payment/>}/>
-        <Route path='/confirmation' element={<Confirmation/>}/>
+        <Route path="/profile" element={<Profile loggedInUser={loggedInUser}/> }/>
+        <Route path='/faq' element={<FAQ loggedInUser={loggedInUser}  />} />
+        <Route path='booking' element={<Booking loggedInUser={loggedInUser}/>} />
+        <Route path='/payment' element={<Payment loggedInUser={loggedInUser}/>}/>
+        <Route path='/confirmation' element={<Confirmation loggedInUser={loggedInUser}/>}/>
       </Routes>
     </BrowserRouter>
   );

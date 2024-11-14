@@ -64,7 +64,7 @@ const designations = [
   { value: 'Miss', label: 'Miss' },
 ];
 
-const UserProfile = () => {
+const UserProfile = ({loggedInUser}) => {
   const [username, setUsername] = useState('Jane Doe');
   const [email, setEmail] = useState('janedoe@gmail.com');
   const [phoneNumber, setPhoneNumber] = useState('+1 2345 67 89');
@@ -116,7 +116,7 @@ const UserProfile = () => {
 
   return (
     <div className="flex flex-col">
-      <Navbar />
+      <Navbar loggedInUser={loggedInUser} />
       <div className="p-4 bg-white shadow-md rounded-lg mt-4 max-w-7xl mx-auto">
         {/* User Information Section */}
         <h1 className="text-xl font-bold mb-4">User  Profile</h1>

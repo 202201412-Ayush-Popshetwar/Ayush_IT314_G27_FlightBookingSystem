@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 
-const ConfirmationPage = () => {
+import Navbar from "./Navbar";
+const ConfirmationPage = ({ loggedInUser}) => {
     const [isTickVisible, setIsTickVisible] = useState(false);
     const navigate = useNavigate();
 
@@ -42,6 +43,7 @@ const ConfirmationPage = () => {
     };
 
     return (
+        <div><Navbar loggedInUser={loggedInUser} />
         <div className="flex items-center justify-center min-h-screen bg-gray-50 p-6">
             <div className="flex flex-col items-center justify-center w-full max-w-md bg-white rounded-lg shadow-lg p-8">
                 {/* Tick mark animation */}
@@ -98,6 +100,7 @@ const ConfirmationPage = () => {
                     Back To Home
                 </button>
             </div>
+        </div>
         </div>
     );
 };

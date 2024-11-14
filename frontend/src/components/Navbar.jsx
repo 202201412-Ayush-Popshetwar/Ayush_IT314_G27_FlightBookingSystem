@@ -4,7 +4,7 @@ import "./index.css";
 import { handleError, handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
 
-const Navbar = ({ setAuthenticated, loggedInUser, setLoggedInUser }) => {
+const Navbar = ({ loggedInUser}) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -13,7 +13,6 @@ const Navbar = ({ setAuthenticated, loggedInUser, setLoggedInUser }) => {
     const handleLogout = () => {
         handleSuccess('User Logged out');
         setTimeout(() => {
-            setAuthenticated(false);
             localStorage.removeItem('token');
             localStorage.removeItem('loggedInUser');
             setLoggedInUser('');
@@ -32,7 +31,7 @@ const Navbar = ({ setAuthenticated, loggedInUser, setLoggedInUser }) => {
                     {loggedInUser ? (
                         <div className="dropdown">
                             <button className="navButton" onClick={toggleDropdown}>
-                                {loggedInUser} ▼
+                                Hello, {loggedInUser} ▼
                             </button>
                             {dropdownOpen && (
                                 <div className="dropdownMenu">

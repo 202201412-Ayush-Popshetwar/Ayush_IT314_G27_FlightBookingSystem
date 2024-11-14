@@ -6,14 +6,12 @@ import Navbar from "./Navbar";
 import RecommendList from "./recommendList";
 import CarouselList from "./CarouselList";
 import "./index.css";
-import NavbarAfterLogin from './NavbarAfterLogin'
-const Home = ({ isAuthenticated,setAuthenticated }) => {
+const Home = ({ loggedInUser}) => {
 
     
     return (
         <div>
-            {!isAuthenticated &&  <Navbar />}
-            {isAuthenticated && <NavbarAfterLogin setAuthenticated={setAuthenticated}/>}
+            <Navbar loggedInUser={loggedInUser} />
             <Header />
             <CarouselList />
             <div className="homeContainer">
