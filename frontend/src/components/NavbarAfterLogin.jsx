@@ -30,7 +30,7 @@ const Navbar = ({ setAuthenticated }) => {
         <div className="navbar">
             <div className="navContainer">
                 <div className="logoContainer">
-                    <img src="/img/logo/SkyLynx_icon.jpg" alt="SkyLynx" className="logo" />
+                    <img src="/img/logo/SkyLynx_icon.jpg" alt="SkyLynx" className="logo" onClick={() => {navigate("/") }}/>
                     <h2 className="logoText">SkyLynx</h2>
                 </div>
                 <div className="navButtons">

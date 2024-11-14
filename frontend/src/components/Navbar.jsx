@@ -24,8 +24,8 @@ const Navbar = ({ setAuthenticated, loggedInUser, setLoggedInUser }) => {
     return (
         <div className="navbar">
             <div className="navContainer">
-                <div className="logoContainer">
-                    <img src="/img/logo/SkyLynx_icon.jpg" alt="SkyLynx" className="logo" />
+                <div className="logoContainer" onClick={() => {navigate("/")}}>
+                    <img src="/img/logo/SkyLynx_icon.jpg" alt="SkyLynx" className="logo"/>
                     <h2 className="logoText">SkyLynx</h2>
                 </div>
                 <div className="navButtons">

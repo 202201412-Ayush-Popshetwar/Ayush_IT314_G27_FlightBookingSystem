@@ -48,11 +48,9 @@ const Header = ({type}) => {
                         <FontAwesomeIcon icon={faPlaneCircleCheck} />
                         <span>Check-In</span>
                     </div>
-                    <div className="headerListItem">
+                    <div className="headerListItem" onClick={() => {navigate("/faq") }}>
                         <FontAwesomeIcon icon={faCircleQuestion} />
-                        <button onClick={()=>{
-                            navigate("/faq")
-                        }}>FAQ</button>
+                        <span>FAQ</span>
                     </div>
                     <div className="headerListItem">
                         <FontAwesomeIcon icon={faWebAwesome} />
