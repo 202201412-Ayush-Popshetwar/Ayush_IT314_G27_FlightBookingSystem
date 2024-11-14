@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const PaymentPage = () => {
+import Navbar from "./Navbar";
+const PaymentPage = ({ loggedInUser}) => {
     const [formData, setFormData] = useState({
         cardNumber: '',
         expiryDate: '',
@@ -75,6 +76,8 @@ const PaymentPage = () => {
     };
 
     return (
+        <div>
+        <Navbar loggedInUser={loggedInUser} />
         <div className="flex items-center justify-center min-h-screen bg-gray-50 p-6">
             <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg">
                 
@@ -183,6 +186,7 @@ const PaymentPage = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     );
 };

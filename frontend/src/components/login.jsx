@@ -5,8 +5,9 @@ import { handleError, handleSuccess } from '../utils';
 import './index.css';
 import Navbar from './Navbar';
 import Header from './Header';
+import { set } from 'date-fns';
 
-function Login({ isAuthenticated, setAuthenticated }) {
+function Login({ loggedInUser ,setLoggedInUser }) {
     const [loginInfo, setLoginInfo] = useState({
         email: '',
         password: ''
@@ -26,7 +27,7 @@ function Login({ isAuthenticated, setAuthenticated }) {
             return handleError('Email and password are required');
         }
         try {
-            const url = `http://localhost:8090/auth/login`;
+            const url = `http://localhost:5050/auth/login`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
@@ -38,7 +39,7 @@ function Login({ isAuthenticated, setAuthenticated }) {
                 handleSuccess(message);
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', name);
-                setAuthenticated(true);
+                setLoggedInUser(name);
                 setTimeout(() => {
                     navigate('/');
                 }, 1000);

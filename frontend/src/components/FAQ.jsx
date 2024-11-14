@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import "./FAQ.css";
 import Navbar from "./Navbar";
-import NavbarAfterLogin from "./NavbarAfterLogin";
 
-const FAQ = ({ isAuthenticated }) => {
+const FAQ = ({ loggedInUser }) => {
     const [activeIndex, setActiveIndex] = useState(null);
     
     const faqs = [
@@ -26,9 +25,7 @@ const FAQ = ({ isAuthenticated }) => {
 
     return (
         <div className="faq-background">
-            {!isAuthenticated &&  <Navbar />}
-            {isAuthenticated && <NavbarAfterLogin setAuthenticated={setAuthenticated}/>}
-        
+            <Navbar loggedInUser={loggedInUser} />
         <div className="faq-container">
             <h2>About SkyLynx</h2>
             <p className="faq-p">

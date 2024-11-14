@@ -5,7 +5,7 @@ import { handleError, handleSuccess } from '../utils';
 import './index.css';
 import Navbar from './Navbar';
 import Header from './Header';
-function Signup() {
+function Signup({loggedInUser}) {
     const [signupInfo, setSignupInfo] = useState({
         name: '',
         email: '',
@@ -43,7 +43,7 @@ function Signup() {
         }
 
         try {
-            const url = `http://localhost:8090/auth/signup`;
+            const url = `http://localhost:5050/auth/signup`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
