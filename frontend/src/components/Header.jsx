@@ -27,12 +27,24 @@ const Header = ({type}) => {
         children: 0,
     });
 
+
     const handleOption = (name, operation) => {
         setOptions((prev) => {
             return {
                 ...prev,
                 [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
             }
+        });
+    };
+
+    const handleSearch = () => {
+        navigate("/booking",{
+            state: {
+                from,
+                to,
+                date,
+                options,
+            },
         });
     };
 
