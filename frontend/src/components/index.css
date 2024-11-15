@@ -189,7 +189,7 @@
 
 .mailInputContainer>input {
     width: 300px;
-    height: 30px;
+    height: 50px;
     padding: 10px;
     border: none;
     margin-right: 10px;
@@ -197,6 +197,7 @@
 }
 
 .mailInputContainer>button {
+    width: 100px;
     height: 50px;
     background-color: #0071c2;
     color: white;
@@ -499,4 +500,47 @@ span>a:hover {
     color: #333;
     margin-bottom: 8px;
     font-weight: 600;
+}
+
+.footer {
+    background-color: #373b41;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+.footer-content{
+    max-width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.footer-section-links > ul > li > a{
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.footerLink:hover {
+    text-decoration: underline;
+}
+
+.footerSocials {
+    display: flex;
+    gap: 10px;
+}
+
+.footerSocialIcon {
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.footerSocialIcon:hover {
+    color: #46affb;
 }

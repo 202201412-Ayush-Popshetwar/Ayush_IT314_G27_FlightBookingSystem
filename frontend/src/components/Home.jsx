@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import RecommendList from "./recommendList";
 import CarouselList from "./CarouselList";
 import "./index.css";
+import Footer from "./Footer";
 const Home = ({ loggedInUser}) => {
 
     
@@ -19,6 +20,7 @@ const Home = ({ loggedInUser}) => {
                 <h1 className="homeTitle">Recommended for you</h1>
                 <RecommendList />
                 <MailList />
+                <Footer />
             </div>
         </div>
     )
