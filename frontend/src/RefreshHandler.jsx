@@ -1,32 +1,28 @@
-import { set } from 'date-fns';
-import React, { useEffect } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function RefrshHandler({ setLoggedInUser }) {
     const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (localStorage.getItem('token')) {
-            const user = localStorage.getItem('loggedInUser');
-            setLoggedInUser(prevUser => {
-                if (prevUser !== user) {
-                    return user;
-                }
-                return prevUser;
-            });
-            if (location.pathname === '/' ||
+        const token = localStorage.getItem('token');
+        const user = localStorage.getItem('loggedInUser');
+
+        if (token) {
+            // Update logged-in user state only if needed
+            setLoggedInUser(prevUser => (prevUser !== user ? user : prevUser));
+            if (
+                location.pathname === '/' ||
                 location.pathname === '/login' ||
                 location.pathname === '/signup'
             ) {
-                navigate('/', { replace: false });
+                navigate('/', { replace: true }); // Use replace:true to avoid history clutter
             }
         }
-    }, [location, navigate, setLoggedInUser]);
+    }, [location.pathname, navigate]); // Only run when the path changes
 
-    return (
-        null
-    )
+    return null;
 }
 
-export default RefrshHandler
+export default RefrshHandler;

@@ -2,10 +2,10 @@ import React from 'react';
 import Navbar from './Navbar';
 import Header from './Header';
 
-const List = () => {
+const List = ({loggedInUser,setLoggedInUser}) => {
     return (
         <div>
-            <Navbar/>
+            <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
             <Header type="list"/>
         </div>
     )

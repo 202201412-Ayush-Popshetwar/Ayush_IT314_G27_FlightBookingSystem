@@ -28,18 +28,18 @@ function App() {
   
   return (
     <BrowserRouter>
-      <RefrshHandler setLoggedInUser ={setLoggedInUser} />
+      <RefrshHandler loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
       <Routes>
-        <Route path="/" element={<Home loggedInUser={loggedInUser}/>} />
-        <Route path="/flights" element={<List />} />
-        <Route path="/flights/:id" element={<Flight />} />
-        <Route path="/login" element={<Login loggedInUser={loggedInUser} />} /> 
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/profile" element={<Profile loggedInUser={loggedInUser}/> }/>
-        <Route path='/faq' element={<FAQ loggedInUser={loggedInUser}  />} />
-        <Route path='booking' element={<Booking loggedInUser={loggedInUser}/>} />
-        <Route path='/payment' element={<Payment loggedInUser={loggedInUser}/>}/>
-        <Route path='/confirmation' element={<Confirmation loggedInUser={loggedInUser}/>}/>
+        <Route path="/" element={<Home loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
+        <Route path="/flights" element={<List loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
+        <Route path="/flights/:id" element={<Flight loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
+        <Route path="/login" element={<Login loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} /> 
+        <Route path="/signup" element={<Signup loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
+        <Route path="/profile" element={<Profile loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/> }/>
+        <Route path='/faq' element={<FAQ loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
+        <Route path='booking' element={<Booking loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
+        <Route path='/payment' element={<Payment loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
+        <Route path='/confirmation' element={<Confirmation loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
       </Routes>
     </BrowserRouter>
   );

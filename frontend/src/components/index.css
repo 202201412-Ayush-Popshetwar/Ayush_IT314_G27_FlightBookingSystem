@@ -119,6 +119,7 @@
 .headerSearchInput {
     border: none;
     outline: none;
+    color : black
 }
 
 .headerSearchText {
@@ -136,6 +137,7 @@
     margin-right: 4px;
 }
 
+/* Updated passenger option counter button styles */
 .options {
     z-index: 2;
     position: absolute;
@@ -143,38 +145,63 @@
     background-color: white;
     color: gray;
     border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
     box-shadow: 0px 0px 10px -5px rgba(0, 0, 0, 0.4);
+    padding: 10px;
 }
 
 .optionItem {
     width: 200px;
     display: flex;
     justify-content: space-between;
-    margin: 10px;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.optionText {
+    font-size: 14px;
+    color: #555;
 }
 
 .optionCounter {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 12px;
+    font-size: 14px;
     color: black;
 }
 
 .optionCounterButton {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     border: 1px solid #0071c2;
     color: #0071c2;
-    cursor: pointer;
     background-color: white;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .optionCounterButton:disabled {
     cursor: not-allowed;
+    color: #ccc;
+    border-color: #ccc;
 }
 
+.optionCounterButton:hover:not(:disabled) {
+    background-color: #0071c2;
+    color: white;
+}
+
+.optionCounterNumber {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
 .mail {
     width: 100%;
     margin-top: 50px;

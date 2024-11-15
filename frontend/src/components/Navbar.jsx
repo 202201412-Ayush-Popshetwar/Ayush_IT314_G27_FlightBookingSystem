@@ -4,7 +4,7 @@ import "./index.css";
 import { handleError, handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
 
-const Navbar = ({ loggedInUser}) => {
+const Navbar = ({ loggedInUser,setLoggedInUser}) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
 

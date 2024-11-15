@@ -7,12 +7,12 @@ import RecommendList from "./recommendList";
 import CarouselList from "./CarouselList";
 import "./index.css";
 import Footer from "./Footer";
-const Home = ({ loggedInUser}) => {
+const Home = ({ loggedInUser,setLoggedInUser}) => {
 
     
     return (
         <div>
-            <Navbar loggedInUser={loggedInUser} />
+            <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
             <Header />
             <CarouselList />
             <div className="homeContainer">

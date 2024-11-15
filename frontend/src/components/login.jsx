@@ -37,6 +37,7 @@ function Login({ loggedInUser ,setLoggedInUser }) {
             const { success, message, jwtToken, name, error } = result;
             if (success) {
                 handleSuccess(message);
+                console.log('harsh')
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', name);
                 setLoggedInUser(name);
@@ -55,7 +56,7 @@ function Login({ loggedInUser ,setLoggedInUser }) {
 
     return (
         <div>
-            <Navbar/>
+            <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
             <Header type="list"/>
         <div className='login-background'>
             <div className='login-container'>

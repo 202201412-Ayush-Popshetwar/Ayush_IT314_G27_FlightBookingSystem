@@ -8,7 +8,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './ui/Table'; 
+} from './ui/Table.jsx'; 
 
 const mockBookings = [
   {
@@ -64,7 +64,7 @@ const designations = [
   { value: 'Miss', label: 'Miss' },
 ];
 
-const UserProfile = ({loggedInUser}) => {
+const UserProfile = ({loggedInUser,setLoggedInUser}) => {
   const [username, setUsername] = useState('Jane Doe');
   const [email, setEmail] = useState('janedoe@gmail.com');
   const [phoneNumber, setPhoneNumber] = useState('+1 2345 67 89');
@@ -116,7 +116,8 @@ const UserProfile = ({loggedInUser}) => {
 
   return (
     <div className="flex flex-col">
-      <Navbar loggedInUser={loggedInUser} />
+  
+      <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
       <div className="p-4 bg-white shadow-md rounded-lg mt-4 max-w-7xl mx-auto">
         {/* User Information Section */}
         <h1 className="text-xl font-bold mb-4">User  Profile</h1>

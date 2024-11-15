@@ -5,7 +5,7 @@ import { handleError, handleSuccess } from '../utils';
 import './index.css';
 import Navbar from './Navbar';
 import Header from './Header';
-function Signup({loggedInUser}) {
+function Signup({loggedInUser,setLoggedInUser}) {
     const [signupInfo, setSignupInfo] = useState({
         name: '',
         email: '',
@@ -72,7 +72,7 @@ function Signup({loggedInUser}) {
 
     return (
         <div>
-            <Navbar/>
+            <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
             <Header type="list"/>
         <div className='login-background'>
             <div className='login-container'>
