@@ -65,7 +65,10 @@ const designations = [
   { value: 'Miss', label: 'Miss' },
 ];
 
-const UserProfile = ({loggedInUser,sesetLoggedInUser}) => {
+const UserProfile = ({loggedInUser,setLoggedInUser}) => {
+  if(!loggedInUser){
+    return <Navigate to="/" />
+  }
   const userId = localStorage.getItem('userId'); // Assuming user ID is stored in localStorage
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -160,7 +163,7 @@ const UserProfile = ({loggedInUser,sesetLoggedInUser}) => {
 
   return (
     <div className="flex flex-col">
-      <Navbar loggedInUser={loggedInUser} />
+      <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
       <div className="p-4 bg-white shadow-md rounded-lg mt-4 max-w-7xl mx-auto">
 
         {/* User Information Section */}

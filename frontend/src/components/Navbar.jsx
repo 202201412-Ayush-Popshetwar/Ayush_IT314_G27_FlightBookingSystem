@@ -15,8 +15,9 @@ const Navbar = ({ loggedInUser,setLoggedInUser}) => {
         setTimeout(() => {
             localStorage.removeItem('token');
             localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('userId');
             setLoggedInUser('');
-            navigate('/login');
+            navigate('/');
         }, 1000);
     };
 
