@@ -1,7 +1,6 @@
-import React, { useState,useEffect } from 'react';
-import Navbar from './Navbar'; 
-import {Navigate} from 'react-router-dom';
-import Badge from './ui/Badge'; 
+import React, { useState, useEffect } from 'react';
+import Navbar from './Navbar';
+import Badge from './ui/Badge';
 import {
   Table,
   TableBody,
@@ -9,63 +8,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from './ui/Table'; 
+} from './ui/Table.jsx';
 
-const mockBookings = [
-  {
-    id: 'FL001',
-    from: 'New York (JFK)',
-    to: 'London (LHR)',
-    date: '2024-03-15',
-    class: 'Business',
-    passengers: 2,
-    status: 'Confirmed',
-    price: '$2,450',
-  },
-  {
-    id: 'FL002',
-    from: 'London (LHR)',
-    to: 'Paris (CDG)',
-    date: '2024-02-28',
-    class: 'Economy',
-    passengers: 1,
-    status: 'Completed',
-    price: '$320',
-  },
-  {
-    id: 'FL003',
-    from: 'Dubai (DXB)',
-    to: 'Singapore (SIN)',
-    date: '2024-04-10',
-    class: 'First Class',
-    passengers: 2,
-    status: 'Upcoming',
-    price: '$4,800',
-  },
-];
-
-const statusColors = {
-  Confirmed: 'bg-green-100 text-green-800',
-  Completed: 'bg-gray-100 text-gray-800',
-  Upcoming: 'bg-blue-100 text-blue-800',
-  Cancelled: 'bg-red-100 text-red-800',
-};
-
-const classColors = {
-  Economy: 'bg-gray-100 text-gray-800',
-  Business: 'bg-purple-100 text-purple-800',
-  'First Class': 'bg-amber-100 text-amber-800',
-};
-
-const designations = [
-  { value: '', label: 'Select Designation' },
-  { value: 'Mr.', label: 'Mr.' },
-  { value: 'Mrs.', label: 'Mrs.' },
-  { value: 'Ms.', label: 'Ms.' },
-  { value: 'Miss', label: 'Miss' },
-];
-
-const UserProfile = ({loggedInUser,sesetLoggedInUser}) => {
+const UserProfile = ({ loggedInUser, setLoggedInUser }) => {
   const userId = localStorage.getItem('userId'); // Assuming user ID is stored in localStorage
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -80,8 +25,9 @@ const UserProfile = ({loggedInUser,sesetLoggedInUser}) => {
     { value: 'Miss', label: 'Miss' },
     { value: 'Dr', label: 'Dr' },
   ];
-   // Fetch user data from the backend
-   useEffect(() => {
+
+  // Fetch user data from the backend
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(`http://localhost:5050/user/${userId}`);
@@ -160,7 +106,7 @@ const UserProfile = ({loggedInUser,sesetLoggedInUser}) => {
 
   return (
     <div className="flex flex-col">
-      <Navbar loggedInUser={loggedInUser} />
+      <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
       <div className="p-4 bg-white shadow-md rounded-lg mt-4 max-w-7xl mx-auto">
 
         {/* User Information Section */}
@@ -172,16 +118,10 @@ const UserProfile = ({loggedInUser,sesetLoggedInUser}) => {
               <input
                 className="ml-2 border border-gray-300 rounded-md p-1"
                 value={userData.name}
-                onChange={(e) =>{ 
-                  setUserData({ ...userData, name: e.target.value })
-                  localStorage.setItem('loggedInUser',e.target.value);
-                
-                }
-              }
+                onChange={(e) => setUserData({ ...userData, name: e.target.value })}
               />
             ) : (
               <span className="itemValue">{userData.name}</span>
-              
             )}
           </div>
           <div className="detailItem">
@@ -298,9 +238,9 @@ const UserProfile = ({loggedInUser,sesetLoggedInUser}) => {
                     onChange={(e) => handlePassengerChange(index, e)}
                   />
                 </div>
-                <div className="detailItem flex items-center">
+                <div className="flex items-center justify-center mt-4">
                   <button
-                    className="bg-red-500 text-white p-1 rounded-md"
+                    className="bg-red-500 text-white p-2 rounded-md"
                     onClick={() => removePassenger(index)}
                   >
                     Remove
@@ -309,59 +249,38 @@ const UserProfile = ({loggedInUser,sesetLoggedInUser}) => {
               </div>
             </div>
           ))}
-          {passengers.length < 4 && (
-            <button className="bg-blue-500 text-white p-2 rounded-md" onClick={addPassenger}>
-              Add Passenger
-            </button>
-          )}
+          <button
+            className="bg-green-500 text-white p-2 rounded-md mt-2"
+            onClick={addPassenger}
+          >
+            Add Passenger
+          </button>
         </div>
 
-        {/* Booking History Section */}
-        <h2 className="text-xl font-bold mb-4">Booking History</h2>
-        <div className="py-4">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Booking ID</TableHead>
-                <TableHead>Route</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Class</TableHead>
-                <TableHead>Passengers</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Price</TableHead>
+        {/* Booking Table */}
+        <h2 className="text-xl font-bold mb-4">Bookings</h2>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableCell>Booking ID</TableCell>
+              <TableCell>From</TableCell>
+              <TableCell>To</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Status</TableCell>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {userData.bookings.map((booking, index) => (
+              <TableRow key={index}>
+                <TableCell>{booking.bookingId}</TableCell>
+                <TableCell>{booking.from}</TableCell>
+                <TableCell>{booking.to}</TableCell>
+                <TableCell>{new Date(booking.date).toLocaleDateString()}</TableCell>
+                <TableCell>{booking.status}</TableCell>
               </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockBookings.map((booking) => (
-                <TableRow key={booking.id}>
-                  <TableCell className="font-medium">{booking.id}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span>{booking.from}</span>
-                      <span className="text-sm text-gray-500">to</span>
-                      <span>{booking.to}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell>{booking.date}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className={classColors[booking.class]}>
-                      {booking.class}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{booking.passengers}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className={statusColors[booking.status]}>
-                      {booking.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right font-medium">
-                    {booking.price}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
+            ))}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );

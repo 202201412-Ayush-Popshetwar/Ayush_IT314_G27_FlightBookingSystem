@@ -34,12 +34,14 @@ function Login({ loggedInUser ,setLoggedInUser }) {
                 body: JSON.stringify(loginInfo)
             });
             const result = await response.json();
-            const { success, message, jwtToken, name, error } = result;
+            console.log(result);  // Add this line to see the full response from the backend
+    
+            const { success, message, jwtToken, name, error, userId } = result;
             if (success) {
                 handleSuccess(message);
-                console.log('harsh')
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', name);
+                localStorage.setItem('userId', userId);
                 setLoggedInUser(name);
                 setTimeout(() => {
                     navigate('/');
@@ -50,6 +52,7 @@ function Login({ loggedInUser ,setLoggedInUser }) {
                 handleError(message);
             }
         } catch (err) {
+            console.error(err);  // Log error details
             handleError(err.message);
         }
     };

@@ -1,6 +1,9 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import mongoose from 'mongoose';
 import dotenv from "dotenv";
+import cors from 'cors';
+import express from 'express';
+const app = express();
 dotenv.config();
 
 const uri = process.env.ATLAS_URI || "";
@@ -13,7 +16,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-
+app.use(cors());
 async function connectToDatabase() {
   try {
     // Connect the client to the server
