@@ -3,7 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 
 import Navbar from "./Navbar";
-const ConfirmationPage = ({ loggedInUser,setLoggedInUser}) => {
+import Header from "./Header";
+import Footer from "./Footer";
+
+const ConfirmationPage = ({ loggedInUser , setLoggedInUser  }) => {
     const [isTickVisible, setIsTickVisible] = useState(false);
     const navigate = useNavigate();
 
@@ -43,65 +46,67 @@ const ConfirmationPage = ({ loggedInUser,setLoggedInUser}) => {
     };
 
     return (
-        <div>
-        <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
-        <div className="flex items-center justify-center min-h-screen bg-gray-50 p-6">
-            <div className="flex flex-col items-center justify-center w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-                {/* Tick mark animation */}
-                <div className="relative mb-6">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="100"
-                        height="100"
-                        viewBox="0 0 100 100"
-                        className="text-green-500"
+        <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+            <Navbar loggedInUser ={loggedInUser } setLoggedInUser ={setLoggedInUser } />
+            <Header type="list" />
+            <div className="flex items-center justify-center flex-grow p-20">
+                <div className="flex flex-col items-center justify-center w-full max-w-md bg-white rounded-lg shadow-lg p-8 bg-opacity-90">
+                    {/* Tick mark animation */}
+                    <div className="relative mb-6">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="100"
+                            height="100"
+                            viewBox="0 0 100 100"
+                            className="text-green-500"
+                        >
+                            <circle
+                                cx="50"
+                                cy="50"
+                                r="48"
+                                fill="none"
+                                stroke="#4CAF50"
+                                strokeWidth="4"
+                            />
+                            {/* Animated Tick */}
+                            <path
+                                d="M30 50 L45 65 L70 35"
+                                fill="none"
+                                stroke="#4CAF50"
+                                strokeWidth="4"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className={`transition-all duration-1000 ease-in-out ${isTickVisible ? 'stroke-dasharray-[60] stroke-dashoffset-0' : 'stroke-dasharray-[60] stroke-dashoffset-[60]'}`}
+                                style={{
+                                    strokeDasharray: 60,
+                                    strokeDashoffset: isTickVisible ? 0 : 60,
+                                }}
+                            />
+                        </svg>
+                    </div>
+
+                    {/* Confirmation Text */}
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-4">Payment Successful!</h2>
+                    <p className=" text-lg text-gray-600 mb-6">Your booking has been confirmed. You can now download your flight ticket.</p>
+
+                    {/* Generate PDF button */}
+                    <button
+                        onClick={generatePDF}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded focus:outline-none transition duration-150 ease-in-out"
                     >
-                        <circle
-                            cx="50"
-                            cy="50"
-                            r="48"
-                            fill="none"
-                            stroke="#4CAF50"
-                            strokeWidth="4"
-                        />
-                        {/* Animated Tick */}
-                        <path
-                            d="M30 50 L45 65 L70 35"
-                            fill="none"
-                            stroke="#4CAF50"
-                            strokeWidth="4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className={`transition-all duration-1000 ease-in-out ${isTickVisible ? 'stroke-dasharray-[60] stroke-dashoffset-0' : 'stroke-dasharray-[60] stroke-dashoffset-[60]'}`}
-                            style={{
-                                strokeDasharray: 60,
-                                strokeDashoffset: isTickVisible ? 0 : 60,
-                            }}
-                        />
-                    </svg>
+                        Download Flight Ticket
+                    </button>
+
+                    {/* Back to Home Button */}
+                    <button
+                        onClick={() => navigate('/')}
+                        className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded focus:outline-none transition duration-150 ease-in-out"
+                    >
+                        Back To Home
+                    </button>
                 </div>
-
-                {/* Confirmation Text */}
-                <h2 className="text-2xl font-semibold text-gray-800 mb-4">Payment Successful!</h2>
-                <p className="text-lg text-gray-600 mb-6">Your booking has been confirmed. You can now download your flight ticket.</p>
-
-                {/* Generate PDF button */}
-                <button
-                    onClick={generatePDF}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded focus:outline-none transition duration-150 ease-in-out"
-                >
-                    Download Flight Ticket
-                </button>
-
-                {/* Back to Home Button */}
-                <button
-                    onClick={() => navigate('/')}
-                    className="mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-6 rounded focus:outline-none transition duration-150 ease-in-out"
-                >
-                    Back To Home
-                </button>
             </div>
-        </div>
+            <Footer />
         </div>
     );
 };
