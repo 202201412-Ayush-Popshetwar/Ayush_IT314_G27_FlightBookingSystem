@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import './connection.js';
 import records from "./Routes/record.js";
 import {UserModel} from './Models/User.js';
+import { appendFile } from 'node:fs/promises';
 
  const PORT = process.env.PORT || 5050;
  dotenv.config()
@@ -40,5 +41,61 @@ app.use("/auth",AuthRouter);
       res.status(500).json({ message: err.message });
     }
   });
+
+app.put('/user/:userId/passengers', async (req, res) => {
+  const { userId } = req.params;
+  const { passengers } = req.body;
+
+  try {
+    // Update the passengers array for the user
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      { passengers },
+      { new: true } 
+    );
+
+    if (!updatedUser) return res.status(404).json({ error: 'User not found' });
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.error('Error updating passengers:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Route to delete a passenger
+app.delete('/user/:userId/:passengerId', async (req, res) => {
+  const { userId, passengerId } = req.params;
+  
+  try {
+    // Find the user by ID and remove the passenger
+    const user = await UserModel.findById(userId);
+    // console.log(user);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Check if passenger exists
+    const passengerIndex = user.passengers.findIndex(
+      (passenger) => passenger._id.toString() === passengerId
+    );
+    // console.log(user.passengers[passengerIndex]);
+    if (passengerIndex === -1) {
+      return res.status(404).json({ message: 'Passenger not found' });
+    }
+
+    // Remove passenger from the array
+    user.passengers.splice(passengerIndex, 1);
+   
+
+    // Save the updated user document
+    await user.save();
+    
+    res.status(200).json({ message: 'Passenger deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting passenger:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+});
 app.listen(PORT,()=>{
     console.log("Connected to Backend")})
