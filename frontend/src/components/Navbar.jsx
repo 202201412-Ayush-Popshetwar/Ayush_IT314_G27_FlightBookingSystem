@@ -4,7 +4,7 @@ import "./index.css";
 import { handleError, handleSuccess } from '../utils';
 import { ToastContainer } from 'react-toastify';
 
-const Navbar = ({ loggedInUser}) => {
+const Navbar = ({ loggedInUser,setLoggedInUser}) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const navigate = useNavigate();
 
@@ -15,8 +15,9 @@ const Navbar = ({ loggedInUser}) => {
         setTimeout(() => {
             localStorage.removeItem('token');
             localStorage.removeItem('loggedInUser');
+            localStorage.removeItem('userId');
             setLoggedInUser('');
-            navigate('/login');
+            navigate('/');
         }, 1000);
     };
 

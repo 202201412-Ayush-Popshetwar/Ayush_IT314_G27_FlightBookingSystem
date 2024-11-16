@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./FAQ.css";
 import Navbar from "./Navbar";
 
-const FAQ = ({ loggedInUser }) => {
+const FAQ = ({ loggedInUser,setLoggedInUser }) => {
     const [activeIndex, setActiveIndex] = useState(null);
     
     const faqs = [
@@ -25,7 +25,7 @@ const FAQ = ({ loggedInUser }) => {
 
     return (
         <div className="faq-background">
-            <Navbar loggedInUser={loggedInUser} />
+            <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
         <div className="faq-container">
             <h2>About SkyLynx</h2>
             <p className="faq-p">

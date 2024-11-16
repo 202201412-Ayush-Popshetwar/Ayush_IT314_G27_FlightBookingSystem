@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import UserModel from "../Models/User.js";
+import {UserModel,BookingModel} from "../Models/User.js";
 import dotenv from 'dotenv';
 dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -8,6 +8,8 @@ const JWT_SECRET = process.env.JWT_SECRET;
 export const signup = async (req, res) => {
     try {
         const { name, email, password } = req.body;
+        console.log(email);
+        console.log('bbb')
         const user = await UserModel.findOne({ email });
         if (user) {
             return res.status(409)
@@ -15,13 +17,16 @@ export const signup = async (req, res) => {
         }
         const userModel = new UserModel({ name, email, password });
         userModel.password = await bcrypt.hash(password, 10);
+       
         await userModel.save();
+        
         res.status(201)
             .json({
                 message: "Signup successfully",
                 success: true
             })
     } catch (err) {
+        console.log(err);
         res.status(500)
             .json({
                 message: err,
@@ -57,7 +62,8 @@ export const login = async (req, res) => {
                 success: true,
                 jwtToken,
                 email,
-                name: user.name
+                name: user.name,
+                userId: user._id
             })
     } catch (err) {
         res.status(500)

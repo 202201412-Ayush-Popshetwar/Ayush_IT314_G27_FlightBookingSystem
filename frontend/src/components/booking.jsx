@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Navbar from "./Navbar";
-const BookingForm = ({ loggedInUser}) => {
+const BookingForm = ({ loggedInUser,setLoggedInUser}) => {
   const [formData, setFormData] = useState([
     {
       designation: '',
@@ -40,7 +40,7 @@ const BookingForm = ({ loggedInUser}) => {
 
   return (
     <div>
-      <Navbar loggedInUser={loggedInUser} />
+    <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-blue-100 to-blue-300 p-4 sm:p-8">
       <div className="max-w-3xl w-full bg-white rounded-lg shadow-xl p-8 sm:p-10 lg:p-12">
         <h1 className="text-3xl font-semibold text-center text-blue-800 mb-8">Flight Booking</h1>
