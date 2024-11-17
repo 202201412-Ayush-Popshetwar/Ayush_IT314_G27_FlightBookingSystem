@@ -11,6 +11,8 @@ import Booking from "./components/booking.jsx";
 import Payment from "./components/payment.jsx";
 import Confirmation from "./components/Confirmation.jsx";
 import Rewards from "./components/rewards.jsx";
+import Addon from "./components/Addon.jsx";
+import Aboutus from "./components/Aboutus.jsx";
 <com></com>
 import {
   Navigate,
@@ -42,6 +44,8 @@ function App() {
         <Route path='/payment' element={<Payment loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
         <Route path='/confirmation' element={<Confirmation loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
         <Route path='/rewards' element={<Rewards loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
+        <Route path='/Addon' element={<Addon loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
+        <Route path='/Aboutus' element={<Aboutus loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
       </Routes>
     </BrowserRouter>
   );
