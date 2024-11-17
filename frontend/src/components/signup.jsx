@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
-import './index.css';
 import Navbar from './Navbar';
 import Header from './Header';
-function Signup({loggedInUser,setLoggedInUser}) {
+import Footer from './Footer';
+
+function Signup({ loggedInUser , setLoggedInUser  }) {
     const [signupInfo, setSignupInfo] = useState({
         name: '',
         email: '',
@@ -71,74 +72,71 @@ function Signup({loggedInUser,setLoggedInUser}) {
     };
 
     return (
-        <div>
-            <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
-            <Header type="list"/>
-        <div className='login-background'>
-            <div className='login-container'>
-                <h1>Signup</h1>
-                <form onSubmit={handleSignup}>
-                    <div>
-                        <label htmlFor='name' className='login-label'>Name</label>
-                        <input
-                            onChange={handleChange}
-                            type='text'
-                            name='name'
-                            autoFocus
-                            placeholder='Enter your name...'
-                            value={signupInfo.name}
-                            className='login-input'
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor='email' className='login-label'>Email</label>
-                        <input
-                            onChange={handleChange}
-                            type='email'
-                            name='email'
-                            placeholder='Enter your email...'
-                            value={signupInfo.email}
-                            className='login-input'
-                        />
-                    </div>
-                    <div style={{ position: 'relative' }}>
-                        <label htmlFor='password' className='login-label'>Password</label>
-                        <input
-                            onChange={handleChange}
-                            type={showPassword ? 'text' : 'password'}
-                            name='password'
-                            placeholder='Enter your password...'
-                            value={signupInfo.password}
-                            className='login-input'
-                        />
-                        {/* Uncomment the following for toggling visibility icons
-                        <span onClick={togglePasswordVisibility} style={{ position: 'absolute', right: '10px', top: '35px', cursor: 'pointer' }}>
-                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+        <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+            <Navbar loggedInUser ={loggedInUser } setLoggedInUser ={setLoggedInUser } />
+            <Header type="list" />
+
+            <div className="flex-grow flex items-center justify-center py-20"> {/* Added padding for spacing */}
+                <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-11/12 max-w-md">
+                    <h1 className="text-2xl font-semibold text-center mb-6">Signup</h1>
+                    <form onSubmit={handleSignup}>
+                        <div className="mb-4">
+                            <label htmlFor='name' className="block text-gray-700 font-semibold mb-1">Name</label>
+                            <input
+                                onChange={handleChange}
+                                type='text'
+                                name='name'
+                                autoFocus
+                                placeholder='Enter your name...'
+                                value={signupInfo.name}
+                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor='email' className="block text-gray-700 font-semibold mb-1">Email</label>
+                            <input
+                                onChange={handleChange}
+                                type='email'
+                                name='email'
+                                placeholder='Enter your email...'
+                                value={signupInfo.email}
+                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+                        <div className="mb-4" style={{ position: 'relative' }}>
+                            <label htmlFor='password' className="block text-gray-700 font-semibold mb-1">Password</label>
+                            <input
+                                onChange={handleChange}
+                                type={showPassword ? 'text' : 'password'}
+                                name='password'
+                                placeholder='Enter your password...'
+                                value={signupInfo.password}
+                                className=" w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+                        <div className="mb-4" style={{ position: 'relative' }}>
+                            <label htmlFor='confirmPassword' className="block text-gray-700 font-semibold mb-1">Confirm Password</label>
+                            <input
+                                onChange={handleChange}
+                                type={showConfirmPassword ? 'text' : 'password'}
+                                name='confirmPassword'
+                                placeholder='Confirm your password...'
+                                value={signupInfo.confirmPassword}
+                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+                        <button type='submit' className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                            Signup
+                        </button>
+                        <span className="block text-center mt-4 text-gray-600">
+                            Already have an account? <Link to="/login" className="text-blue-500 hover:underline">Login</Link>
                         </span>
-                        */}
-                    </div>
-                    <div style={{ position: 'relative' }}>
-                        <label htmlFor='confirmPassword' className='login-label'>Confirm Password</label>
-                        <input
-                            onChange={handleChange}
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            name='confirmPassword'
-                            placeholder='Confirm your password...'
-                            value={signupInfo.confirmPassword}
-                            className='login-input'
-                        />
-                        {/* Uncomment the following for toggling visibility icons
-                        <span onClick={toggleConfirmPasswordVisibility} style={{ position: 'absolute', right: '10px', top: '35px', cursor: 'pointer' }}>
-                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
-                        </span>
-                        */}
-                    </div>
-                    <button type='submit' className='login-button'>Signup</button>
-                    <span>Already have an account? <Link to="/login">Login</Link></span>
-                </form>
-                <ToastContainer />
+                    </form>
+                </div>
             </div>
-        </div>
+
+            <Footer />
+            <ToastContainer />
         </div>
     );
 }

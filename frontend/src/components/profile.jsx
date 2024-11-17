@@ -1,20 +1,10 @@
-import React, { useState,useEffect } from 'react';
-import Navbar from './Navbar'; 
-import {Navigate} from 'react-router-dom';
-import { format } from 'date-fns';
-import Badge from './ui/Badge'; 
+import React, { useState, useEffect } from 'react';
+import Navbar from './Navbar';
+import Header from "./Header";
+import Footer from "./Footer";
+import { Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from './ui/Table'; 
-
-
 const mockBookings = [
   {
     id: 'FL001',
@@ -48,19 +38,6 @@ const mockBookings = [
   },
 ];
 
-const statusColors = {
-  Confirmed: 'bg-green-100 text-green-800',
-  Completed: 'bg-gray-100 text-gray-800',
-  Upcoming: 'bg-blue-100 text-blue-800',
-  Cancelled: 'bg-red-100 text-red-800',
-};
-
-const classColors = {
-  Economy: 'bg-gray-100 text-gray-800',
-  Business: 'bg-purple-100 text-purple-800',
-  'First Class': 'bg-amber-100 text-amber-800',
-};
-
 const designations = [
   { value: '', label: 'Select Designation' },
   { value: 'Mr.', label: 'Mr.' },
@@ -75,30 +52,22 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
   if(!loggedInUser){
     return <Navigate to="/" />
   }
-  const userId = localStorage.getItem('userId'); // Assuming user ID is stored in localStorage
+  const userId = localStorage.getItem('userId');
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState(null);
   const [passengers, setPassengers] = useState([{ designation: '', firstName: '', lastName: '', dob: '', phone: '' }]);
   const [error, setError] = useState(null);
 
-  // Define designations for passengers
-  const designations = [
-    { value: 'Mr', label: 'Mr' },
-    { value: 'Mrs', label: 'Mrs' },
-    { value: 'Miss', label: 'Miss' },
-    { value: 'Dr', label: 'Dr' },
-  ];
-   // Fetch user data from the backend
-   useEffect(() => {
+  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(`http://localhost:5050/user/${userId}`);
         if (!response.ok) throw new Error('Failed to fetch user data');
         const data = await response.json();
         setUserData(data);
-        setOriginalData(data); // Store original data for cancellation
-        setPassengers(data.passengers || []); // Sync passengers with user data
+        setOriginalData(data);
+        setPassengers(data.passengers || []);
       } catch (error) {
         setError(error.message);
         console.error('Error fetching user data:', error);
@@ -110,7 +79,6 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
 
   const handleEdit = () => {
     if (isEditing) {
-      // Save changes
       const updatedData = {
         name: userData.name,
         email: userData.email,
@@ -120,7 +88,6 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
         bookings: userData.bookings,
       };
 
-      // Update in backend
       const updateUserData = async () => {
         try {
           await fetch(`http://localhost:5050/user/${userId}`, {
@@ -135,7 +102,7 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
 
       updateUserData();
     } else {
-      setOriginalData(userData); // Store original data for cancellation
+      setOriginalData(userData);
     }
     setIsEditing(!isEditing);
   };
@@ -154,7 +121,6 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
     setIsEditing(false); // Exit edit mode
   };
 
-  // Handle changes to passenger data
   const handlePassengerChange = (index, e) => {
     const { name, value } = e.target;
     const updatedPassengers = [...passengers];
@@ -240,254 +206,259 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
   if (!userData) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
       <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
-      <div className="p-4 bg-white shadow-md rounded-lg mt-4 max-w-7xl mx-auto">
-
-        {/* User Information Section */}
-        <h1 className="text-xl font-bold mb-4">User Profile</h1>
-        <div className="grid grid-cols-3 gap-4 mb-4">
-          <div className="detailItem">
-            <span className="itemKey font-semibold">Username:</span>
-            {isEditing ? (
-              <input
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                value={userData.name}
-                onChange={(e) =>{ 
-                  setUserData({ ...userData, name: e.target.value })
-                  localStorage.setItem('loggedInUser',e.target.value);
-                
-                }
-              }
-              />
-            ) : (
-              <span className="itemValue">{userData.name}</span>
-              
-            )}
-          </div>
-          <div className="detailItem">
-            <span className="itemKey font-semibold">Email:</span>
-            {isEditing ? (
-              <input
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                value={userData.email}
-                onChange={(e) => setUserData({ ...userData, email: e.target.value })}
-              />
-            ) : (
-              <span className="itemValue">{userData.email}</span>
-            )}
-          </div>
-          <div className="detailItem">
-            <span className="itemKey font-semibold">Phone Number:</span>
-            {isEditing ? (
-              <input
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                value={userData.phoneNumber}
-                onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
-              />
-            ) : (
-              <span className="itemValue">{userData.phoneNumber}</span>
-            )}
-          </div>
-          <div className="detailItem">
-            <span className="itemKey font-semibold">Address:</span>
-            {isEditing ? (
-              <input
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                value={userData.address}
-                onChange={(e) => setUserData({ ...userData, address: e.target.value })}
-              />
-            ) : (
-              <span className="itemValue">{userData.address}</span>
-            )}
-          </div>
-          <div className="flex items-center justify-end col-span-3">
-            <button
-              className={`bg-blue-500 text-white p-2 rounded-md ${isEditing ? 'mr-2' : ''}`}
-              onClick={handleEdit}
-            >
-              {isEditing ? 'Save Changes' : 'Edit'}
-            </button>
-            {isEditing && (
+      <Header type="list" />
+      
+      <div className="py-20">
+        <div className="p-4 bg-white mt-4 max-w-7xl mx-auto w-full rounded-lg shadow-sm">
+          {/* User Information Section */}
+          <h1 className="text-2xl font-bold mb-6">User Profile</h1>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+            <div className="detailItem transition-all duration-200 hover:bg-gray-50 p-3 rounded-md">
+              <span className="itemKey font-semibold text-gray-700">Username: </span>
+              {isEditing ? (
+                <input
+                  className="ml-2 border border-gray-300 rounded p-2 w-2/3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  value={userData.name}
+                  onChange={(e) => {
+                    setUserData({ ...userData, name: e.target.value });
+                    localStorage.setItem('loggedInUser', e.target.value);
+                  }}
+                />
+              ) : (
+                <span className="itemValue">{userData.name}</span>
+              )}
+            </div>
+            <div className="detailItem transition-all duration-200 hover:bg-gray-50 p-3 rounded-md">
+              <span className="itemKey font-semibold text-gray-700">Email: </span>
+              {isEditing ? (
+                <input
+                  className="ml-2 border border-gray-300 rounded p-2 w-2/3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  value={userData.email}
+                  onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                  type="email"
+                />
+              ) : (
+                <span className="itemValue">{userData.email}</span>
+              )}
+            </div>
+            <div className="detailItem transition-all duration-200 hover:bg-gray-50 p-3 rounded-md">
+              <span className="itemKey font-semibold text-gray-700">Phone Number: </span>
+              {isEditing ? (
+                <input
+                  className="ml-2 border border-gray-300 rounded p-2 w-2/3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  value={userData.phoneNumber}
+                  onChange={(e) => setUserData({ ...userData, phoneNumber: e.target.value })}
+                  type="tel"
+                />
+              ) : (
+                <span className="itemValue">{userData.phoneNumber}</span>
+              )}
+            </div>
+            <div className="detailItem transition-all duration-200 hover:bg-gray-50 p-3 rounded-md">
+              <span className="itemKey font-semibold text-gray-700">Address: </span>
+              {isEditing ? (
+                <input
+                  className="ml-2 border border-gray-300 rounded p-2 w-2/3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  value={userData.address}
+                  onChange={(e) => setUserData({ ...userData, address: e.target.value })}
+                />
+              ) : (
+                <span className="itemValue">{userData.address}</span>
+              )}
+            </div>
+            <div className="flex items-center justify-end col-span-full">
               <button
-                className="bg-red-500 text-white p-2 rounded-md"
-                onClick={handleCancel}
+                className={`bg-blue-500 hover:bg-blue-600 text-white p-2 rounded transition-colors duration-200 ${isEditing ? 'mr-2' : ''}`}
+                onClick={handleEdit}
               >
-                Cancel
+                {isEditing ? 'Save Changes' : 'Edit'}
               </button>
-            )}
+              {isEditing && (
+                <button
+                  className="bg-red-500 hover:bg-red-600 text-white p-2 rounded transition-colors duration-200"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </div>
-        </div>
-
 
         {/* Passengers Section */}
-<h2 className="text-xl font-bold mb-4">Passengers</h2>
-<div className="flex flex-col gap-4 mb-4">
-  {passengers.map((passenger, index) => (
-    <div key={index} className="passengerCard p-4 bg-gray-50 rounded-md shadow">
-      {!passenger.isEditing ? (
-        // Display Mode
-        <div>
-          <div className="grid grid-cols-3 gap-4 mb-2">
-            <div className="detailItem">
-              <span className="itemKey font-semibold">Designation:</span> {passenger.designation}
-            </div>
-            <div className="detailItem">
-              <span className="itemKey font-semibold">First Name:</span> {passenger.firstName}
-            </div>
-            <div className="detailItem">
-              <span className="itemKey font-semibold">Last Name:</span> {passenger.lastName}
-            </div>
-            <div className="detailItem">
-              <span className="itemKey font-semibold">Date of Birth:</span> {}
-              {passenger.dob ? new Date(passenger.dob).toLocaleDateString() : 'N/A'}
-            </div>
-            <div className="detailItem">
-              <span className="itemKey font-semibold">Phone:</span> {passenger.phone}
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <button
-              className="bg-blue-500 text-white p-1 rounded-md"
-              onClick={() => toggleEdit(index, true)}
-            >
-              Edit
-            </button>
-          </div>
-        </div>
-      ) : (
-        // Edit Mode
-        <div>
-          <div className="grid grid-cols-3 gap-4 mb-2">
-            <div className="detailItem">
-              <span className="itemKey font-semibold">Designation:</span>
-              <select
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                name="designation"
-                value={passenger.designation}
-                onChange={(e) => handlePassengerChange(index, e)}
-              >
-                {designations.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="detailItem">
-              <span className="itemKey font-semibold">First Name:</span>
-              <input
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                name="firstName"
-                value={passenger.firstName}
-                onChange={(e) => handlePassengerChange(index, e)}
-              />
-            </div>
-            <div className="detailItem">
-              <span className="itemKey font-semibold">Last Name:</span>
-              <input
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                name="lastName"
-                value={passenger.lastName}
-                onChange={(e) => handlePassengerChange(index, e)}
-              />
-            </div>
-            <div className="detailItem">
-              <span className="itemKey font-semibold">Date of Birth:</span>
-              <input
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                name="dob"
-                type="date"
-                value={passenger.dob}
-                onChange={(e) => handlePassengerChange(index, e)}
-              />
-            </div>
-            <div className="detailItem">
-              <span className="itemKey font-semibold">Phone:</span>
-              <input
-                className="ml-2 border border-gray-300 rounded-md p-1"
-                name="phone"
-                value={passenger.phone}
-                onChange={(e) => handlePassengerChange(index, e)}
-              />
-            </div>
-          </div>
-          <div className="flex gap-4">
-            <button
-              className="bg-green-500 text-white p-1 rounded-md"
-              onClick={() => saveChanges(index)}
-            >
-              Save Changes
-            </button>
-            <button
-              className="bg-red-500 text-white p-1 rounded-md"
-              onClick={() => removePassenger(index)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
-  ))}
-  <div className="flex gap-4">
-    {passengers.length < 4 && (
-      <button className="bg-blue-500 text-white p-2 rounded-md" onClick={addPassenger}>
-        Add Passenger
-      </button>
-    )}
-  </div>
-</div>
-
-
-        {/* Booking History Section */}
-        <h2 className="text-xl font-bold mb-4">Booking History</h2>
-        <div className="py-4">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Booking ID</TableHead>
-                <TableHead>Route</TableHead>
-                <TableHead>Date</TableHead>
-                <TableHead>Class</TableHead>
-                <TableHead>Passengers</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Price</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockBookings.map((booking) => (
-                <TableRow key={booking.id}>
-                  <TableCell className="font-medium">{booking.id}</TableCell>
-                  <TableCell>
-                    <div className="flex flex-col">
-                      <span>{booking.from}</span>
-                      <span className="text-sm text-gray-500">to</span>
-                      <span>{booking.to}</span>
+        <h2 className="text-xl font-bold mb-4">Passengers</h2>
+          <div className="flex flex-col gap-4 mb-4">
+            {passengers.map((passenger, index) => (
+              <div key={index} className="passengerCard p-4 bg-gray-50 rounded-md shadow transition-all duration-200 hover:shadow-lg">
+                {!passenger.isEditing ? (
+                  // Display Mode
+                  <div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">Designation:</span> {passenger.designation}
+                      </div>
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">First Name:</span> {passenger.firstName}
+                      </div>
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">Last Name:</span> {passenger.lastName}
+                      </div>
                     </div>
-                  </TableCell>
-                  <TableCell>{booking.date}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className={classColors[booking.class]}>
-                      {booking.class}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>{booking.passengers}</TableCell>
-                  <TableCell>
-                    <Badge variant="secondary" className={statusColors[booking.status]}>
-                      {booking.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-right font-medium">
-                    {booking.price}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">Date of Birth:</span>
+                        {passenger.dob ? new Date(passenger.dob).toLocaleDateString() : 'N/A'}
+                      </div>
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">Phone:</span> {passenger.phone}
+                      </div>
+                      <div className="detailItem flex items-center">
+                        <button
+                          className="bg-blue-500 text-white p-1 rounded-md"
+                          onClick={() => toggleEdit(index, true)}
+                        >
+                          Edit
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  // Edit Mode
+                  <div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">Designation:</span>
+                        <select
+                          className="ml-2 border border-gray-300 rounded-md p-1 w-full"
+                          name="designation"
+                          value={passenger.designation}
+                          onChange={(e) => handlePassengerChange(index, e)}
+                        >
+                          {designations.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">First Name:</span>
+                        <input
+                          className="ml-2 border border-gray-300 rounded-md p-1 w-full"
+                          name="firstName"
+                          value={passenger.firstName}
+                          onChange={(e) => handlePassengerChange(index, e)}
+                        />
+                      </div>
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">Last Name:</span>
+                        <input
+                          className="ml-2 border border-gray-300 rounded-md p-1 w-full"
+                          name="lastName"
+                          value={passenger.lastName}
+                          onChange={(e) => handlePassengerChange(index, e)}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-2">
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">Date of Birth:</span>
+                        <input
+                          className="ml-2 border border-gray-300 rounded-md p-1 w-full"
+                          name="dob"
+                          type="date"
+                          value={passenger.dob}
+                          onChange={(e) => handlePassengerChange(index, e)}
+                        />
+                      </div>
+                      <div className="detailItem">
+                        <span className="itemKey font-semibold">Phone:</span>
+                        <input
+                          className="ml-2 border border-gray-300 rounded-md p-1 w-full"
+                          name="phone"
+                          value={passenger.phone}
+                          onChange={(e) => handlePassengerChange(index, e)}
+                        />
+                      </div>
+                      <div className="detailItem flex items-center gap-2">
+                        <button
+                          className="bg-green-500 text-white p-1 rounded-md"
+                          onClick={() => saveChanges(index)}
+                        >
+                          Save Changes
+                        </button>
+                        <button
+                          className= "bg-red-500 text-white p-1 rounded-md"
+                          onClick={() => removePassenger(index)}
+          >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ))}
+            <div className="flex gap-4">
+              {passengers.length < 4 && (
+                <button className="bg-blue-500 text-white p-2 rounded-md" onClick={addPassenger}>
+                  Add Passenger
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Booking History Section */}
+          <h2 className="text-2xl font-bold mb-6 mt-10">Booking History</h2>
+          <div className="overflow-x-auto rounded-lg">
+            <table className="min-w-full border-collapse bg-white">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="p-3 text-left font-semibold text-gray-700">Booking ID</th>
+                  <th className="p-3 text-left font-semibold text-gray-700">Route</th>
+                  <th className="p-3 text-left font-semibold text-gray-700 hidden md:table-cell">Date</th>
+                  <th className="p-3 text-left font-semibold text-gray-700">Class</th>
+                  <th className="p-3 text-left font-semibold text-gray-700 hidden md:table-cell">Passengers</th>
+                  <th className="p-3 text-left font-semibold text-gray-700">Status</th>
+                  <th className="p-3 text-right font-semibold text-gray-700">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {mockBookings.map((booking) => (
+                  <tr key={booking.id} className="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+                    <td className="p-3">{booking.id}</td>
+                    <td className="p-3">
+                      <div className="flex flex-col">
+                        <span>{booking.from}</span>
+                        <span className="text-sm text-gray-500">to</span>
+                        <span>{booking.to}</span>
+                        <span className="md:hidden text-sm text-gray-500">{booking.date}</span>
+                      </div>
+                    </td>
+                    <td className="p-3 hidden md:table-cell">{booking.date}</td>
+                    <td className="p-3">{booking.class}</td>
+                    <td className="p-3 hidden md:table-cell">{booking.passengers}</td>
+                    <td className="p-3">
+                      <span className={`inline-flex px-2 py-1 rounded-full text-sm
+                        ${booking.status === 'Confirmed' ? 'bg-green-100 text-green-800' : ''}
+                        ${booking.status === 'Completed' ? 'bg-gray-100 text-gray-800' : ''}
+                        ${booking.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' : ''}
+                        ${booking.status === 'Cancelled' ? 'bg-red-100 text-red-800' : ''}
+                      `}>
+                        {booking.status}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right font-medium">{booking.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-      <ToastContainer />
+      <Footer/>
+      <ToastContainer/>
     </div>
   );
 };
