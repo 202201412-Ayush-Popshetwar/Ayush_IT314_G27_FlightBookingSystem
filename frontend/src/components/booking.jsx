@@ -27,6 +27,8 @@ const BookingForm = ({ loggedInUser,setLoggedInUser}) => {
       ...formData,
       { designation: '', firstName: '', lastName: '', dob: '', phoneNumber: '' },
     ]);
+
+    console.log(formData);
   };
 
   const removePassenger = (index) => {
