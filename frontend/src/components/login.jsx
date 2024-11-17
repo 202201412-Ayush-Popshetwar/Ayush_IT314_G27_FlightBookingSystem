@@ -2,12 +2,11 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
-import './index.css';
 import Navbar from './Navbar';
 import Header from './Header';
-import { set } from 'date-fns';
+import Footer from './Footer';
 
-function Login({ loggedInUser ,setLoggedInUser }) {
+function Login({ loggedInUser, setLoggedInUser  }) {
     const [loginInfo, setLoginInfo] = useState({
         email: '',
         password: ''
@@ -35,14 +34,14 @@ function Login({ loggedInUser ,setLoggedInUser }) {
             });
             const result = await response.json();
             console.log(result);  // Add this line to see the full response from the backend
-    
+
             const { success, message, jwtToken, name, error, userId } = result;
             if (success) {
                 handleSuccess(message);
                 localStorage.setItem('token', jwtToken);
                 localStorage.setItem('loggedInUser', name);
                 localStorage.setItem('userId', userId);
-                setLoggedInUser(name);
+                setLoggedInUser (name);
                 setTimeout(() => {
                     navigate('/');
                 }, 1000);
@@ -58,41 +57,48 @@ function Login({ loggedInUser ,setLoggedInUser }) {
     };
 
     return (
-        <div>
-            <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>
-            <Header type="list"/>
-        <div className='login-background'>
-            <div className='login-container'>
-                <h1>Login</h1>
-                <form onSubmit={handleLogin}>
-                    <div>
-                        <label htmlFor='email' className='login-label'>Email</label>
-                        <input
-                            onChange={handleChange}
-                            type='email'
-                            name='email'
-                            placeholder='Enter your email...'
-                            value={loginInfo.email}
-                            className='login-input'
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor='password' className='login-label'>Password</label>
-                        <input
-                            onChange={handleChange}
-                            type='password'
-                            name='password'
-                            placeholder='Enter your password...'
-                            value={loginInfo.password}
-                            className='login-input'
-                        />
-                    </div>
-                    <button type='submit' className='login-button'>Login</button>
-                    <span>Don't have an account? <Link to="/signup">Signup</Link></span>
-                </form>
+        <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+            <Navbar loggedInUser={loggedInUser} setLoggedInUser ={setLoggedInUser } />
+            <Header type="list" />
+
+            <div className="flex-grow flex items-center justify-center py-20"> {/* Added padding for spacing */}
+                <div className="bg-white bg-opacity-90 p-8 rounded-lg shadow-lg w-11/12 max-w-md">
+                    <h1 className="text-2xl font-semibold text-center mb-6">Login</h1>
+                    <form onSubmit={handleLogin}>
+                        <div className="mb-4">
+                            <label htmlFor='email' className="block text-gray-700 font-semibold mb-1">Email</label>
+                            <input
+                                onChange={handleChange}
+                                type='email'
+                                name='email'
+                                placeholder='Enter your email...'
+                                value={loginInfo.email}
+                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor='password' className="block text-gray-700 font-semibold mb-1">Password</label>
+                            <input
+                                onChange={handleChange}
+                                type='password'
+                                name='password'
+                                placeholder='Enter your password...'
+                                value={loginInfo.password}
+                                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            />
+                        </div>
+                        <button type='submit' className="w-full bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold py-2 rounded-md hover:bg-blue-600 transition duration-300">
+                            Login
+                        </button>
+                        <span className="block text-center mt-4 text-gray-600">
+                            Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Signup</Link>
+                        </span>
+                    </form>
+                </div>
             </div>
+
+            <Footer />
             <ToastContainer />
-        </div>
         </div>
     );
 }
