@@ -10,7 +10,6 @@ import FAQ from "./components/FAQ.jsx";
 import Booking from "./components/booking.jsx";
 import Payment from "./components/payment.jsx";
 import Confirmation from "./components/Confirmation.jsx";
-import Rewards from "./components/rewards.jsx";
 <com></com>
 import {
   Navigate,
@@ -41,7 +40,6 @@ function App() {
         <Route path='booking' element={<Booking loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
         <Route path='/payment' element={<Payment loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
         <Route path='/confirmation' element={<Confirmation loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
-        <Route path='/rewards' element={<Rewards loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
       </Routes>
     </BrowserRouter>
   );
