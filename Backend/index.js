@@ -6,8 +6,8 @@ import AuthRouter from './Routes/AuthRouter.js';
 import dotenv from 'dotenv';
 import './connection.js';
 import records from "./Routes/record.js";
-import {UserModel} from './Models/User.js';
-import { appendFile } from 'node:fs/promises';
+import {UserModel,BookingModel} from './Models/User.js';
+
 
  const PORT = process.env.PORT || 5050;
  dotenv.config()
@@ -97,5 +97,25 @@ app.delete('/user/:userId/:passengerId', async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
+
+
+// Route to get flight bookings for a specific user
+app.get('/user/:userId/bookings', async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Fetch the user data including bookings
+    const user = await UserModel.findById(userId).populate('bookings'); // Assuming `bookings` is a populated reference
+    // console.log(user);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    res.json(user.bookings); // Send only the bookings
+  } catch (error) {
+    console.error('Error fetching bookings:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 app.listen(PORT,()=>{
     console.log("Connected to Backend")})

@@ -30,27 +30,20 @@ const UserSchema = new mongoose.Schema({
     },
   ],
   // Array of booking IDs referencing the Bookings collection
-  bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking' }],
+  bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'bookings' }],
 });
 
 // Booking Schema definition
 const BookingSchema = new mongoose.Schema({
-  user: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User', // Reference to the User who made the booking
-    required: true,
-  },
-  from: { type: String, required: true },
-  to: { type: String, required: true },
-  date: { type: Date, required: true },
-  class: { type: String, required: true },
-  passengers: { type: Number, required: true },
-  status: { 
-    type: String, 
-    enum: ['Pending', 'Confirmed', 'Cancelled'], 
-    default: 'Pending',
-  },
-  price: { type: Number, required: true }, // Changed to Number
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
+  flightId: { type: mongoose.Schema.Types.ObjectId, ref: 'flights' },
+  from: String,
+  to: String,
+  date: Date,
+  class: String,
+  passengers: Number,
+  status: String,
+  price: Number,
 });
 
 // Models
