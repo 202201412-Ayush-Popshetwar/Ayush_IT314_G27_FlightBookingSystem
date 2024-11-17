@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Navbar from "./Navbar";
-import Header from "./Header";
-import Footer from "./Footer";
 const PaymentPage = ({ loggedInUser,setLoggedInUser}) => {
     const [formData, setFormData] = useState({
         cardNumber: '',
@@ -78,10 +76,9 @@ const PaymentPage = ({ loggedInUser,setLoggedInUser}) => {
     };
 
     return (
-        <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+        <div>
         <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
-        <Header type="list" />
-        <div className="flex items-center justify-center min-h-screen  p-6">
+        <div className="flex items-center justify-center min-h-screen bg-gray-50 p-6">
             <div className="flex flex-col md:flex-row w-full max-w-4xl bg-white rounded-lg shadow-lg">
                 
                 {/* Left Column: Payment Details */}
@@ -190,7 +187,6 @@ const PaymentPage = ({ loggedInUser,setLoggedInUser}) => {
                 </div>
             </div>
         </div>
-        <Footer />
         </div>
     );
 };
