@@ -22,10 +22,10 @@ const UserSchema = new mongoose.Schema({
   address: String,
   passengers: [
     {
-      designation: { type: String, required: true },
-      firstName: { type: String, required: true },
-      lastName: { type: String, required: true },
-      dob: { type: Date, required: true },
+      designation: { type: String,  },
+      firstName: { type: String,  },
+      lastName: { type: String,  },
+      dob: { type: Date,  },
       phone: { type: String, match: /^[0-9]{10}$/ }, // Ensures 10-digit phone number
     },
   ],
