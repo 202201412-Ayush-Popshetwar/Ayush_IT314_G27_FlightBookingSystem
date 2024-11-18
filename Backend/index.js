@@ -6,7 +6,7 @@ import AuthRouter from './Routes/AuthRouter.js';
 import dotenv from 'dotenv';
 import './connection.js';
 import records from "./Routes/record.js";
-import {UserModel,BookingModel} from './Models/User.js';
+import {UserModel,BookingModel,FlightModel,AirportModel} from './Models/User.js';
 
 
  const PORT = process.env.PORT || 5050;
@@ -15,10 +15,32 @@ app.use(cors());
 app.use(express.json());
 app.use(bodyParser.json());
 
+async function populateAirportsFromBookings() {
+  try {
+    // Fetch distinct 'from' values from bookings
+    const distinctFromLocations = await FlightModel.distinct("from");
 
+    // Prepare data for bulk insert, ensuring no duplicates
+    const airportData = distinctFromLocations.map((location) => ({ name: location }));
+
+    // Insert data into Airport collection
+    await AirportModel.insertMany(airportData, { ordered: false });
+    console.log("Airports added successfully!");
+  } catch (error) {
+    if (error.code === 11000) {
+      console.log("Duplicate entry encountered. Ignoring duplicates.");
+    } else {
+      console.error("Error inserting airports:", error);
+    }
+  }
+}
+
+// Usage
+populateAirportsFromBookings();
 
 app.use("/record", records);
 app.use("/auth",AuthRouter);
+
 
   // Fetch user profile
   app.get('/user/:userId', async (req, res) => {

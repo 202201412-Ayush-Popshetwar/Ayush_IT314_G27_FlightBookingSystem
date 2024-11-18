@@ -46,8 +46,32 @@ const BookingSchema = new mongoose.Schema({
   price: Number,
 });
 
+
+// Airport Schema definition
+const AirportSchema = new mongoose.Schema({
+  name: {type: String,required: true,unique:true},
+});
+
+//flight schema definition
+const flightSchema = new mongoose.Schema({
+  flight_date: { type: String, required: true },
+  airline: { type: String, required: true },
+  flight_num: { type: String, required: true },
+  class: { type: String, required: true, enum: ['economy', 'business', 'first'] },
+  from: { type: String, required: true },
+  dep_time: { type: String, required: true },
+  to: { type: String, required: true },
+  arr_time: { type: String, required: true },
+  duration: { type: String, required: true },
+  price: { type: Number, required: true },
+  stops: { type: String, required: true }
+});
+
+
 // Models
  const UserModel = mongoose.model('users', UserSchema);
  const BookingModel = mongoose.model('bookings', BookingSchema);
+ const AirportModel = mongoose.model('Airport', AirportSchema);
+const FlightModel = mongoose.model('Flight', flightSchema);
 
-export  { UserModel, BookingModel };
+export  { UserModel, BookingModel, AirportModel, FlightModel };
