@@ -89,7 +89,7 @@ const Header = ({ type }) => {
               placeholder="From"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="w-full h-full pl-12 pr-4 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="text-black w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
             />
           </div>
 
@@ -103,7 +103,7 @@ const Header = ({ type }) => {
               placeholder="To"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              className="w-full h-full pl-12 pr-4 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="text-black w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
             />
           </div>
 
@@ -209,7 +209,7 @@ const Header = ({ type }) => {
     <div className="relative bg-[#003580] text-white py-8 shadow-lg" ref={containerRef}>
       <div className="max-w-7xl mx-auto px-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="flex items-center justify-center sm:justify-start h-14 cursor-pointer rounded-lg border border-white p-2 hover:bg-white/10 transition">
+          <div className="flex items-center justify-center sm:justify-start h-14 cursor-pointer rounded-lg border border-white p-2 hover:bg-white/10 transition" onClick={() => navigate("/")}>
             <AirplanemodeActive className="text-white" size={20} />
             <span className="ml-2 text-white">Flights</span>
           </div>
@@ -221,7 +221,7 @@ const Header = ({ type }) => {
             <HelpOutline className="text-white" size={20} />
             <span className="ml-2 text-white">FAQ</span>
           </div>
-          <div className="flex items-center justify-center sm:justify-start h-14 cursor-pointer rounded-lg border border-white p-2 hover:bg-white/10 transition">
+          <div className="flex items-center justify-center sm:justify-start h-14 cursor-pointer rounded-lg border border-white p-2 hover:bg-white/10 transition" onClick={() => navigate("/rewards")}>
             <Stars className="text-white" size={20} />
             <span className="ml-2 text-white">Rewards</span>
           </div>
