@@ -5,8 +5,10 @@ import cors from 'cors';
 import AuthRouter from './Routes/AuthRouter.js';
 import dotenv from 'dotenv';
 import './connection.js';
-import records from "./Routes/record.js";
 import {UserModel,BookingModel,FlightModel,AirportModel} from './Models/User.js';
+import {db} from "./connection.js";
+import  {ObjectId} from "mongodb";
+import SearchRouter from './Routes/SearchRouter.js';
 
 
  const PORT = process.env.PORT || 5050;
@@ -38,9 +40,8 @@ async function populateAirportsFromBookings() {
 // Usage
 populateAirportsFromBookings();
 
-app.use("/record", records);
 app.use("/auth",AuthRouter);
-
+app.use("/search", SearchRouter);
 
   // Fetch user profile
   app.get('/user/:userId', async (req, res) => {

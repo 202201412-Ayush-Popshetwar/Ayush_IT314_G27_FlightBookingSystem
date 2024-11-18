@@ -54,7 +54,7 @@ const AirportSchema = new mongoose.Schema({
 
 //flight schema definition
 const flightSchema = new mongoose.Schema({
-  flight_date: { type: String, required: true },
+  'flight date': { type: String, required: true },
   airline: { type: String, required: true },
   flight_num: { type: String, required: true },
   class: { type: String, required: true, enum: ['economy', 'business', 'first'] },
