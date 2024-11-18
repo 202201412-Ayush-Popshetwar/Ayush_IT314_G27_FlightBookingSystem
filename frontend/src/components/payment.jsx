@@ -5,6 +5,9 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const PaymentPage = ({ loggedInUser, setLoggedInUser }) => {
+    if(!loggedInUser){
+        return <Navigate to="/" />
+      }
     const [selectedPayment, setSelectedPayment] = useState('card');
     const [formData, setFormData] = useState({
         cardNumber: '',
