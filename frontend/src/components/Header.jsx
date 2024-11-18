@@ -17,15 +17,18 @@ import {
 } from '@mui/icons-material';
 
 const Header = ({ type }) => {
+
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+
   const [openDate, setOpenDate] = useState(false);
-  const [openOptions, setOpenOptions] = useState(false);
   const [date, setDate] = useState([{
     startDate: new Date(),
     endDate: new Date(),
     key: "selection"
   }]);
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+
+  const [openOptions, setOpenOptions] = useState(false);
   const [options, setOptions] = useState({
     adult: 1,
     children: 0
@@ -41,6 +44,10 @@ const Header = ({ type }) => {
       [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
     }));
   };
+
+  const handleSearch = () => {
+    navigate("/flights",{state:{from, to, date, options}})
+  }
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -82,7 +89,7 @@ const Header = ({ type }) => {
               placeholder="From"
               value={from}
               onChange={(e) => setFrom(e.target.value)}
-              className="w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="w-full h-full pl-12 pr-4 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
             />
           </div>
 
@@ -96,7 +103,7 @@ const Header = ({ type }) => {
               placeholder="To"
               value={to}
               onChange={(e) => setTo(e.target.value)}
-              className="w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              className="w-full h-full pl-12 pr-4 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
             />
           </div>
 
@@ -190,7 +197,7 @@ const Header = ({ type }) => {
         </div>
 
         {/* Search Button */}
-        <button className="w-full h-14 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition flex items-center justify-center space-x-2">
+        <button onClick={handleSearch} className="w-full h-14 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition flex items-center justify-center space-x-2">
         <Search className="text-white" size={20} />
             <span className="text-white">Search</span>
         </button>
