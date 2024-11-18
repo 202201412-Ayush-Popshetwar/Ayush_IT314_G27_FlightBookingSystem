@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "./SearchItem";
 import Footer from './Footer.jsx';
+import axios from "axios";
 import { 
     FlightTakeoff, 
     FlightLand, 
@@ -23,6 +24,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
     const [openDate, setOpenDate] = useState(false);
     const [openOptions, setOpenOptions] = useState(false);
     const [options, setOptions] = useState(location.state.options);
+    const [flights, setFlights] = useState([]);
 
     const handleOption = (name, operation) => {
         setOptions((prev) => ({
@@ -30,6 +32,25 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
             [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
         }));
     };
+
+        const fetchFlights = async () => {
+        try {
+            const start_date = format(date[0].startDate, 'dd-MM-yyyy');
+            console.log('Search parameters:', { from, to, start_date });
+            const response = await axios.get('http://localhost:5050/search/flight', {
+                params: {
+                    from,
+                    to,
+                    start_date,
+                },
+            });
+            console.log('Search response',response.data);
+            setFlights(response.data.flights);
+            } catch (error) {
+                console.error('Error fetching flights:', error);
+            }
+        };
+
 
     return (
         <div>
@@ -162,9 +183,11 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                             </div>
                         </div>
 
-                        <button className="w-full h-14 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition flex items-center justify-center space-x-2">
+                        <button className="w-full h-14 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition flex items-center justify-center space-x-2"
+                         onClick={fetchFlights}>
                             <Search className="text-white" size={20} />
                             <span>Search</span>
+                           
                         </button>
                     </div>
 
