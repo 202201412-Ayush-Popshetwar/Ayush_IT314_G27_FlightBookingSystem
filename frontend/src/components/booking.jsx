@@ -5,11 +5,10 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const BookingForm = ({ loggedInUser , setLoggedInUser  }) => {
-  // Fixed number of passengers: 2 adults and 1 child
   const [formData, setFormData] = useState([
-    { designation: '', firstName: '', lastName: '', dob: '' }, // Adult 1
-    { designation: '', firstName: '', lastName: '', dob: '' }, // Adult 2
-    { designation: '', firstName: '', lastName: '', dob: '' }, // Child 1
+    { designation: '', firstName: '', lastName: '', dob: '' },
+    { designation: '', firstName: '', lastName: '', dob: '' },
+    { designation: '', firstName: '', lastName: '', dob: '' },
   ]);
 
   const [contactInfo, setContactInfo] = useState({
@@ -32,26 +31,24 @@ const BookingForm = ({ loggedInUser , setLoggedInUser  }) => {
   };
 
   const handleSubmit = () => {
-    // Here you can add validation if needed
     localStorage.setItem('passengerDetails', JSON.stringify(formData));
     localStorage.setItem('contactInfo', JSON.stringify(contactInfo));
-    navigate('/Addon'); // Navigating to the Addons Page
+    navigate('/Addon');
   };
 
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
       <Navbar loggedInUser ={loggedInUser } setLoggedInUser ={setLoggedInUser } />
       <Header type="list" />
-      <div className="w-full mx-auto px-40 py-20">
-        <div className="bg-white rounded-lg shadow-xl p-8">
-          <h1 className="text-3xl text-blue-800 mb-4 font-bold">Flight Booking</h1>
-          <h2 className=" text-2xl text-blue-800 mb-6">Add Passenger Details</h2>
+      <div className="w-full mx-auto px-4 md:px-20 py-20">
+        <div className="bg-white rounded-lg shadow-xl p-6 md:p-8">
+          <h1 className="text-2xl md:text-3xl text-blue-800 mb-4 font-bold">Flight Booking</h1>
+          <h2 className="text-xl md:text-2xl text-blue-800 mb-6">Add Passenger Details</h2>
           <p className="mb-4"><sup className="text-red-400">*</sup> Mandatory Fields</p>
           {formData.map((passenger, index) => (
-            <div key={index} className="relative mb-8 p-6 bg-white rounded-lg border border-gray-200 shadow-md">
+            <div key={index} className="relative mb-8 p-4 md:p-6 bg-white rounded-lg border border-gray-200 shadow-md">
               <h3 className="text-lg font-semibold text-gray-700 mb-4">Passenger {index + 1}</h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-4  gap-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-semibold text-gray-600">Designation<sup className="text-red-400">*</sup></label>
                   <select
@@ -68,7 +65,6 @@ const BookingForm = ({ loggedInUser , setLoggedInUser  }) => {
                     <option value="Ms">Ms</option>
                   </select>
                 </div>
-
                 <div>
                   <label className="block text-sm font-semibold text-gray-600">First Name<sup className="text-red-400">*</sup></label>
                   <input
@@ -81,7 +77,6 @@ const BookingForm = ({ loggedInUser , setLoggedInUser  }) => {
                     required
                   />
                 </div>
-
                 <div>
                   <label className="block text-sm font-semibold text-gray-600">Last Name<sup className="text-red-400">*</sup></label>
                   <input
@@ -94,7 +89,6 @@ const BookingForm = ({ loggedInUser , setLoggedInUser  }) => {
                     required
                   />
                 </div>
-
                 <div>
                   <label className="block text-sm font-semibold text-gray-600">Date of Birth<sup className="text-red-400">*</sup></label>
                   <input
@@ -109,12 +103,9 @@ const BookingForm = ({ loggedInUser , setLoggedInUser  }) => {
               </div>
             </div>
           ))}
-          {/* Contact Information Section */}
-          <h2 className="text-2xl text-blue-800 mb-6">Contact Information</h2>
-          <div className="relative mb-8 p-6 bg-white rounded-lg border border-gray-200 shadow-md">
+          <h2 className="text-xl md:text-2xl text-blue-800 mb-6">Contact Information</h2>
+          <div className="relative mb-8 p-4 md:p-6 bg-white rounded-lg border border-gray-200 shadow-md">
             <h3 className="text-lg font-semibold text-gray-700 mb-4">Contact Details</h3>
-
-            {/* Grid layout for Email and Phone Number */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-600">Email Address<sup className="text-red-400">*</sup></label>
@@ -128,7 +119,6 @@ const BookingForm = ({ loggedInUser , setLoggedInUser  }) => {
                   required
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-semibold text-gray-600">Phone Number<sup className="text-red-400">*</sup></label>
                 <input
@@ -143,8 +133,6 @@ const BookingForm = ({ loggedInUser , setLoggedInUser  }) => {
               </div>
             </div>
           </div>
-
-          
           <div className="flex justify-center mt-6">
             <button
               type="button"
