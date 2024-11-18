@@ -6,6 +6,7 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-date-range";
 import SearchItem from "./SearchItem";
+import Footer from './Footer.jsx';
 import { 
     FlightTakeoff, 
     FlightLand, 
@@ -177,6 +178,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };
