@@ -6,6 +6,8 @@ import {db} from "../connection.js";
 // This help convert the id from string to ObjectId for the _id.
 import  {ObjectId} from "mongodb";
 import AuthRouter from './AuthRouter.js';
+import { FlightModel } from "../Models/User.js";
+
 
 // router is an instance of the express router.
 // We use it to define our routes.
@@ -15,6 +17,29 @@ router.get('/ping', (req, res) => {
   res.send('PONG');
 });
 
+router.get('/flight/:id', async (req, res) => {
+  try {
+    const flightId = req.params.id;
+    const flight = await FlightModel.findById(flightId);
+    if (!flight) {
+      return res.status(404).json({ message: "Flight not found", success: false });
+    }
+    res.status(200).json({ flight, success: true });
+  } catch (err) {
+    console.error("Error fetching flight:", err);
+    res.status(500).json({ message: "Internal server error", success: false });
+  }
+});
+
+router.get('/flights', async (req, res) => {
+  try {
+    const flights = await FlightModel.find();
+    res.status(200).json({ flights, success: true });
+  } catch (err) {
+    console.error("Error fetching flights:", err);
+    res.status(500).json({ message: "Internal server error", success: false });
+  }
+});
 
 //app.use('/products',ProductRouter);
 router.use('/products',(req,res)=>{
