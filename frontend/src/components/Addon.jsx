@@ -11,6 +11,9 @@ import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety"; // Passen
 import LocalAirportIcon from "@mui/icons-material/LocalAirport"; // Airport Services icon
 
 const Addons = ({ loggedInUser  , setLoggedInUser   }) => {
+  if(!loggedInUser){
+    return <Navigate to="/" />
+  }
   const [addons, setAddons] = useState([
     { id: 1, name: "Baggage", description: "Ensure extra baggage allowance for your travels.", price: 500, icon: <LuggageIcon sx={{ color: "#003580", fontSize: 40 }} />, quantity: 0, varieties: [{ name: "Standard", price: 500 }, { name: "Premium", price: 800 }] },
     { id: 2, name: "Seats", description: "Choose your ideal seat to make your journey more comfortable.", price: 300, icon: <AirlineSeatReclineExtraIcon sx={{ color: "#003580", fontSize: 40 }} />, quantity: 0, varieties: [{ name: "Aisle", price: 300 }, { name: "Window", price: 350 }, { name: "Extra Legroom", price: 400 }] },
