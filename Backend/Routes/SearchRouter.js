@@ -8,7 +8,6 @@ import  {ObjectId} from "mongodb";
 import AuthRouter from './AuthRouter.js';
 import { FlightModel } from "../Models/User.js";
 
-
 // router is an instance of the express router.
 // We use it to define our routes.
 // The router will be added as a middleware and will take control of requests starting with path /record.
@@ -27,6 +26,27 @@ router.get('/flight/:id', async (req, res) => {
     res.status(200).json({ flight, success: true });
   } catch (err) {
     console.error("Error fetching flight:", err);
+    res.status(500).json({ message: "Internal server error", success: false });
+  }
+});
+
+router.get('/flight', async (req, res) => {
+  try {
+    const { from, to, start_date } = req.query;
+
+    // Build the query object
+    const query = {};
+    if (from) query.from = from;
+    if (to) query.to = to;
+    if (start_date) query['flight date'] = new String(start_date);
+
+    const flights = await FlightModel.find(query);
+    if (flights.length === 0) {
+      return res.status(404).json({ message: "No flights found", success: false });
+    }
+    res.status(200).json({ flights, success: true });
+  } catch (err) {
+    console.error("Error fetching flights:", err);
     res.status(500).json({ message: "Internal server error", success: false });
   }
 });

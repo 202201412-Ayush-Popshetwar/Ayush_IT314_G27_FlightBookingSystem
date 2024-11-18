@@ -23,8 +23,8 @@ const Header = ({ type }) => {
 
   const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState([{
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date('2023-06-26'),
+    endDate: new Date('2023-06-26'),
     key: "selection"
   }]);
 
