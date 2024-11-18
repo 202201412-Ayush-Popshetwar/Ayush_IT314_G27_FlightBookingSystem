@@ -7,9 +7,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 const ConfirmationPage = ({ loggedInUser , setLoggedInUser  }) => {
-    if(!loggedInUser){
-        return <Navigate to="/" />
-      }
+    
     const [isTickVisible, setIsTickVisible] = useState(false);
     const navigate = useNavigate();
 

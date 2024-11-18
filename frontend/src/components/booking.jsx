@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,Navigate } from 'react-router-dom';
 import Navbar from "./Navbar";
 import Header from "./Header";
 import Footer from "./Footer";
 import { Autocomplete, TextField } from '@mui/material';
 
 const BookingForm = ({ loggedInUser, setLoggedInUser }) => {
-  if(!loggedInUser){
-    return <Navigate to="/" />
-  }
+  const navigate = useNavigate();
+  
   const passengerCount = JSON.parse(localStorage.getItem('options'))?.adult + JSON.parse(localStorage.getItem('options'))?.children || 2; 
   const [formData, setFormData] = useState(Array(passengerCount).fill().map(() => ({
     designation: '',
@@ -16,7 +15,6 @@ const BookingForm = ({ loggedInUser, setLoggedInUser }) => {
     lastName: '',
     dob: ''
   })));
-  const navigate = useNavigate();
   const [savedPassengers, setSavedPassengers] = useState([]);
   const [contactInfo, setContactInfo] = useState({
     email: '',
