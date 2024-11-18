@@ -4,7 +4,7 @@ import Footer from "./Footer";
 import { FlightTakeoff, CheckCircle, CardTravel, Work } from "@mui/icons-material"; // Updated icons
 import Header from "./Header";
 
-const RewardsPage = () => {
+const RewardsPage = ({ loggedInUser , setLoggedInUser  }) => {
   const [redeemSuccess, setRedeemSuccess] = useState(false);
   const [totalPoints, setTotalPoints] = useState(1250); // Starting points
   const [redeemAmount, setRedeemAmount] = useState(0); // Points redeemed
@@ -26,7 +26,7 @@ const RewardsPage = () => {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100"
+      className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 "
       style={{
         backgroundImage: "url('/flight.jpg')",
         backgroundSize: "cover",
@@ -34,49 +34,51 @@ const RewardsPage = () => {
         backgroundRepeat: "no-repeat",
       }}
     >
-        
-      <Navbar />
-      <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
-        {/* Header */}
-        <header className="bg-white bg-opacity-30 backdrop-blur-sm p-6 rounded-lg shadow-md">
-          <h1 className="text-3xl font-bold text-blue-800">Your Rewards</h1>
-          <p className="text-sm text-gray-700 mt-2">
-            Earn points and unlock exciting benefits!
+      <Navbar loggedInUser ={loggedInUser } setLoggedInUser ={setLoggedInUser } />
+      <Header type="list" />
+      <div className="w-10/12 mx-auto py-8 space-y-8  ">
+        {/* About Rewards Section */}
+        <div className="bg-white p-5 rounded-lg shadow-md mb-6">
+          <h2 className="text-3xl text-blue-800 text-center mb-4 font-bold ">About Your Rewards</h2>
+          <p className="text-center text-gray-700 text-base">
+            Welcome to the Rewards Program! Here you can earn points for every booking and unlock exciting benefits. 
+            If you have any questions, feel free to reach out to our support team.
           </p>
-        </header>
+        </div>
 
         {/* Reward Summary */}
-        <section className="bg-white bg-opacity-30 backdrop-blur-sm p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold text-blue-800">Reward Summary</h2>
-          <div className="flex items-center justify-between mt-6">
-            <div>
-              <p className="text-gray-500">Total Points</p>
-              <p className="text-4xl font-bold text-blue-800">{totalPoints}</p>
-            </div>
-            <button
-              className="px-6 py-2 bg-blue-600 text-white text-lg rounded-lg shadow hover:bg-blue-700 active:scale-95 transform transition-all duration-150"
-              onClick={handleRedeem}
-            >
-              Redeem Now
-            </button>
-          </div>
-
-          {/* Success Pop-up */}
-          {redeemSuccess && (
-            <div className="fixed inset-0 flex items-center justify-center z-50 transition-opacity opacity-100 animate-opacity-appear">
-              <div className="bg-green-500 text-white px-8 py-4 rounded-lg shadow-xl transform transition-all duration-500 scale-110 opacity-100">
-                <CheckCircle className="text-white text-3xl" /> {/* CheckCircle icon for success */}
-                <span>{redeemAmount} points redeemed successfully!</span>
+        {loggedInUser  ? ( // Check if user is logged in
+          <section className="bg-white bg-opacity-30 backdrop-blur-sm p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-semibold text-blue-800">Reward Summary</h2>
+            <div className="flex items-center justify-between mt-6">
+              <div>
+                <p className="text-gray-500">Total Points</p>
+                <p className="text-4xl font-bold text-blue-800">{totalPoints}</p>
               </div>
             </div>
-          )}
-        </section>
+
+            {/* Success Pop-up */}
+            {redeemSuccess && (
+              <div className="fixed inset-0 flex items-center justify-center z-50 transition-opacity opacity-100 animate-opacity-appear">
+                <div className="bg-green-500 text-white px-8 py-4 rounded-lg shadow-xl transform transition-all duration-500 scale-110 opacity-100">
+                  <CheckCircle className="text-white text-3xl" /> {/* CheckCircle icon for success */}
+                  <span>{redeemAmount} points redeemed successfully!</span>
+                </div>
+              </div>
+            )}
+          </section>
+        ) : (
+          <section className="bg-white bg-opacity-30 backdrop-blur-sm p-6 rounded-lg shadow-md">
+            <h2 className="text-2xl font-semibold text-blue-800">Rewards Summary</h2>
+            <p className="text-gray-500">Please log in to view your rewards summary.</p>
+          </section>
+        )}
 
         {/* Benefits Section */}
         <section className="bg-white bg-opacity-30 backdrop-blur-sm p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-blue-800">Why Earn Rewards?</h2>
           <ul className="mt-6 space-y-6">
-            <li className="flex items-start space-x-6">
+            <li className="flex items -start space-x-6">
               <span className="flex-shrink-0 w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl">
                 <FlightTakeoff /> {/* Plane taking off icon */}
               </span>

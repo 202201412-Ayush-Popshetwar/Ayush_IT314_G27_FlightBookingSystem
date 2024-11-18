@@ -58,8 +58,8 @@ const FAQ = ({ loggedInUser , setLoggedInUser  }) => {
             <Navbar loggedInUser  ={loggedInUser  } setLoggedInUser  ={setLoggedInUser  } />
             <Header type="list" />
             <div className="max-w-[1000px] mx-auto p-5 font-sans">
-                <div className="bg-white bg-opacity-50 p-5 rounded-lg shadow-lg mb-6">
-                    <h2 className="text-3xl text-gray-800 text-center mb-4 font-bold">About SkyLynx</h2>
+                <div className="bg-white  p-5 rounded-lg shadow-lg mb-6">
+                    <h2 className="text-3xl text-blue-800 text-center mb-4 font-bold">About SkyLynx</h2>
                     <p className="text-center text-gray-700 text-base">
                         Welcome to our FAQ section! Here you'll find answers to common questions about SkyLynx. If you need further assistance, please don't hesitate to reach out to our support team.
                     </p>

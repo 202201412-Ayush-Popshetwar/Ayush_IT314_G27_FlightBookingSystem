@@ -215,12 +215,12 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
   if (!userData) return <div>Loading...</div>;
 
   return (
-    <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
+    <div className="flex flex-col min-h-screen " style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }} >
       <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
       <Header type="list" />
       
       <div className="py-20">
-        <div className="p-4 bg-white mt-4 max-w-7xl mx-auto w-full rounded-lg shadow-sm">
+        <div className="p-4 bg-white mt-4 px-60 py-20 mx-auto w-10/12 rounded-lg shadow-sm space-y-8 ">
           {/* User Information Section */}
           <h1 className="text-2xl font-bold mb-6">User Profile</h1>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
@@ -296,8 +296,8 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
           </div>
 
         {/* Passengers Section */}
-        <h2 className="text-xl font-bold mb-4">Passengers</h2>
-          <div className="flex flex-col gap-4 mb-4">
+        <h2 className="text-xl font-bold mb-4 ">Passengers</h2>
+          <div className="flex flex-col gap-5 mb-4">
             {passengers.map((passenger, index) => (
               <div key={index} className="passengerCard p-4 bg-gray-50 rounded-md shadow transition-all duration-200 hover:shadow-lg">
                 {!passenger.isEditing ? (

@@ -12,7 +12,7 @@ const Home = ({ loggedInUser , setLoggedInUser  }) => {
             <Navbar loggedInUser ={loggedInUser } setLoggedInUser ={setLoggedInUser } />
             <Header />
             <CarouselList />
-            <div className="flex-grow flex flex-col items-center w-full mt-4"> {/* Removed px-4 */}
+            <div className="flex-grow flex flex-col items-center w-full mt-4"> 
                 <Featured />
                 <RecommendList />
                 <MailList />
