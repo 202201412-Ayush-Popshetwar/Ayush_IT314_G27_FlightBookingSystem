@@ -90,6 +90,7 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
   }, [userId]);
 
   const handleEdit = () => {
+
     if (isEditing) {
       const updatedData = {
         name: userData.name,
@@ -99,7 +100,30 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
         passengers: passengers,
         bookings: userData.bookings,
       };
-
+     
+      const nameRegex = /^[A-Za-z\s]+$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneRegex = /^\d{10}$/;
+      
+      // Validation logic
+      if (!nameRegex.test(userData.name)) {
+       handleError('Name must contain only alphabets and spaces.');
+        return;
+      }
+      if (!emailRegex.test(userData.email)) {
+        handleError('Please enter a valid email address.');
+        return;
+      }
+  
+      if (!phoneRegex.test(userData.phoneNumber)) {
+        handleError('Phone number must be a 10-digit number.');
+        return;
+      }
+  
+      if (!nameRegex.test(userData.address)) {
+        handleError('Address must contain only alphabets and spaces.');
+        return;
+      }
       const updateUserData = async () => {
         try {
           await fetch(`http://localhost:5050/user/${userId}`, {
@@ -117,7 +141,13 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
       setOriginalData(userData);
     }
     setIsEditing(!isEditing);
+    localStorage.setItem('loggedInUser', userData.name);
+
   };
+
+  
+  
+
   const toggleEdit = (index, isEditing) => {
     const updatedPassengers = [...passengers];
     updatedPassengers[index].isEditing = isEditing;
@@ -162,33 +192,64 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
       if (!response.ok) throw new Error('Failed to remove passenger');
   
       // Update the local state after successful removal
-      alert('Passenger removed successfully');
+      handleSuccess('Passenger removed successfully');
       setPassengers(passengers.filter((_, i) => i !== index));
     } catch (error) {
       console.error('Error removing passenger:', error);
-      alert('Error removing passenger. Please try again.');
+      handleError('Error removing passenger. Please try again.');
     }
   };
   
   
   const saveChanges = async (index) => {
     const passenger = passengers[index];
-    console.log(passenger);
-    // Validation logic
+    const nameRegex = /^[A-Za-z\s]+$/;
+    console.log(passengers);
     if (
       !passenger.designation ||
       !passenger.firstName ||
       !passenger.lastName ||
       !passenger.dob ||
-      !passenger.phone ||
-      passenger.phone.length !== 10 ||
-      isNaN(passenger.phone)
-    ) {
+      !passenger.phone
+      ){
       // Use a toast library like react-toastify to display the error
-      handleError('All details are required. Phone number must be a 10-digit number.');
+      handleError('All details are required.');
+      return;
+    }
+    if (!nameRegex.test(passenger.firstName)) {
+      handleError('First name must only contain alphabets.');
       return;
     }
   
+    if (!nameRegex.test(passenger.lastName)) {
+      handleError('Last name must only contain alphabets.');
+      return;
+    }
+  
+    const today = new Date();
+    const dob = new Date(passenger.dob);
+  
+    if (dob >= today) {
+      handleError('Date of birth must be before the current date.');
+      return;
+    }
+  
+    if (passenger.phone.length !== 10 || isNaN(passenger.phone)) {
+      handleError('Phone number must be a 10-digit number.');
+      return;
+    }
+    const isDuplicate = passengers.some(
+      (p, i) =>
+        i !== index && // Exclude the current passenger based on its index
+        p.firstName === passenger.firstName &&
+        p.lastName === passenger.lastName &&
+        p.dob === passenger.dob
+    );
+
+    if (isDuplicate) {
+      handleError('Passenger with the same name and date of birth already exists.');
+      return;
+    }
     try {
       // Save changes to backend
       const response = await fetch(`http://localhost:5050/user/${userId}/passengers`, {
@@ -198,10 +259,10 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
       });
       if (!response.ok) throw new Error('Failed to update passengers');
       toggleEdit(index, false);
-      alert('Passenger details saved successfully!');
+      handleSuccess('Passenger details saved successfully!');
     } catch (error) {
       console.error('Error updating passengers:', error);
-      alert('Error updating passengers. Please try again.');
+      handleError('Error updating passengers. Please try again.');
     }
   };
   
@@ -232,7 +293,7 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
                   value={userData.name}
                   onChange={(e) => {
                     setUserData({ ...userData, name: e.target.value });
-                    localStorage.setItem('loggedInUser', e.target.value);
+                    
                   }}
                 />
               ) : (
