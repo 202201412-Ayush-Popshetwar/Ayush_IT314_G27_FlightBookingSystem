@@ -8,12 +8,12 @@ import { DateRange } from "react-date-range";
 import SearchItem from "./SearchItem";
 import Footer from './Footer.jsx';
 import axios from "axios";
-import { 
-    FlightTakeoff, 
-    FlightLand, 
-    CalendarToday, 
+import {
+    FlightTakeoff,
+    FlightLand,
+    CalendarToday,
     People,
-    Search 
+    Search
 } from '@mui/icons-material';
 
 const List = ({ loggedInUser, setLoggedInUser }) => {
@@ -33,7 +33,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
         }));
     };
 
-        const fetchFlights = async () => {
+    const fetchFlights = async () => {
         try {
             const start_date = format(date[0].startDate, 'dd-MM-yyyy');
             console.log('Search parameters:', { from, to, start_date });
@@ -44,12 +44,12 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                     start_date,
                 },
             });
-            console.log('Search response',response.data);
+            console.log('Search response', response.data);
             setFlights(response.data.flights);
-            } catch (error) {
-                console.error('Error fetching flights:', error);
-            }
-        };
+        } catch (error) {
+            console.error('Error fetching flights:', error);
+        }
+    };
 
 
     return (
@@ -61,7 +61,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                     {/* Search Section - Updated height and width */}
                     <div className="w-full lg:w-80 h-fit bg-[#febb02] p-4 rounded-lg self-start">
                         <h1 className="text-xl text-gray-600 font-semibold mb-4">Search</h1>
-                        
+
                         {/* From Field */}
                         <div className="mb-4">
                             <label className="block text-sm mb-2">From</label>
@@ -184,21 +184,27 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                         </div>
 
                         <button className="w-full h-14 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition flex items-center justify-center space-x-2"
-                         onClick={fetchFlights}>
+                            onClick={fetchFlights}>
                             <Search className="text-white" size={20} />
                             <span>Search</span>
-                           
+
                         </button>
                     </div>
 
                     {/* Results Section */}
-                    <div className="w-full lg:w-3/4 space-y-4">
-                        <SearchItem />
-                        <SearchItem />
-                        <SearchItem />
-                        <SearchItem />
-                        <SearchItem />
-                    </div>
+                    {flights.length > 0 ?
+                        flights.map((flight, index) => (
+                            <div key={index} className="w-full lg:w-3/4 space-y-4">
+                                <SearchItem flight={flight} />
+                            </div>
+                        ))
+
+                        :
+                        (
+                            <>
+                                <h1>Empty</h1>
+                            </>
+                        )}
                 </div>
             </div>
             <Footer />
