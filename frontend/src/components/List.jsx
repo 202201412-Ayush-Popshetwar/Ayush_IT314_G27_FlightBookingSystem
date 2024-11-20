@@ -14,6 +14,7 @@ import {
     People,
     Search
 } from '@mui/icons-material';
+import { Pagination } from '@mui/material';
 
 const List = ({ loggedInUser, setLoggedInUser }) => {
 
@@ -34,6 +35,8 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
     const [openOptions, setOpenOptions] = useState(false);
     const [options, setOptions] = useState(location.state.options);
     const [flights, setFlights] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [flightsPerPage] = useState(10);
 
     const dateRef = useRef(null);
     const optionsRef = useRef(null);
@@ -87,6 +90,16 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
             console.error('Error fetching flights:', error);
             setFlights([]);
         }
+    };
+
+    const indexOfLastFlight = currentPage * flightsPerPage;
+    const indexOfFirstFlight = indexOfLastFlight - flightsPerPage;
+    const currentFlights = flights.slice(indexOfFirstFlight, indexOfLastFlight);
+    const totalPages = Math.ceil(flights.length / flightsPerPage);
+
+    const handlePageChange = (event, value) => {
+        setCurrentPage(value);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
@@ -253,11 +266,22 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                         {/* Results Section */}
                         <div className="flex-1">
                             {flights.length > 0 ? (
-                                <div className="space-y-4">
-                                    {flights.map((flight, index) => (
-                                        <SearchItem key={index} flight={flight} />
-                                    ))}
-                                </div>
+                                <>
+                                    <div className="space-y-4">
+                                        {currentFlights.map((flight, index) => (
+                                            <SearchItem key={index} flight={flight} />
+                                        ))}
+                                    </div>
+                                    <div className="flex justify-center mt-6 mb-8">
+                                        <Pagination 
+                                            count={totalPages}
+                                            page={currentPage}
+                                            onChange={handlePageChange}
+                                            color="primary"
+                                            size="large"
+                                        />
+                                    </div>
+                                </>
                             ) : (
                                 <div className="w-full h-40 flex items-center justify-center bg-white rounded-lg shadow">
                                     <h1 className="text-xl text-gray-500">No flights found</h1>
