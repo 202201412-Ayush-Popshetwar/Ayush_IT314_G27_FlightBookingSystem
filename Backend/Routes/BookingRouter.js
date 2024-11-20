@@ -1,5 +1,5 @@
 import express from 'express';
-const router = express.bookingRouter();
+const bookingRouter = express.Router();
 import { UserModel, FlightModel, BookingModel } from '../Models/User.js';
 
 // Create a new booking
