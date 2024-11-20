@@ -64,7 +64,8 @@ const flightSchema = new mongoose.Schema({
   arr_time: { type: String, required: true },
   duration: { type: String, required: true },
   price: { type: String, required: true },
-  stops: { type: String, required: true }
+  stops: { type: String, required: true },
+  availableseats: { type: Number, required: true, default: 100 }
 });
 
 

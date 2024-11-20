@@ -5,38 +5,8 @@ import Footer from "./Footer";
 import { Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { handleError, handleSuccess } from '../utils';
-const mockBookings = [
-  {
-    id: 'FL001',
-    from: 'New York (JFK)',
-    to: 'London (LHR)',
-    date: '2024-03-15',
-    class: 'Business',
-    passengers: 2,
-    status: 'Confirmed',
-    price: '$2,450',
-  },
-  {
-    id: 'FL002',
-    from: 'London (LHR)',
-    to: 'Paris (CDG)',
-    date: '2024-02-28',
-    class: 'Economy',
-    passengers: 1,
-    status: 'Completed',
-    price: '$320',
-  },
-  {
-    id: 'FL003',
-    from: 'Dubai (DXB)',
-    to: 'Singapore (SIN)',
-    date: '2024-04-10',
-    class: 'First Class',
-    passengers: 2,
-    status: 'Upcoming',
-    price: '$4,800',
-  },
-];
+import axios from 'axios';
+import { format } from 'date-fns';
 
 const designations = [
   { value: '', label: 'Select Designation' },
@@ -45,108 +15,100 @@ const designations = [
   { value: 'Ms.', label: 'Ms.' },
   { value: 'Miss', label: 'Miss' },
 ];
-const formatDate = (isoDate) => {
-  return format(new Date(isoDate), 'MMMM d, yyyy'); // e.g., "June 13, 2000"
-};
-const UserProfile = ({loggedInUser,setLoggedInUser}) => {
-  if(!loggedInUser){
+
+const UserProfile = ({loggedInUser, setLoggedInUser}) => {
+  if(!loggedInUser) {
     return <Navigate to="/" />
   }
+
   const userId = localStorage.getItem('userId');
   const [userData, setUserData] = useState(null);
   const [bookings, setBookings] = useState([]); 
   const [isEditing, setIsEditing] = useState(false);
   const [originalData, setOriginalData] = useState(null);
-  const [passengers, setPassengers] = useState([{ designation: '', firstName: '', lastName: '', dob: '', phone: '' }]);
+  const [passengers, setPassengers] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5050/user/${userId}`);
-        if (!response.ok) throw new Error('Failed to fetch user data');
-        const data = await response.json();
-        setUserData(data);
-        setOriginalData(data);
-        setPassengers(data.passengers || []);
+        const response = await axios.get(`http://localhost:5050/user/${userId}`);
+        if (response.data) {
+          setUserData(response.data);
+          setOriginalData(response.data);
+          setPassengers(response.data.passengers || []);
+        }
       } catch (error) {
-        setError(error.message);
+        handleError('Error fetching user data');
         console.error('Error fetching user data:', error);
       }
     };
+
     const fetchBookings = async () => {
       try {
-        const response = await fetch(`http://localhost:5050/user/${userId}/bookings`);
-        if (!response.ok) throw new Error('Failed to fetch bookings');
-        const data = await response.json();
-        setBookings(data);
+        const response = await axios.get(`http://localhost:5050/user/${userId}/bookings`);
+        if (response.data) {
+          setBookings(response.data);
+        }
       } catch (error) {
-        setError(error.message);
+        handleError('Error fetching bookings');
         console.error('Error fetching bookings:', error);
       }
     };
-    fetchUserData();
-    fetchBookings();
+
+    if (userId) {
+      fetchUserData();
+      fetchBookings();
+    }
   }, [userId]);
 
-  const handleEdit = () => {
-
+  const handleEdit = async () => {
     if (isEditing) {
-      const updatedData = {
-        name: userData.name,
-        email: userData.email,
-        phoneNumber: userData.phoneNumber,
-        address: userData.address,
-        passengers: passengers,
-        bookings: userData.bookings,
-      };
-     
-      const nameRegex = /^[A-Za-z\s]+$/;
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const phoneRegex = /^\d{10}$/;
-      
-      // Validation logic
-      if (!nameRegex.test(userData.name)) {
-       handleError('Name must contain only alphabets and spaces.');
-        return;
-      }
-      if (!emailRegex.test(userData.email)) {
-        handleError('Please enter a valid email address.');
-        return;
-      }
-  
-      if (!phoneRegex.test(userData.phoneNumber)) {
-        handleError('Phone number must be a 10-digit number.');
-        return;
-      }
-  
-      if (!nameRegex.test(userData.address)) {
-        handleError('Address must contain only alphabets and spaces.');
-        return;
-      }
-      const updateUserData = async () => {
-        try {
-          await fetch(`http://localhost:5050/user/${userId}`, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedData),
-          });
-        } catch (error) {
-          console.error('Error updating user data:', error);
+      try {
+        // Validation
+        const nameRegex = /^[A-Za-z\s]+$/;
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\d{10}$/;
+        
+        if (!nameRegex.test(userData.name)) {
+          handleError('Name must contain only alphabets and spaces.');
+          return;
         }
-      };
+        if (!emailRegex.test(userData.email)) {
+          handleError('Please enter a valid email address.');
+          return;
+        }
+        if (!phoneRegex.test(userData.phoneNumber)) {
+          handleError('Phone number must be a 10-digit number.');
+          return;
+        }
+        if (!nameRegex.test(userData.address)) {
+          handleError('Address must contain only alphabets and spaces.');
+          return;
+        }
 
-      updateUserData();
-    } else {
-      setOriginalData(userData);
+        const updatedData = {
+          name: userData.name,
+          email: userData.email,
+          phoneNumber: userData.phoneNumber,
+          address: userData.address
+        };
+
+        const response = await axios.put(`http://localhost:5050/user/${userId}`, updatedData);
+        if (response.data) {
+          setUserData(response.data);
+          setOriginalData(response.data);
+          handleSuccess('Profile updated successfully');
+          setLoggedInUser(response.data.name);
+          localStorage.setItem('loggedInUser', response.data.name);
+        }
+      } catch (error) {
+        handleError('Error updating profile');
+        console.error('Error updating profile:', error);
+      }
     }
     setIsEditing(!isEditing);
-    localStorage.setItem('loggedInUser', userData.name);
-
   };
-
-  
-  
 
   const toggleEdit = (index, isEditing) => {
     const updatedPassengers = [...passengers];
@@ -350,7 +312,7 @@ const UserProfile = ({loggedInUser,setLoggedInUser}) => {
                   className="bg-red-500 hover:bg-red-600 text-white p-2 rounded transition-colors duration-200"
                   onClick={handleCancel}
                 >
-                  Cancel
+                  Delete
                 </button>
               )}
             </div>
