@@ -444,50 +444,53 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
           {/* Booking History Section */}
           <h2 className="text-2xl font-bold mb-6 mt-10">Booking History</h2>
           <div className="overflow-x-auto rounded-lg">
-          <table className="min-w-full border-collapse bg-white">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="p-3 text-left font-semibold text-gray-700">Booking ID</th>
-                <th className="p-3 text-left font-semibold text-gray-700">Route</th>
-                <th className="p-3 text-left font-semibold text-gray-700 hidden md:table-cell">Date</th>
-                <th className="p-3 text-left font-semibold text-gray-700">Class</th>
-                <th className="p-3 text-left font-semibold text-gray-700 hidden md:table-cell">Passengers</th>
-                <th className="p-3 text-left font-semibold text-gray-700">Status</th>
-                <th className="p-3 text-right font-semibold text-gray-700">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              {bookings.map((booking) => (
-                <tr key={booking._id} className="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
-                  <td className="p-3">{booking._id}</td>
-                  <td className="p-3">
-                    <div className="flex flex-col">
-                      <span>{booking.from}</span>
-                      <span className="text-sm text-gray-500">to</span>
-                      <span>{booking.to}</span>
-                      <span className="md:hidden text-sm text-gray-500">{booking.date}</span>
-                    </div>
-                  </td>
-                  <td className="p-3 hidden md:table-cell">{new Date(booking.date).toLocaleDateString()}</td>
-                  <td className="p-3">{booking.class}</td>
-                  <td className="p-3 hidden md:table-cell">{booking.passengers}</td>
-                  <td className="p-3">
-                    <span className={`inline-flex px-2 py-1 rounded-full text-sm
-                      ${booking.status === 'Confirmed' ? 'bg-green-100 text-green-800' : ''}
-                      ${booking.status === 'Completed' ? 'bg-gray-100 text-gray-800' : ''}
-                      ${booking.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' : ''}
-                      ${booking.status === 'Cancelled' ? 'bg-red-100 text-red-800' : ''}
-                      ${booking.status === 'Pending' ? 'bg-red-100 text-red-800' : ''}
-                    `}>
-                      {booking.status}
-                    </span>
-                  </td>
-                  <td className="p-3 text-right font-medium">{booking.price}$</td>
+            <table className="min-w-full border-collapse bg-white">
+              <thead>
+                <tr className="bg-gray-50">
+                  <th className="p-3 text-left text-sm font-semibold text-gray-600">Booking ID</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-600">Route</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-600 hidden md:table-cell">Date</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-600">Class</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-600 hidden md:table-cell">Passengers</th>
+                  <th className="p-3 text-left text-sm font-semibold text-gray-600">Status</th>
+                  <th className="p-3 text-right text-sm font-semibold text-gray-600">Price</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {bookings.map((booking) => (
+                  <tr key={booking._id} className="border-t border-gray-200 hover:bg-gray-50 transition-colors duration-200">
+                    <td className="p-3">{booking._id}</td>
+                    <td className="p-3">
+                      <div className="flex flex-col">
+                        <span>{booking.from}</span>
+                        <span className="text-sm text-gray-500">to</span>
+                        <span>{booking.to}</span>
+                      </div>
+                    </td>
+                    <td className="p-3 hidden md:table-cell">
+                      {new Date(booking.date).toLocaleDateString()}
+                    </td>
+                    <td className="p-3">{booking.class}</td>
+                    <td className="p-3 hidden md:table-cell">
+                      {booking.passengers.length} Passengers
+                    </td>
+                    <td className="p-3">
+                      <span className={`inline-flex px-2 py-1 rounded-full text-sm
+                        ${booking.status === 'Confirmed' ? 'bg-green-100 text-green-800' : ''}
+                        ${booking.status === 'Completed' ? 'bg-gray-100 text-gray-800' : ''}
+                        ${booking.status === 'Upcoming' ? 'bg-blue-100 text-blue-800' : ''}
+                        ${booking.status === 'Cancelled' ? 'bg-red-100 text-red-800' : ''}
+                        ${booking.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : ''}
+                      `}>
+                        {booking.status}
+                      </span>
+                    </td>
+                    <td className="p-3 text-right font-medium">₹{booking.price}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <Footer/>

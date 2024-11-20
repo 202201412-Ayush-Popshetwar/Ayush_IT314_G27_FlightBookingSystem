@@ -41,9 +41,25 @@ const BookingSchema = new mongoose.Schema({
   to: String,
   date: Date,
   class: String,
-  passengers: Number,
+  passengers: [{
+      designation: String,
+      firstName: String,
+      lastName: String,
+      dob: Date,
+  }],
   status: String,
   price: Number,
+  paymentMethod: String,
+  addons: [{
+      name: String,
+      quantity: Number,
+      variety: String,
+      price: Number
+  }],
+  createdAt: { 
+      type: Date, 
+      default: Date.now 
+  }
 });
 
 

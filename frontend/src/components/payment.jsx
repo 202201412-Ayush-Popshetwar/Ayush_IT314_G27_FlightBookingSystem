@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from "./Navbar";
 import Header from "./Header";
 import Footer from "./Footer";
+import axios from 'axios';
+import { handleError } from '../utils';
 
 const PaymentPage = ({ loggedInUser, setLoggedInUser }) => {
     
@@ -15,6 +17,13 @@ const PaymentPage = ({ loggedInUser, setLoggedInUser }) => {
         postalCode: ''
     });
     const navigate = useNavigate();
+
+    // Get all necessary details from localStorage
+    const bookingDetails = JSON.parse(localStorage.getItem('bookingDetails'));
+    const passengerDetails = JSON.parse(localStorage.getItem('passengerDetails'));
+    const addonDetails = JSON.parse(localStorage.getItem('addonDetails') || '[]');
+    const totalPrice = localStorage.getItem('totalPrice');
+    const searchParams = JSON.parse(localStorage.getItem('searchParams'));
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,41 +47,71 @@ const PaymentPage = ({ loggedInUser, setLoggedInUser }) => {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
+        // Payment validation checks
         if (selectedPayment === 'card') {
-            // Validate card number length
             if (formData.cardNumber.replace(/\s/g, '').length !== 16) {
-                alert('Please provide a valid card number with 16 digits.');
+                handleError('Please provide a valid card number with 16 digits.');
                 return;
             }
-
-            // Validate CVV length
             if (formData.cvv.length !== 3) {
-                alert('CVV must be exactly 3 digits.');
+                handleError('CVV must be exactly 3 digits.');
                 return;
             }
-
-            // Validate expiry date format
             const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/;
             if (!expiryRegex.test(formData.expiryDate)) {
-                alert('Please enter a valid expiry date in MM/YY format.');
+                handleError('Please enter a valid expiry date in MM/YY format.');
                 return;
             }
         } else if (selectedPayment === 'upi') {
-            // Validate UPI ID format
             const upiRegex = /^[\w.-]+@[\w.-]+$/;
             if (!upiRegex.test(formData.upiId)) {
-                alert('Please enter a valid UPI ID.');
+                handleError('Please enter a valid UPI ID.');
                 return;
             }
         }
 
-        // If all validations pass
-        console.log('Payment submitted:', formData);
-        alert('Payment submitted successfully!');
-        navigate('/confirmation');
+        try {
+            // Prepare booking data
+            const bookingData = {
+                userId: localStorage.getItem('userId'),
+                flightId: bookingDetails.flight._id,
+                from: bookingDetails.flight.from,
+                to: bookingDetails.flight.to,
+                date: new Date(bookingDetails.date[0].startDate),
+                class: bookingDetails.flight.class,
+                passengers: passengerDetails.map(passenger => ({
+                    designation: passenger.designation,
+                    firstName: passenger.firstName,
+                    lastName: passenger.lastName,
+                    dob: new Date(passenger.dob),
+                })),
+                status: "Confirmed",
+                price: Number(totalPrice),
+                paymentMethod: selectedPayment,
+                addons: addonDetails
+            };
+
+            // Make API call to create booking
+            const token = localStorage.getItem('token');
+            const response = await axios.post('http://localhost:5050/bookings/create', 
+                bookingData,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (response.data.success) {
+                alert('Booking confirmed successfully!');
+                navigate('/confirmation');
+            }
+        } catch (error) {
+            handleError(error.response?.data?.message || 'Error processing payment');
+        }
     };
 
     const renderPaymentForm = () => {
@@ -217,43 +256,62 @@ const PaymentPage = ({ loggedInUser, setLoggedInUser }) => {
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Flight Summary</h2>
                         
                         <div className="mb-4">
-                            <p className="text-lg text-gray-700 font-medium">Flight Number: <span className="text-gray-900 font-semibold">G9419</span></p>
-                            <p className="text-sm text-gray-600">Non-stop | Duration: 1h 35m</p>
+                            <p className="text-lg text-gray-700 font-medium">
+                                Flight Number: <span className="text-gray-900 font-semibold">{bookingDetails.flight.flight_num}</span>
+                            </p>
+                            <p className="text-sm text-gray-600">
+                                {bookingDetails.flight.stops} | Duration: {bookingDetails.flight.duration}
+                            </p>
                         </div>
 
                         <div className="mb-6">
                             <h3 className="text-lg font-medium text-gray-700 mb-1">Departure</h3>
-                            <p className="text-gray-800">Ahmedabad</p>
-                            <p className="text-sm text-gray-600">22-11-2024, 05:05</p>
+                            <p className="text-gray-800">{bookingDetails.flight.from}</p>
+                            <p className="text-sm text-gray-600">
+                                {new Date(bookingDetails.date[0].startDate).toLocaleDateString()}, {bookingDetails.flight.dep_time}
+                            </p>
                         </div>
 
                         <div className="mb-6">
                             <h3 className="text-lg font-medium text-gray-700 mb-1">Arrival</h3>
-                            <p className="text-gray-800">Sharjah</p>
-                            <p className="text-sm text-gray-600">22-11-2024, 06:35</p>
+                            <p className="text-gray-800">{bookingDetails.flight.to}</p>
+                            <p className="text-sm text-gray-600">
+                                {new Date(bookingDetails.date[0].startDate).toLocaleDateString()}, {bookingDetails.flight.arr_time}
+                            </p>
                         </div>
 
                         <div className="border-t pt-4">
                             <div className="space-y-2">
                                 <div className="flex justify-between">
-                                    <span className="text-gray-600">Base Fare (3 Adults, 1 Child)</span>
-                                    <span>AED 44.00</span>
+                                    <span className="text-gray-600">
+                                        Base Fare ({searchParams.options.adult} Adults, {searchParams.options.children} Children)
+                                    </span>
+                                    <span>₹{bookingDetails.basePrice}</span>
                                 </div>
-                                <div className="flex justify-between">
-                                    <span className="text-gray-600">Airport Tax & Surcharge</span>
-                                    <span>AED 2,256.44</span>
+
+                                {/* Display addon details if any */}
+                                {addonDetails.map((addon, index) => (
+                                    <div key={index} className="flex justify-between">
+                                        <span className="text-gray-600">
+                                            {addon.name} ({addon.variety}) x{addon.quantity}
+                                        </span>
+                                        <span>₹{addon.price}</span>
+                                    </div>
+                                ))}
+
+                                {/* Display passenger details */}
+                                <div className="pt-2 border-t">
+                                    <h4 className="text-gray-700 font-medium mb-2">Passenger Details:</h4>
+                                    {passengerDetails.map((passenger, index) => (
+                                        <p key={index} className="text-sm text-gray-600">
+                                            {passenger.designation} {passenger.firstName} {passenger.lastName}
+                                        </p>
+                                    ))}
                                 </div>
-                                <div className="flex justify-between">
-                                    <span className="text-gray-600">Additional Services</span>
-                                    <span>AED 127.50</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span className="text-gray-600">Service Tax</span>
-                                    <span>AED 162.90</span>
-                                </div>
+
                                 <div className="flex justify-between font-medium text-lg pt-2 border-t">
                                     <span>Total Amount</span>
-                                    <span>AED 2,606.66</span>
+                                    <span>₹{totalPrice}</span>
                                 </div>
                             </div>
                         </div>
