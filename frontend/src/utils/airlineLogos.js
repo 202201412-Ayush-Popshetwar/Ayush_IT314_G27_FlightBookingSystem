@@ -1,8 +1,8 @@
 const airlineLogos = {
-    'SpiceJet': '/img/logo/SpiceJet.png',
-    'Vistara': '/img/logo/Vistara.png',
-    'Indigo': '/img/logo/Indigo.png',
-    'Air India': '/img/logo/AirIndia.png',
+    'SpiceJet': '/img/logo/spiceJet.png',
+    'Vistara': '/img/logo/vistara.png',
+    'Indigo': '/img/logo/indigo.png',
+    'Air India': '/img/logo/airIndia.png',
     'Go First': '/img/logo/GoFirst.png',
     // Add more airlines as needed
 };

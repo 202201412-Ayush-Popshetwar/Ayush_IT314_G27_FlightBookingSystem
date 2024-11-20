@@ -269,7 +269,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                                 <>
                                     <div className="space-y-4">
                                         {currentFlights.map((flight, index) => (
-                                            <SearchItem key={index} flight={flight} />
+                                            <SearchItem key={index} flight={flight} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
                                         ))}
                                     </div>
                                     <div className="flex justify-center mt-6 mb-8">

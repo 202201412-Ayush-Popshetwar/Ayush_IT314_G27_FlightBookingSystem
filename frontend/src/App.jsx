@@ -40,7 +40,7 @@ function App() {
         <Route path="/signup" element={<Signup loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
         <Route path="/profile" element={<Profile loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/> }/>
         <Route path='/faq' element={<FAQ loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />} />
-        <Route path='booking' element={<Booking loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
+        <Route path='/booking' element={<Booking loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
         <Route path='/payment' element={<Payment loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
         <Route path='/confirmation' element={<Confirmation loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>
         <Route path='/rewards' element={<Rewards loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>}/>

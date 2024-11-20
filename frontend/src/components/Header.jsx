@@ -207,7 +207,7 @@ const Header = ({ type }) => {
                       </button>
                       <span className="w-8 text-center text-gray-700">{options.adult}</span>
                       <button
-                        disabled={options.adult >= 10}
+                        disabled={options.adult >= 5}
                         className="w-8 h-8 border border-blue-500 rounded-md flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={() => handleOption("adult", "i")}
                       >
@@ -227,7 +227,7 @@ const Header = ({ type }) => {
                       </button>
                       <span className="w-8 text-center text-gray-700">{options.children}</span>
                       <button
-                        disabled={options.children >= 10}
+                        disabled={options.children >= 5}
                         className="w-8 h-8 border border-blue-500 rounded-md flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                         onClick={() => handleOption("children", "i")}
                       >
