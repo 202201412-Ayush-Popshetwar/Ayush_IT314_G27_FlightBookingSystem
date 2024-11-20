@@ -4,9 +4,12 @@ import express from "express";
 import {db} from "../connection.js";
 import {UserModel} from "../Models/User.js";
 import cors from "cors";
-
+import nodemailer from 'nodemailer';
+import { SubscriberModel } from '../Models/Subscriber.js';
+import dotenv from 'dotenv';
+dotenv.config();
 const router = express.Router();
-
+router.use(cors());
 router.get('/user/:userId', (req, res) => {
   UserModel.findOne({ _id: req.params.userId })
       .then(user => {
@@ -102,7 +105,6 @@ router.delete('/user/:userId/:passengerId', async (req, res) => {
       const user = await UserModel.findById(userId).populate('bookings'); // Assuming `bookings` is a populated reference
       // console.log(user);
       if (!user) return res.status(404).json({ message: 'User not found' });
-  
       res.json(user.bookings); // Send only the bookings
     } catch (error) {
       console.error('Error fetching bookings:', error);

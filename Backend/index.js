@@ -11,6 +11,7 @@ import {db} from "./connection.js";
 import  {ObjectId} from "mongodb";
 import SearchRouter from './Routes/SearchRouter.js';
 import bookingRouter from './Routes/bookingRouter.js';
+import subscribeRouter from './Routes/Subscribe.js';
 
 
  const PORT = process.env.PORT || 5050;
@@ -25,6 +26,7 @@ app.use("/auth",AuthRouter);
 app.use("/search", SearchRouter);
 app.use(UserRouter);
 app.use('/bookings', bookingRouter);
+app.use('/api', subscribeRouter);
 
 
 
