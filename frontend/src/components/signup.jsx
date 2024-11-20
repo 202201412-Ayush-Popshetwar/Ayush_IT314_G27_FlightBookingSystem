@@ -44,7 +44,7 @@ function Signup({ loggedInUser , setLoggedInUser  }) {
         }
 
         try {
-            const url = `http://localhost:5050/auth/signup`;
+            const url = `${import.meta.env.VITE_BACKEND_URL}/auth/signup`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: {

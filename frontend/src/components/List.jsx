@@ -73,7 +73,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
             const start_date = format(date[0].startDate, 'dd-MM-yyyy');
             console.log('Search parameters:', { from, to, start_date });
             
-            const response = await axios.get('http://localhost:5050/search/flight', {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/search/flight`, {
                 params: {
                     from,
                     to,

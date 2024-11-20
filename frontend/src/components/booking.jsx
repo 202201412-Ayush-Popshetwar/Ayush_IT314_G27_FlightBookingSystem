@@ -48,7 +48,7 @@ const BookingForm = ({ loggedInUser, setLoggedInUser }) => {
     const fetchUserData = async () => {
       try {
         const userId = localStorage.getItem('userId');
-        const response = await fetch(`http://localhost:5050/user/${userId}`);
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/${userId}`);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

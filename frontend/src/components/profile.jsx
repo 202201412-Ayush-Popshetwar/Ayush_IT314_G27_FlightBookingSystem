@@ -32,7 +32,7 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/user/${userId}`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/${userId}`);
         if (response.data) {
           setUserData(response.data);
           setOriginalData(response.data);
@@ -46,7 +46,7 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
 
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`http://localhost:5050/user/${userId}/bookings`);
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user/${userId}/bookings`);
         if (response.data) {
           setBookings(response.data);
         }
@@ -94,7 +94,7 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
           address: userData.address
         };
 
-        const response = await axios.put(`http://localhost:5050/user/${userId}`, updatedData);
+        const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/user/${userId}`, updatedData);
         if (response.data) {
           setUserData(response.data);
           setOriginalData(response.data);
@@ -147,7 +147,7 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
       // For saved passengers, proceed with backend DELETE request
       const passengerId = passenger._id; 
   
-      const response = await fetch(`http://localhost:5050/user/${userId}/${passengerId}`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/${userId}/${passengerId}`, {
         method: 'DELETE',
       });
   
@@ -214,7 +214,7 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
     }
     try {
       // Save changes to backend
-      const response = await fetch(`http://localhost:5050/user/${userId}/passengers`, {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user/${userId}/passengers`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ passengers }),

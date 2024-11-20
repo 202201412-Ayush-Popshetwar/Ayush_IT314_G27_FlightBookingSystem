@@ -96,7 +96,7 @@ const PaymentPage = ({ loggedInUser, setLoggedInUser }) => {
 
             // Make API call to create booking
             const token = localStorage.getItem('token');
-            const response = await axios.post('http://localhost:5050/bookings/create', 
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/bookings/create`, 
                 bookingData,
                 {
                     headers: {

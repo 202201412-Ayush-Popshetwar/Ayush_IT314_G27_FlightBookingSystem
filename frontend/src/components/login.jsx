@@ -26,7 +26,7 @@ function Login({ loggedInUser, setLoggedInUser  }) {
             return handleError('Email and password are required');
         }
         try {
-            const url = `http://localhost:5050/auth/login`;
+            const url = `${import.meta.env.VITE_BACKEND_URL}/auth/login`;
             const response = await fetch(url, {
                 method: "POST",
                 headers: { 'Content-Type': 'application/json' },
