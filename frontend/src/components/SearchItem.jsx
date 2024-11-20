@@ -49,8 +49,8 @@ const SearchItem = ({ flight }) => {
                     <div className="relative w-full">
                         <div className="w-full h-[2px] bg-blue-500 my-2"></div>
                         <div className="absolute w-full flex justify-between top-[-8px]">
-                            <FlightTakeoff className="text-blue-500 transform -translate-x-1/2" />
-                            <FlightLand className="text-blue-500 transform translate-x-1/2" />
+                            <FlightTakeoff className="text-blue-500 transform -translate-x-1/2 -translate-y-1/2 " />
+                            <FlightLand className="text-blue-500 transform translate-x-1/2 -translate-y-1/2" />
                         </div>
                     </div>
                     <p className="text-xs text-gray-500">

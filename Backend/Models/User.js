@@ -63,7 +63,7 @@ const flightSchema = new mongoose.Schema({
   to: { type: String, required: true },
   arr_time: { type: String, required: true },
   duration: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: String, required: true },
   stops: { type: String, required: true }
 });
 
