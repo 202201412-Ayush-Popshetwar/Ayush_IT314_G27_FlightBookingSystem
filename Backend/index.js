@@ -10,7 +10,7 @@ import {UserModel,BookingModel,FlightModel,AirportModel} from './Models/User.js'
 import {db} from "./connection.js";
 import  {ObjectId} from "mongodb";
 import SearchRouter from './Routes/SearchRouter.js';
-import bookingRouter from './Routes/bookingRouter.js';
+import router from './Routes/bookingRouter.js';
 import subscribeRouter from './Routes/Subscribe.js';
 
 
@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use("/auth",AuthRouter);
 app.use("/search", SearchRouter);
 app.use(UserRouter);
-app.use('/bookings', bookingRouter);
+app.use('/bookings', router);
 app.use('/api', subscribeRouter);
 
 
