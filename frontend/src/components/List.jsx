@@ -37,6 +37,8 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
     const [flights, setFlights] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [flightsPerPage] = useState(10);
+    const [sortBy, setSortBy] = useState('');
+    const [selectedAirline, setSelectedAirline] = useState('');
 
     const dateRef = useRef(null);
     const optionsRef = useRef(null);
@@ -92,10 +94,49 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
         }
     };
 
-    const indexOfLastFlight = currentPage * flightsPerPage;
-    const indexOfFirstFlight = indexOfLastFlight - flightsPerPage;
-    const currentFlights = flights.slice(indexOfFirstFlight, indexOfLastFlight);
-    const totalPages = Math.ceil(flights.length / flightsPerPage);
+    const getUniqueAirlines = () => {
+        return [...new Set(flights.map(flight => flight.airline))];
+    };
+
+    // Function to convert price string to number
+    const priceToNumber = (priceStr) => {
+        // Remove commas and convert to number
+        return Number(priceStr.replace(/,/g, ''));
+    };
+
+    // Update the getSortedAndFilteredFlights function
+    const getSortedAndFilteredFlights = () => {
+        let processedFlights = [...flights];
+        
+        // Apply airline filter
+        if (selectedAirline) {
+            processedFlights = processedFlights.filter(flight => flight.airline === selectedAirline);
+        }
+        
+        // Apply price sorting
+        if (sortBy === 'price_asc') {
+            processedFlights.sort((a, b) => priceToNumber(a.price) - priceToNumber(b.price));
+        } else if (sortBy === 'price_desc') {
+            processedFlights.sort((a, b) => priceToNumber(b.price) - priceToNumber(a.price));
+        }
+
+        // Apply pagination
+        const indexOfLastFlight = currentPage * flightsPerPage;
+        const indexOfFirstFlight = indexOfLastFlight - flightsPerPage;
+        return processedFlights.slice(indexOfFirstFlight, indexOfLastFlight);
+    };
+
+    const getTotalPages = () => {
+        let filteredFlights = [...flights];
+        if (selectedAirline) {
+            filteredFlights = filteredFlights.filter(flight => flight.airline === selectedAirline);
+        }
+        return Math.ceil(filteredFlights.length / flightsPerPage);
+    };
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [sortBy, selectedAirline]);
 
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
@@ -263,18 +304,51 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                             </div>
                         </div>
 
+                        {/* Sorting and Filtering Section */}
+                        <div className="mt-4">
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <div className="flex-1">
+                                    <label className="block text-sm text-gray-600 mb-1">Sort by Price</label>
+                                    <select
+                                        value={sortBy}
+                                        onChange={(e) => setSortBy(e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">Default</option>
+                                        <option value="price_asc">Price: Low to High</option>
+                                        <option value="price_desc">Price: High to Low</option>
+                                    </select>
+                                </div>
+                                <div className="flex-1">
+                                    <label className="block text-sm text-gray-600 mb-1">Filter by Airline</label>
+                                    <select
+                                        value={selectedAirline}
+                                        onChange={(e) => setSelectedAirline(e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">All Airlines</option>
+                                        {getUniqueAirlines().map((airline) => (
+                                            <option key={airline} value={airline}>
+                                                {airline}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         {/* Results Section */}
                         <div className="flex-1">
                             {flights.length > 0 ? (
                                 <>
                                     <div className="space-y-4">
-                                        {currentFlights.map((flight, index) => (
+                                        {getSortedAndFilteredFlights().map((flight, index) => (
                                             <SearchItem key={index} flight={flight} loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
                                         ))}
                                     </div>
                                     <div className="flex justify-center mt-6 mb-8">
                                         <Pagination 
-                                            count={totalPages}
+                                            count={getTotalPages()}
                                             page={currentPage}
                                             onChange={handlePageChange}
                                             color="primary"

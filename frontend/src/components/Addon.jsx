@@ -10,24 +10,93 @@ import ShieldIcon from "@mui/icons-material/Shield"; // Insurance icon
 import HealthAndSafetyIcon from "@mui/icons-material/HealthAndSafety"; // Passenger Assistance icon
 import LocalAirportIcon from "@mui/icons-material/LocalAirport"; // Airport Services icon
 
-const Addons = ({ loggedInUser  , setLoggedInUser   }) => {
+const Addons = ({ loggedInUser, setLoggedInUser }) => {
+  const navigate = useNavigate();
   
+  // Get booking and passenger details
+  const bookingDetails = JSON.parse(localStorage.getItem('bookingDetails'));
+  const passengerDetails = JSON.parse(localStorage.getItem('passengerDetails'));
+  
+  // Redirect if no booking details
+  if (!bookingDetails || !passengerDetails) {
+    navigate('/');
+    return null;
+  }
+
+  const passengerCount = passengerDetails?.length || 0;
+  const initialPrice = bookingDetails.basePrice || 0; // Get initial price from bookingDetails
+
   const [addons, setAddons] = useState([
-    { id: 1, name: "Baggage", description: "Ensure extra baggage allowance for your travels.", price: 500, icon: <LuggageIcon sx={{ color: "#003580", fontSize: 40 }} />, quantity: 0, varieties: [{ name: "Standard", price: 500 }, { name: "Premium", price: 800 }] },
-    { id: 2, name: "Seats", description: "Choose your ideal seat to make your journey more comfortable.", price: 300, icon: <AirlineSeatReclineExtraIcon sx={{ color: "#003580", fontSize: 40 }} />, quantity: 0, varieties: [{ name: "Aisle", price: 300 }, { name: "Window", price: 350 }, { name: "Extra Legroom", price: 400 }] },
-    { id: 3, name: "Meals", description: "Pre-order delicious meals on board.", price: 400, icon: <FastfoodIcon sx={{ color: "#003580", fontSize: 40 }} />, quantity: 0, varieties: [{ name: "Vegetarian", price: 400 }, { name: "Non-Vegetarian", price: 450 }, { name: "Vegan", price: 500 }] },
-    { id: 4, name: "Insurance", description: "Travel with peace of mind with comprehensive insurance coverage.", price: 1000, icon: <ShieldIcon sx={{ color: "#003580", fontSize: 40 }} />, quantity: 0, varieties: [{ name: "Basic", price: 1000 }, { name: "Comprehensive", price: 1500 }] },
-    { id: 5, name: "Passenger Assistance", description: "Get medical and mobility assistance during your flight.", price: 700, icon: <HealthAndSafetyIcon sx={{ color: "#003580", fontSize: 40 }} />, quantity: 0, varieties: [{ name: "Standard", price: 700 }, { name: "Premium", price: 1000 }] },
-    { id: 6, name: "Airport Services", description: "Upgrade to priority check-in, faster security clearance.", price: 800, icon: <LocalAirportIcon sx={{ color: "#003580", fontSize: 40 }} />, quantity: 0, varieties: [{ name: "Standard", price: 800 }, { name: "VIP", price: 1200 }] },
+    { 
+      id: 1, 
+      name: "Baggage", 
+      description: "Ensure extra baggage allowance for your travels.", 
+      price: 500, 
+      icon: <LuggageIcon sx={{ color: "#003580", fontSize: 40 }} />, 
+      quantity: 0,
+      maxQuantity: passengerCount,
+      varieties: [{ name: "Standard", price: 500 }, { name: "Premium", price: 800 }] 
+    },
+    { 
+      id: 2, 
+      name: "Seats", 
+      description: "Choose your ideal seat to make your journey more comfortable.", 
+      price: 300,
+      icon: <AirlineSeatReclineExtraIcon sx={{ color: "#003580", fontSize: 40 }} />, 
+      quantity: 0,
+      maxQuantity: passengerCount,
+      varieties: [{ name: "Aisle", price: 300 }, { name: "Window", price: 350 }, { name: "Extra Legroom", price: 400 }] 
+    },
+    { 
+      id: 3, 
+      name: "Meals", 
+      description: "Pre-order delicious meals on board.", 
+      price: 400, 
+      icon: <FastfoodIcon sx={{ color: "#003580", fontSize: 40 }} />, 
+      quantity: 0,
+      maxQuantity: passengerCount,
+      varieties: [{ name: "Vegetarian", price: 400 }, { name: "Non-Vegetarian", price: 450 }, { name: "Vegan", price: 500 }] 
+    },
+    { 
+      id: 4, 
+      name: "Insurance", 
+      description: "Travel with peace of mind with comprehensive insurance coverage.", 
+      price: 1000, 
+      icon: <ShieldIcon sx={{ color: "#003580", fontSize: 40 }} />, 
+      quantity: 0,
+      maxQuantity: passengerCount,
+      varieties: [{ name: "Basic", price: 1000 }, { name: "Comprehensive", price: 1500 }] 
+    },
+    { 
+      id: 5, 
+      name: "Passenger Assistance", 
+      description: "Get medical and mobility assistance during your flight.", 
+      price: 700, 
+      icon: <HealthAndSafetyIcon sx={{ color: "#003580", fontSize: 40 }} />, 
+      quantity: 0,
+      maxQuantity: passengerCount,
+      varieties: [{ name: "Standard", price: 700 }, { name: "Premium", price: 1000 }] 
+    },
+    { 
+      id: 6, 
+      name: "Airport Services", 
+      description: "Upgrade to priority check-in, faster security clearance.", 
+      price: 800, 
+      icon: <LocalAirportIcon sx={{ color: "#003580", fontSize: 40 }} />, 
+      quantity: 0,
+      maxQuantity: passengerCount,
+      varieties: [{ name: "Standard", price: 800 }, { name: "VIP", price: 1200 }] 
+    },
   ]);
 
   const [selectedVarieties, setSelectedVarieties] = useState({});
-  const navigate = useNavigate();
 
   const handleIncrement = (id) => {
     setAddons((prevAddons) =>
       prevAddons.map((addon) =>
-        addon.id === id ? { ...addon, quantity: addon.quantity + 1 } : addon
+        addon.id === id && addon.quantity < addon.maxQuantity 
+          ? { ...addon, quantity: addon.quantity + 1 } 
+          : addon
       )
     );
   };
@@ -49,12 +118,14 @@ const Addons = ({ loggedInUser  , setLoggedInUser   }) => {
     const selectedVariety = selectedVarieties[addon.id];
     const price = selectedVariety ? selectedVariety.price : addon.price;
     return total + price * addon.quantity;
-  }, 0);
-
+  }, initialPrice);
+  console.log(totalPrice);
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
-      <Navbar loggedInUser ={loggedInUser } setLoggedInUser ={setLoggedInUser } />
+      <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
       <Header type="list" />
+      
+      
       <div className="flex flex-col w-full max-w-screen-lg mx-auto bg-white shadow-xl rounded-xl p-4 md:p-8 my-10">
         <h1 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-8 text-center">Enhance Your Travel Experience</h1>
         <div className="space-y-8">
@@ -120,8 +191,20 @@ const Addons = ({ loggedInUser  , setLoggedInUser   }) => {
           <h2 className="text-lg font-bold text-gray-800">Total: ₹{totalPrice}</h2>
           <button
             type="button"
-            onClick={() => navigate('/payment')}
-            className="px-8 py-6  bg-blue-700 text-white text-lg font-semibold rounded-lg hover:bg-[#003580] transition duration-300"
+            onClick={() => {
+              // Store total price and addon details in localStorage
+              localStorage.setItem('totalPrice', totalPrice);
+              localStorage.setItem('addonDetails', JSON.stringify(
+                addons.filter(addon => addon.quantity > 0).map(addon => ({
+                  name: addon.name,
+                  quantity: addon.quantity,
+                  variety: selectedVarieties[addon.id]?.name,
+                  price: selectedVarieties[addon.id]?.price * addon.quantity
+                }))
+              ));
+              navigate('/payment');
+            }}
+            className="px-8 py-6 bg-blue-700 text-white text-lg font-semibold rounded-lg hover:bg-[#003580] transition duration-300"
           >
             Continue to Payment
           </button>

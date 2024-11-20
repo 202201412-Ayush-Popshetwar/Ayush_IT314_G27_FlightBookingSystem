@@ -1,22 +1,29 @@
 import { FlightTakeoff, FlightLand } from '@mui/icons-material';
 import { getAirlineLogo } from '../utils/airlineLogos';
 import { useNavigate } from 'react-router-dom';
+import { handleError } from '../utils';
 
 const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) => {
 
     const navigate = useNavigate();
     const searchParams = JSON.parse(localStorage.getItem('searchParams'))
-    
+    const getNumericPrice = (priceString) => {
+        return Number(priceString.replace(/,/g, ''));
+    };
     const handleSelectFlight = () => {
         console.log(loggedInUser);
         if (!loggedInUser) {
-            alert('Please login to select flight');
+            handleError('Please login to select flight');
             navigate('/login');
+            return;
+        }
+        if (flight.availableseats <= 0) {
+            handleError("This flight is fully booked!");
             return;
         }
 
         const totalPassengers = searchParams.options.adult + searchParams.options.children;
-        const basePrice = flight.price * totalPassengers;
+        const basePrice = getNumericPrice(flight.price) * totalPassengers;
         const bookingDetails = {
             flight: flight,
             basePrice: basePrice,
@@ -28,8 +35,16 @@ const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) => {
         navigate('/booking');
     };
 
+    const handleSelect = () => {
+        if (flight.availableseats <= 0) {
+            handleError("This flight is fully booked!");
+            return;
+        }
+        handleSelectFlight();
+    };
+
     return (
-        <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+        <div className={`bg-white p-4 rounded-lg shadow-md ${flight.availableseats <= 0 ? 'opacity-75' : ''}`}>
             {/* Airline and Flight Number */}
             <div className="flex justify-between items-center mb-4">
                 <div className="flex items-center gap-4">
@@ -94,10 +109,15 @@ const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) => {
                     <span>{flight.stops === "non-stop" ? "Direct Flight" : `${flight.stops} Stop`}</span>
                 </div>
                 <button 
-                    className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors"
-                    onClick={handleSelectFlight}
+                    className={`px-4 py-2 rounded-md ${
+                        flight.availableseats <= 0 
+                        ? 'bg-gray-400 cursor-not-allowed' 
+                        : 'bg-blue-500 hover:bg-blue-600'
+                    } text-white transition`}
+                    onClick={handleSelect}
+                    disabled={flight.availableseats <= 0}
                 >
-                    Select Flight
+                    {flight.availableseats <= 0 ? 'Fully Booked' : 'Select'}
                 </button>
             </div>
         </div>
