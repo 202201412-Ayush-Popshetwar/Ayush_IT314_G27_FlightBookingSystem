@@ -1,91 +1,79 @@
-import { FlightTakeoff, FlightLand, AccessTime } from '@mui/icons-material';
-import { useEffect } from 'react';
+import { FlightTakeoff, FlightLand } from '@mui/icons-material';
+import { getAirlineLogo } from '../utils/airlineLogos';
 
-const SearchItem = (props) => {
-    const { flight } = props;
-    useEffect(() => {
-        console.log("flight", flight);
-    }, [flight]);
+const SearchItem = ({ flight }) => {
     return (
-        <div className="border border-gray-200 p-4 rounded-lg hover:shadow-md transition-shadow">
-            {/* Airline Info */}
-            <div className="flex items-center gap-4 mb-4 pb-2 border-b">
-                <img
-                    src=".png" // Replace with actual airline logo
-                    alt="Airline Logo"
-                    className="w-12 h-12 object-contain"
-                />
-                <span className="text-lg font-semibold">{flight.airline}</span>
-            </div>
-
-            {/* Flight Details */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                {/* Time and Route Info */}
-                <div className="flex-1 flex items-center gap-4">
-                    {/* Departure */}
-                    <div className="flex flex-col items-center">
-                        <span className="text-xl font-bold">{flight.dep_time}</span>
-                        <span className="text-sm text-gray-500">{flight.from}</span>
+        <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+            {/* Airline and Flight Number */}
+            <div className="flex justify-between items-center mb-4">
+                <div className="flex items-center gap-4">
+                    {/* Airline Logo */}
+                    <div className="w-16 h-16 flex items-center justify-center">
+                        <img
+                            src={getAirlineLogo(flight.airline)}
+                            alt={`${flight.airline} logo`}
+                            className="max-w-full max-h-full object-contain"
+                            onError={(e) => {
+                                e.target.onerror = null;
+                                e.target.src = '/img/logo/default-airline.png';
+                            }}
+                        />
                     </div>
-
-                    {/* Flight Path */}
-                    <div className="flex-1 flex flex-col items-center">
-                        <div className="flex items-center w-full">
-                            <FlightTakeoff className="text-blue-500" />
-                            <div className="flex-1 h-[2px] bg-blue-500 mx-2"></div>
-                            <FlightLand className="text-blue-500" />
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                            <AccessTime fontSize="small" />
-                            <span>{flight.duration}</span>
-                        </div>
-                    </div>
-
-                    {/* Arrival */}
-                    <div className="flex flex-col items-center">
-                        <span className="text-xl font-bold">{flight.arr_time}</span>
-                        <span className="text-sm text-gray-500">{flight.to}</span>
+                    <div>
+                        <span className="text-lg font-semibold text-blue-600">{flight.airline}</span>
+                        <p className="text-sm text-gray-500">Flight {flight.flight_num}</p>
                     </div>
                 </div>
-
-                {/* Price and Booking */}
-                <div className="w-full md:w-auto flex flex-col items-end gap-2">
-                    <div className="flex flex-col items-end">
-                        <span className="text-2xl font-bold text-blue-600">₹</span>
-                        <span className="text-sm text-gray-500">per person</span>
-                    </div>
-                    <button className="w-full md:w-auto bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition-colors">
-                        Select Flight
-                    </button>
+                <div className="text-right">
+                    <span className="text-2xl font-bold text-blue-600">₹{flight.price}</span>
+                    <p className="text-sm text-gray-500">per person</p>
                 </div>
             </div>
 
             {/* Flight Details */}
-            <div className="mt-4 pt-4 border-t flex flex-wrap gap-4 text-sm text-gray-600">
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold">Flight No:</span>
-                    <span>{flight.flight_num}</span>
+            <div className="flex flex-col md:flex-row items-center justify-between mb-4 gap-4 md:gap-0">
+                {/* Departure */}
+                <div className="text-center">
+                    <p className="text-xl font-bold">{flight.dep_time}</p>
+                    <p className="text-sm text-gray-600">{flight.from}</p>
                 </div>
-                {/* <div className="flex items-center gap-2">
-                    <span className="font-semibold">Aircraft:</span>
-                    <span>Airbus A320</span>
-                </div> */}
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold">Class:</span>
-                    <span>{flight.class}</span>
+
+                {/* Flight Duration - Updated Design */}
+                <div className="flex flex-col items-center flex-1 px-4 min-w-[200px] md:min-w-[300px] lg:min-w-[400px]">
+                    <p className="text-sm text-gray-500">{flight.duration}</p>
+                    <div className="relative w-full">
+                        <div className="w-full h-[2px] bg-blue-500 my-2"></div>
+                        <div className="absolute w-full flex justify-between top-[-8px]">
+                            <FlightTakeoff className="text-blue-500 transform -translate-x-1/2" />
+                            <FlightLand className="text-blue-500 transform translate-x-1/2" />
+                        </div>
+                    </div>
+                    <p className="text-xs text-gray-500">
+                        {flight.stops === "non-stop" ? "Non-stop" : `${flight.stops} stop`}
+                    </p>
                 </div>
-                <div className="flex items-center gap-2">
-                    <span className="font-semibold">stops:</span>
-                    <span>{flight.stops}</span>
+
+                {/* Arrival */}
+                <div className="text-center">
+                    <p className="text-xl font-bold">{flight.arr_time}</p>
+                    <p className="text-sm text-gray-600">{flight.to}</p>
                 </div>
             </div>
 
-            {/* Fare Features */}
-            {/* <div className="mt-4 flex flex-wrap gap-2">
-                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">Free Meals</span>
-                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">Refundable</span>
-                <span className="text-xs bg-purple-100 text-purple-700 px-2 py-1 rounded">Seat Selection</span>
-            </div> */}
+            {/* Additional Info */}
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+                <div className="flex gap-4 text-sm text-gray-600">
+                    <span className="capitalize">Class: {flight.class}</span>
+                    <span>•</span>
+                    <span>{flight.stops === "non-stop" ? "Direct Flight" : `${flight.stops} Stop`}</span>
+                </div>
+                <button 
+                    className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors"
+                    onClick={() => {/* Add your booking logic here */}}
+                >
+                    Select Flight
+                </button>
+            </div>
         </div>
     );
 };

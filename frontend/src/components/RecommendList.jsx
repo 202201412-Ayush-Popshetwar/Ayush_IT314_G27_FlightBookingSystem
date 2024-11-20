@@ -2,11 +2,11 @@ import React from 'react';
 
 const RecommendList = () => {
     const recommendations = [
-        { logo: '/img/logo/spiceJet.png', route: 'AMD to BOM', price: 'INR 3500' },
-        { logo: '/img/logo/vistara.png', route: 'AMD to BOM', price: 'INR 3600' },
-        { logo: '/img/logo/indigo.png', route: 'AMD to BOM', price: 'INR 3700' },
-        { logo: '/img/logo/airIndia.png', route: 'AMD to BOM', price: 'INR 3800' },
-        { logo: '/img/logo/goAir.png', route: 'AMD to BOM', price: 'INR 3750' },
+        { logo: '/img/logo/SpiceJet.png', route: 'AMD to BOM', price: 'INR 3500' },
+        { logo: '/img/logo/Vistara.png', route: 'AMD to BOM', price: 'INR 3600' },
+        { logo: '/img/logo/Indigo.png', route: 'AMD to BOM', price: 'INR 3700' },
+        { logo: '/img/logo/AirIndia.png', route: 'AMD to BOM', price: 'INR 3800' },
+        { logo: '/img/logo/GoFirst.png', route: 'AMD to BOM', price: 'INR 3750' },
     ];
 
     return (

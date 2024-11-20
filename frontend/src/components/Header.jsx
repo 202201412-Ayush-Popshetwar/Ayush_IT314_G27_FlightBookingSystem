@@ -45,9 +45,34 @@ const Header = ({ type }) => {
     }));
   };
 
-  const handleSearch = () => {
-    navigate("/flights",{state:{from, to, date, options}})
-  }
+  const handleSearch = async () => {
+    // Basic validation
+    if (!from || !to) {
+      alert("Please enter both origin and destination cities");
+      return;
+    }
+
+    // Format the date as required by the backend (dd-MM-yyyy)
+    const formattedDate = format(date[0].startDate, 'dd-MM-yyyy');
+    
+    // Store search parameters in localStorage for List component
+    localStorage.setItem('searchParams', JSON.stringify({
+      from,
+      to,
+      date,
+      options
+    }));
+
+    // Navigate to flights page with search parameters
+    navigate("/flights", {
+      state: {
+        from,
+        to,
+        date,
+        options
+      }
+    });
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
