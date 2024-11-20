@@ -18,6 +18,14 @@ import {
 
 const Header = ({ type }) => {
 
+  const airports = [
+    "Delhi",
+    "Mumbai",
+    "Kolkata",
+    "Chennai",
+    "Bangalore",
+    "Hyderabad"
+  ];
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
 
@@ -109,13 +117,18 @@ const Header = ({ type }) => {
             <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center">
               <FlightTakeoff className="text-gray-400" size={20} />
             </div>
-            <input
-              type="text"
-              placeholder="From"
+            <select
               value={from}
               onChange={(e) => setFrom(e.target.value)}
               className="text-black w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-            />
+            >
+              <option value="">Select Origin</option>
+              {airports.map((airport) => (
+                <option key={airport} value={airport}>
+                  {airport}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* To Field */}
@@ -123,13 +136,20 @@ const Header = ({ type }) => {
             <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center">
               <FlightLand className="text-gray-400" size={20} />
             </div>
-            <input
-              type="text"
-              placeholder="To"
+            <select
               value={to}
               onChange={(e) => setTo(e.target.value)}
               className="text-black w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-            />
+            >
+              <option value="">Select Destination</option>
+              {airports.map((airport) => (
+                airport !== from && (
+                  <option key={airport} value={airport}>
+                    {airport}
+                  </option>
+                )
+              ))}
+            </select>
           </div>
 
           {/* Date Field */}
