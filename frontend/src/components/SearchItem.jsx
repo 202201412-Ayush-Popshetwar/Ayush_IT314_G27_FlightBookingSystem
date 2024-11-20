@@ -2,10 +2,31 @@ import { FlightTakeoff, FlightLand } from '@mui/icons-material';
 import { getAirlineLogo } from '../utils/airlineLogos';
 import { useNavigate } from 'react-router-dom';
 
-const SearchItem = ({ flight }) => {
+const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) => {
 
     const navigate = useNavigate();
-    // const searchParams = will do later 
+    const searchParams = JSON.parse(localStorage.getItem('searchParams'))
+    
+    const handleSelectFlight = () => {
+        console.log(loggedInUser);
+        if (!loggedInUser) {
+            alert('Please login to select flight');
+            navigate('/login');
+            return;
+        }
+
+        const totalPassengers = searchParams.options.adult + searchParams.options.children;
+        const basePrice = flight.price * totalPassengers;
+        const bookingDetails = {
+            flight: flight,
+            basePrice: basePrice,
+            totalPrice: basePrice,
+            passengerCount: totalPassengers,
+            date: searchParams.date
+        };
+        localStorage.setItem('bookingDetails', JSON.stringify(bookingDetails));
+        navigate('/booking');
+    };
 
     return (
         <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
@@ -74,7 +95,7 @@ const SearchItem = ({ flight }) => {
                 </div>
                 <button 
                     className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors"
-                    onClick={() => {/* navigate to flight details page*/}}
+                    onClick={handleSelectFlight}
                 >
                     Select Flight
                 </button>

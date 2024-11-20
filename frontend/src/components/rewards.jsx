@@ -6,7 +6,7 @@ import Header from "./Header";
 
 const RewardsPage = ({ loggedInUser , setLoggedInUser  }) => {
   const [redeemSuccess, setRedeemSuccess] = useState(false);
-  const [totalPoints, setTotalPoints] = useState(1250); // Starting points
+  const [totalPoints, setTotalPoints] = useState(0); // Starting points
   const [redeemAmount, setRedeemAmount] = useState(0); // Points redeemed
 
   const handleRedeem = () => {

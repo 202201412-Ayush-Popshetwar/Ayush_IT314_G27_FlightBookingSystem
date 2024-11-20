@@ -8,13 +8,26 @@ import { Autocomplete, TextField } from '@mui/material';
 const BookingForm = ({ loggedInUser, setLoggedInUser }) => {
   const navigate = useNavigate();
   
-  const passengerCount = JSON.parse(localStorage.getItem('options'))?.adult + JSON.parse(localStorage.getItem('options'))?.children || 2; 
-  const [formData, setFormData] = useState(Array(passengerCount).fill().map(() => ({
-    designation: '',
-    firstName: '',
-    lastName: '',
-    dob: ''
-  })));
+  // Get booking details from localStorage
+  const bookingDetails = JSON.parse(localStorage.getItem('bookingDetails'));
+
+  // Initialize form with the correct number of passengers from bookingDetails
+  const [formData, setFormData] = useState(() => {
+    if (!bookingDetails) {
+      alert('No booking details found');
+      navigate('/');
+      return [];
+    }
+    
+    const totalPassengers = bookingDetails.passengerCount;
+    return Array(totalPassengers).fill().map(() => ({
+      designation: '',
+      firstName: '',
+      lastName: '',
+      dob: ''
+    }));
+  });
+
   const [savedPassengers, setSavedPassengers] = useState([]);
   const [contactInfo, setContactInfo] = useState({
     email: '',
@@ -22,6 +35,14 @@ const BookingForm = ({ loggedInUser, setLoggedInUser }) => {
   });
 
   const [usedPassengers, setUsedPassengers] = useState(new Set());
+
+  // Add validation to ensure booking details exist
+  useEffect(() => {
+    if (!bookingDetails) {
+      alert('Please select a flight first');
+      navigate('/');
+    }
+  }, [bookingDetails, navigate]);
 
   useEffect(() => {
     const fetchUserData = async () => {
