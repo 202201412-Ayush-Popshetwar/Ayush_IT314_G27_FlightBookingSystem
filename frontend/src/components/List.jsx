@@ -16,6 +16,16 @@ import {
 } from '@mui/icons-material';
 
 const List = ({ loggedInUser, setLoggedInUser }) => {
+
+    const airports = [
+        "Delhi",
+        "Mumbai",
+        "Kolkata",
+        "Chennai",
+        "Bangalore",
+        "Hyderabad"
+      ];
+
     const location = useLocation();
     const [from, setFrom] = useState(location.state.from);
     const [to, setTo] = useState(location.state.to);
@@ -89,46 +99,58 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                     <div className="flex flex-col lg:flex-row gap-6">
                         {/* Search Section - Will be at top in mobile, left side in desktop */}
                         <div className="w-full lg:w-80">
-                            <div className="bg-[#febb02] p-4 rounded-lg lg:sticky lg:top-5">
-                                <h1 className="text-xl text-gray-600 font-semibold mb-4">Search</h1>
+                            <div className="bg-[#003580] p-4 rounded-lg lg:sticky lg:top-5">
+                                <h1 className="text-xl text-white font-semibold mb-4">Search</h1>
 
                                 {/* From Field */}
                                 <div className="mb-4">
-                                    <label className="block text-sm mb-2">From</label>
-                                    <div className="relative h-14">
-                                        <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center">
-                                            <FlightTakeoff className="text-gray-400" size={20} />
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="From"
-                                            value={from}
-                                            onChange={(e) => setFrom(e.target.value)}
-                                            className="w-full h-full pl-12 pr-4 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-                                        />
+                                <label className="block text-sm mb-2 text-white">From</label>
+                                <div className="relative h-14">
+                                    <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center">
+                                    <FlightTakeoff className="text-gray-400" size={20} />
                                     </div>
+                                    <select
+                                    value={from}
+                                    onChange={(e) => setFrom(e.target.value)}
+                                    className="text-black w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                    >
+                                    <option value="">Select Origin</option>
+                                    {airports.map((airport) => (
+                                        <option key={airport} value={airport}>
+                                        {airport}
+                                        </option>
+                                    ))}
+                                    </select>
+                                </div>
                                 </div>
 
                                 {/* To Field */}
                                 <div className="mb-4">
-                                    <label className="block text-sm mb-2">To</label>
-                                    <div className="relative h-14">
-                                        <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center">
-                                            <FlightLand className="text-gray-400" size={20} />
-                                        </div>
-                                        <input
-                                            type="text"
-                                            placeholder="To"
-                                            value={to}
-                                            onChange={(e) => setTo(e.target.value)}
-                                            className="w-full h-full pl-12 pr-4 text-black border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-                                        />
+                                <label className="block text-sm mb-2 text-white">To</label>
+                                <div className="relative h-14">
+                                    <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center">
+                                    <FlightLand className="text-gray-400" size={20} />
                                     </div>
+                                    <select
+                                    value={to}
+                                    onChange={(e) => setTo(e.target.value)}
+                                    className="text-black w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                    >
+                                    <option value="">Select Destination</option>
+                                    {airports.map((airport) => (
+                                        airport !== from && (
+                                        <option key={airport} value={airport}>
+                                            {airport}
+                                        </option>
+                                        )
+                                    ))}
+                                    </select>
+                                </div>
                                 </div>
 
                                 {/* Date Field */}
                                 <div className="mb-4" ref={dateRef}>
-                                    <label className="block text-sm mb-2">Travel Dates</label>
+                                    <label className="block text-sm mb-2 text-white">Travel Dates</label>
                                     <div className="relative h-14">
                                         <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center">
                                             <CalendarToday className="text-gray-400" size={20} />
@@ -143,7 +165,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                                             {`${format(date[0].startDate, "MM/dd/yyyy")} to ${format(date[0].endDate, "MM/dd/yyyy")}`}
                                         </button>
                                         {openDate && (
-                                            <div className="absolute z-20 mt-1">
+                                            <div className="absolute z-20 mt-1 ">
                                                 <DateRange
                                                     editableDateInputs={true}
                                                     onChange={(item) => setDate([item.selection])}
@@ -158,7 +180,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
 
                                 {/* Passengers Field */}
                                 <div className="mb-4" ref={optionsRef}>
-                                    <label className="block text-sm mb-2">Passengers</label>
+                                    <label className="block text-sm mb-2 text-white">Passengers</label>
                                     <div className="relative h-14">
                                         <div className="absolute inset-y-0 left-0 w-12 flex items-center justify-center">
                                             <People className="text-gray-400" size={20} />

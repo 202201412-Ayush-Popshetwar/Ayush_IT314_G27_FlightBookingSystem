@@ -1,7 +1,12 @@
 import { FlightTakeoff, FlightLand } from '@mui/icons-material';
 import { getAirlineLogo } from '../utils/airlineLogos';
+import { useNavigate } from 'react-router-dom';
 
 const SearchItem = ({ flight }) => {
+
+    const navigate = useNavigate();
+    // const searchParams = will do later 
+
     return (
         <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
             {/* Airline and Flight Number */}
@@ -69,7 +74,7 @@ const SearchItem = ({ flight }) => {
                 </div>
                 <button 
                     className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-md transition-colors"
-                    onClick={() => {/* Add your booking logic here */}}
+                    onClick={() => {/* navigate to flight details page*/}}
                 >
                     Select Flight
                 </button>
