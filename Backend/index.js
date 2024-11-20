@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 app.use("/auth",AuthRouter);
 app.use("/search", SearchRouter);
-app.use("/user",UserRouter);
+app.use(UserRouter);
 
 app.listen(PORT,()=>{
     console.log("Connected to Backend")})

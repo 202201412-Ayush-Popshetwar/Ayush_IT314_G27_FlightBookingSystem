@@ -2,20 +2,29 @@ import express from "express";
 
 // This will help us connect to the database
 import {db} from "../connection.js";
+import {UserModel} from "../Models/User.js";
+import cors from "cors";
+
 const router = express.Router();
 
-router.get('/:userId', async (req, res) => {
-    try {
-      const user = await UserModel.findOne({ _id: req.params.userId });
-      if (!user) return res.status(404).json({ message: 'User not found' });
-      res.json(user);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  });
+router.get('/user/:userId', (req, res) => {
+  UserModel.findOne({ _id: req.params.userId })
+      .then(user => {
+          if (!user) {
+              return res.status(404).json({ message: 'User not found' });
+          }
+          res.json(user);
+      })
+      .catch(err => {
+          res.status(500).json({ message: err.message });
+      });
+});
 
+router.get('/user',(req,res)=>{
+  res.json({message:"user"})
+});
 // Update User Profile Data
-router.put('/:userId', async (req, res) => {
+router.put('/user/:userId', async (req, res) => {
     try {
         const user = await UserModel.findByIdAndUpdate(req.params.userId, req.body, { new: true });
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -26,7 +35,7 @@ router.put('/:userId', async (req, res) => {
 });
 
 //Update passengers data 
-    router.put('/:userId/passengers', async (req, res) => {
+    router.put('/user/:userId/passengers', async (req, res) => {
         const { userId } = req.params;
   const { passengers } = req.body;
 
