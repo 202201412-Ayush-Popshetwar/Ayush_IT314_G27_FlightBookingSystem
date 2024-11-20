@@ -1,9 +1,9 @@
 import express from 'express';
-const router = express.Router();
+const router = express.bookingRouter();
 import { UserModel, FlightModel, BookingModel } from '../Models/User.js';
 
 // Create a new booking
-router.post('/create', async (req, res) => {
+bookingRouter.post('/create', async (req, res) => {
     try {
         const {
             userId,
@@ -87,4 +87,4 @@ router.post('/create', async (req, res) => {
     }
 });
 
-export default router;
+export default bookingRouter;
