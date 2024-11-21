@@ -32,7 +32,7 @@ const Addons = ({ loggedInUser, setLoggedInUser }) => {
       name: "Baggage", 
       description: "Ensure extra baggage allowance for your travels.", 
       price: 500, 
-      icon: <LuggageIcon sx={{ color: "#003580", fontSize: 40 }} />, 
+      icon: <LuggageIcon sx={{ color: "#003580", fontSize: 40 }} />,
       quantity: 0,
       maxQuantity: passengerCount,
       varieties: [{ name: "Standard", price: 500 }, { name: "Premium", price: 800 }] 
