@@ -176,6 +176,7 @@ const Header = ({ type }) => {
                     onChange={(item) => setDate([item.selection])}
                     moveRangeOnFirstSelection={false}
                     ranges={date}
+                    minDate={new Date('2023-06-26')}
                     className="bg-white shadow-lg rounded-md"
                 />
                 </div>

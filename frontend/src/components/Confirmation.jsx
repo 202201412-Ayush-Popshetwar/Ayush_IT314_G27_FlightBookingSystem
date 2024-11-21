@@ -23,29 +23,55 @@ const ConfirmationPage = ({ loggedInUser , setLoggedInUser  }) => {
 
         // Add content for the flight ticket PDF
         doc.setFont('Helvetica', 'normal');
-        doc.setFontSize(16);
+        doc.setFontSize(20);
         doc.text('Flight Ticket', 20, 20);
         doc.setFontSize(12);
         doc.text('Thank you for booking with us!', 20, 30);
 
-        doc.text(`Flight Number: XYZ123`, 20, 50);
-        doc.text(`Departure: New York (JFK)`, 20, 60);
-        doc.text(`Arrival: Los Angeles (LAX)`, 20, 70);
-        doc.text(`Date: 20th Dec 2024`, 20, 80);
-        doc.text(`Departure Time: 09:00 AM`, 20, 90);
-        doc.text(`Arrival Time: 03:15 PM`, 20, 100);
+        // Draw a line
+        doc.setLineWidth(0.5);
+        doc.line(20, 35, 190, 35);
 
-        doc.text(`Passenger Name: John Doe`, 20, 120);
-        doc.text(`Seat: 23A`, 20, 130);
-        doc.text(`Class: Economy`, 20, 140);
-
-        doc.text(`Total Amount: ₹30,000`, 20, 160);
+        // Flight details
         doc.setFontSize(14);
-        doc.text('Enjoy your flight!', 20, 170);
+        doc.text(`Flight Number: ${flightDetails.flightNumber}`, 20, 50);
+        doc.text(`Departure: ${flightDetails.departure}`, 20, 60);
+        doc.text(`Arrival: ${flightDetails.arrival}`, 20, 70);
+        doc.text(`Date: ${flightDetails.date}`, 20, 80);
+        doc.text(`Departure Time: ${flightDetails.departureTime}`, 20, 90);
+        doc.text(`Arrival Time: ${flightDetails.arrivalTime}`, 20, 100);
 
+        // Passenger details
+        doc.text(`Passenger Name: ${passengerDetails.name}`, 20, 120);
+        doc.text(`Seat: ${passengerDetails.seat}`, 20, 130);
+        doc.text(`Class: ${passengerDetails.class}`, 20, 140);
+
+        // Total amount
+        doc.setFontSize(16);
+        doc.text(`Total Amount: ₹${passengerDetails.totalAmount}`, 20, 160);
+
+        // Footer
+        doc.setFontSize(14);
+        doc.text('Enjoy your flight!', 20, 180);
+
+        // Save the PDF
         doc.save('flight_ticket.pdf');
     };
-
+    const flightDetails = {
+        flightNumber: 'XYZ123',
+        departure: 'New York (JFK)',
+        arrival: 'Los Angeles (LAX)',
+        date: '20th Dec 2024',
+        departureTime: '09:00 AM',
+        arrivalTime: '03:15 PM'
+    };
+    
+    const passengerDetails = {
+        name: 'John Doe',
+        seat: '23A',
+        class: 'Economy',
+        totalAmount: '30,000'
+    };
     return (
         <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
             <Navbar loggedInUser ={loggedInUser } setLoggedInUser ={setLoggedInUser } />

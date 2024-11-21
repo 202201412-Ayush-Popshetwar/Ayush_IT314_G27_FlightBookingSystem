@@ -90,7 +90,7 @@ const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) => {
                         </div>
                     </div>
                     <p className="text-xs text-gray-500">
-                        {flight.stops === "non-stop" ? "Non-stop" : `${flight.stops} stop`}
+                        {flight.stops === "non-stop" ? "Non-stop" : `${flight.stops}`}
                     </p>
                 </div>
 
@@ -106,7 +106,7 @@ const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) => {
                 <div className="flex gap-4 text-sm text-gray-600">
                     <span className="capitalize">Class: {flight.class}</span>
                     <span>•</span>
-                    <span>{flight.stops === "non-stop" ? "Direct Flight" : `${flight.stops} Stop`}</span>
+                    <span>{flight.stops === "non-stop" ? "Direct Flight" : `${flight.stops}`}</span>
                 </div>
                 <button 
                     className={`px-4 py-2 rounded-md ${

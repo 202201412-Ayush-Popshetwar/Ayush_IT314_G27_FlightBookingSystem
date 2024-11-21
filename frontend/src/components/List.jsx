@@ -37,9 +37,11 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
     const [flights, setFlights] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [flightsPerPage] = useState(10);
-    const [sortBy, setSortBy] = useState('');
+    const [sortByPrice, setSortByPrice] = useState('');
+    const [sortByDuration, setSortByDuration] = useState('');
     const [selectedAirline, setSelectedAirline] = useState('');
-
+    const [selectedStops, setSelectedStops] = useState('');
+    const [selectedClass, setSelectedClass] = useState('');
     const dateRef = useRef(null);
     const optionsRef = useRef(null);
 
@@ -67,7 +69,12 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
             [name]: operation === "i" ? options[name] + 1 : options[name] - 1,
         }));
     };
-
+    localStorage.setItem('searchParams', JSON.stringify({
+        from,
+        to,
+        date,
+        options
+      }));
     const fetchFlights = async () => {
         try {
             const start_date = format(date[0].startDate, 'dd-MM-yyyy');
@@ -98,11 +105,24 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
         return [...new Set(flights.map(flight => flight.airline))];
     };
 
+    const getUniqueStops = () => {
+        return [...new Set(flights.map(flight => flight.stops))];
+    };
+    const getUniqueClasses = () => {
+        return [...new Set(flights.map(flight => flight.class))];
+    };
+
     // Function to convert price string to number
     const priceToNumber = (priceStr) => {
         // Remove commas and convert to number
         return Number(priceStr.replace(/,/g, ''));
     };
+
+    const durationToMinutes = (duration) => {
+        const [hours, minutes] = duration.split(' ').map(part => parseInt(part));
+        return (hours * 60) + minutes;
+    };
+    
 
     // Update the getSortedAndFilteredFlights function
     const getSortedAndFilteredFlights = () => {
@@ -113,12 +133,29 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
             processedFlights = processedFlights.filter(flight => flight.airline === selectedAirline);
         }
         
+        // Apply stops filter
+        if (selectedStops) {
+            processedFlights = processedFlights.filter(flight => flight.stops === selectedStops);
+        }
+        if (selectedClass) {
+            processedFlights = processedFlights.filter(flight => flight.class === selectedClass)
+        }
+        
+        // Apply duration sorting
+        if (sortByDuration === 'duration_asc') {
+            processedFlights.sort((a, b) => durationToMinutes(a.duration) - durationToMinutes(b.duration));
+        } else if (sortByDuration === 'duration_desc') {
+            processedFlights.sort((a, b) => durationToMinutes(b.duration) - durationToMinutes(a.duration));
+        }
+        
         // Apply price sorting
-        if (sortBy === 'price_asc') {
+        if (sortByPrice === 'price_asc') {
             processedFlights.sort((a, b) => priceToNumber(a.price) - priceToNumber(b.price));
-        } else if (sortBy === 'price_desc') {
+        } else if (sortByPrice === 'price_desc') {
             processedFlights.sort((a, b) => priceToNumber(b.price) - priceToNumber(a.price));
         }
+        
+        
 
         // Apply pagination
         const indexOfLastFlight = currentPage * flightsPerPage;
@@ -136,7 +173,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
 
     useEffect(() => {
         setCurrentPage(1);
-    }, [sortBy, selectedAirline]);
+    }, [sortByPrice, selectedAirline]);
 
     const handlePageChange = (event, value) => {
         setCurrentPage(value);
@@ -225,6 +262,7 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                                                     onChange={(item) => setDate([item.selection])}
                                                     moveRangeOnFirstSelection={false}
                                                     ranges={date}
+                                                    minDate={new Date('2023-06-26')}
                                                     className="bg-white shadow-lg rounded-md"
                                                 />
                                             </div>
@@ -310,22 +348,32 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                                 <div className="flex-1">
                                     <label className="block text-sm text-gray-600 mb-1">Sort by Price</label>
                                     <select
-                                        value={sortBy}
-                                        onChange={(e) => setSortBy(e.target.value)}
-                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
+                                        value={sortByPrice}
+                                        onChange={(e) => setSortByPrice(e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <option value="">Default</option>
                                         <option value="price_asc">Price: Low to High</option>
                                         <option value="price_desc">Price: High to Low</option>
                                     </select>
-                                </div>
-                                <div className="flex-1">
+                                </div>    
+                            </div>
+                            <div className="flex-1">
+                                    <label className="block text-sm text-gray-600 mb-1">Sort by Duration</label>
+                                    <select
+                                        value={sortByDuration}
+                                        onChange={(e) => setSortByDuration(e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                        <option value="">Default</option>
+                                        <option value="duration_asc">Lowest to Highest</option>
+                                        <option value="duration_desc">Highest to Lowest</option>
+                                    </select>
+                                </div>   
+                            <div className="flex-1">
                                     <label className="block text-sm text-gray-600 mb-1">Filter by Airline</label>
                                     <select
                                         value={selectedAirline}
                                         onChange={(e) => setSelectedAirline(e.target.value)}
-                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    >
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
                                         <option value="">All Airlines</option>
                                         {getUniqueAirlines().map((airline) => (
                                             <option key={airline} value={airline}>
@@ -334,7 +382,36 @@ const List = ({ loggedInUser, setLoggedInUser }) => {
                                         ))}
                                     </select>
                                 </div>
-                            </div>
+                            <div className="flex-1">
+                                    <label className="block text-sm text-gray-600 mb-1">Filter by Stops</label>
+                                    <select
+                                        value={selectedStops}
+                                        onChange={(e) => setSelectedStops(e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">All Stops</option>
+                                        {getUniqueStops().map((stops) => (
+                                            <option key={stops} value={stops}>
+                                                {stops}
+                                            </option>
+                                            ))}
+                                    </select>
+                                </div>
+                                <div className="flex-1">
+                                    <label className="block text-sm text-gray-600 mb-1">Filter by Class</label>
+                                    <select
+                                        value={selectedClass}
+                                        onChange={(e) => setSelectedClass(e.target.value)}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    >
+                                        <option value="">All Classes</option>
+                                        {getUniqueClasses().map((flightClass) => (
+                                            <option key={flightClass} value={flightClass}>
+                                                {flightClass}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
                         </div>
 
                         {/* Results Section */}
