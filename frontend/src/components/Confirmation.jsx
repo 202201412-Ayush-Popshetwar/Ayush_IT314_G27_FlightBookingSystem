@@ -6,10 +6,15 @@ import Navbar from "./Navbar";
 import Header from "./Header";
 import Footer from "./Footer";
 
-const ConfirmationPage = ({ loggedInUser , setLoggedInUser  }) => {
-    
+const ConfirmationPage = ({ loggedInUser, setLoggedInUser }) => {
     const [isTickVisible, setIsTickVisible] = useState(false);
     const navigate = useNavigate();
+
+    // Fetch details from localStorage
+    const bookingDetails = JSON.parse(localStorage.getItem('bookingDetails')) || {};
+    const passengerDetails = JSON.parse(localStorage.getItem('passengerDetails')) || [];
+    const addonDetails = JSON.parse(localStorage.getItem('addonDetails') || '[]');
+    const totalPrice = localStorage.getItem('totalPrice') || '0';
 
     useEffect(() => {
         // Delay to trigger the animation of the tick mark
@@ -20,61 +25,95 @@ const ConfirmationPage = ({ loggedInUser , setLoggedInUser  }) => {
 
     const generatePDF = () => {
         const doc = new jsPDF();
-
-        // Add content for the flight ticket PDF
+    
+        // Title
+        doc.setFont('Helvetica', 'bold');
+        doc.setFontSize(22);
+        doc.text('Flight Ticket', 105, 20, null, null, 'center');
+    
         doc.setFont('Helvetica', 'normal');
-        doc.setFontSize(20);
-        doc.text('Flight Ticket', 20, 20);
         doc.setFontSize(12);
-        doc.text('Thank you for booking with us!', 20, 30);
-
+        doc.text('Thank you for booking with us!', 105, 30, null, null, 'center');
+    
         // Draw a line
         doc.setLineWidth(0.5);
         doc.line(20, 35, 190, 35);
-
-        // Flight details
+    
+        // Flight Details Section
         doc.setFontSize(14);
-        doc.text(`Flight Number: ${flightDetails.flightNumber}`, 20, 50);
-        doc.text(`Departure: ${flightDetails.departure}`, 20, 60);
-        doc.text(`Arrival: ${flightDetails.arrival}`, 20, 70);
-        doc.text(`Date: ${flightDetails.date}`, 20, 80);
-        doc.text(`Departure Time: ${flightDetails.departureTime}`, 20, 90);
-        doc.text(`Arrival Time: ${flightDetails.arrivalTime}`, 20, 100);
-
-        // Passenger details
-        doc.text(`Passenger Name: ${passengerDetails.name}`, 20, 120);
-        doc.text(`Seat: ${passengerDetails.seat}`, 20, 130);
-        doc.text(`Class: ${passengerDetails.class}`, 20, 140);
-
-        // Total amount
-        doc.setFontSize(16);
-        doc.text(`Total Amount: ₹${passengerDetails.totalAmount}`, 20, 160);
-
+        doc.setFont('Helvetica', 'bold');
+        doc.text('Flight Details:', 20, 45);
+    
+        doc.setFont('Helvetica', 'normal');
+        const flightDetailsY = 55;
+        // Setting the flight number to start from 1
+        const flightNumber = 1; // Hardcoded flight number starting from 1
+        doc.text(`Flight Number: ${flightNumber}`, 20, flightDetailsY);
+        doc.text(`Departure: ${bookingDetails.flight?.from || 'N/A'}`, 20, flightDetailsY + 10);
+        doc.text(`Arrival: ${bookingDetails.flight?.to || 'N/A'}`, 20, flightDetailsY + 20);
+        doc.text(
+            `Date: ${new Date(bookingDetails.date?.[0]?.startDate || '').toLocaleDateString() || 'N/A'}`,
+            20,
+            flightDetailsY + 30
+        );
+        doc.text(`Departure Time: ${bookingDetails.flight?.dep_time || 'N/A'}`, 20, flightDetailsY + 40);
+        doc.text(`Arrival Time: ${bookingDetails.flight?.arr_time || 'N/A'}`, 20, flightDetailsY + 50);
+    
+        // Passenger Details Section
+        doc.setFont('Helvetica', 'bold');
+        doc.text('Passenger Details:', 20, flightDetailsY + 70);
+    
+        doc.setFont('Helvetica', 'normal');
+        let passengerDetailsY = flightDetailsY + 80;
+        passengerDetails.forEach((passenger, index) => {
+            doc.text(
+                `Passenger ${index + 1}: ${passenger.designation} ${passenger.firstName} ${passenger.lastName}`,
+                20,
+                passengerDetailsY
+            );
+            passengerDetailsY += 10;
+        });
+    
+        // Add-on Details Section
+        if (addonDetails.length > 0) {
+            doc.setFont('Helvetica', 'bold');
+            doc.text('Add-ons:', 20, passengerDetailsY + 10);
+    
+            doc.setFont('Helvetica', 'normal');
+            addonDetails.forEach((addon, index) => {
+                doc.text(
+                    `Addon ${index + 1}: ${addon.name} - ₹${addon.price}`,
+                    20,
+                    passengerDetailsY + 20 + index * 10
+                );
+            });
+            passengerDetailsY += 20 + addonDetails.length * 10;
+        }
+    
+        // Total Amount Section
+        doc.setFont('Helvetica', 'bold');
+        doc.text(`Total Amount: ₹${totalPrice}`, 20, passengerDetailsY + 20);
+    
         // Footer
+        doc.setFont('Helvetica', 'normal');
         doc.setFontSize(14);
-        doc.text('Enjoy your flight!', 20, 180);
-
+        doc.text('Enjoy your flight!', 105, 280, null, null, 'center');
+    
         // Save the PDF
         doc.save('flight_ticket.pdf');
     };
-    const flightDetails = {
-        flightNumber: 'XYZ123',
-        departure: 'New York (JFK)',
-        arrival: 'Los Angeles (LAX)',
-        date: '20th Dec 2024',
-        departureTime: '09:00 AM',
-        arrivalTime: '03:15 PM'
-    };
     
-    const passengerDetails = {
-        name: 'John Doe',
-        seat: '23A',
-        class: 'Economy',
-        totalAmount: '30,000'
-    };
     return (
-        <div className="flex flex-col min-h-screen" style={{ backgroundImage: "url('/flight.jpg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
-            <Navbar loggedInUser ={loggedInUser } setLoggedInUser ={setLoggedInUser } />
+        <div
+            className="flex flex-col min-h-screen"
+            style={{
+                backgroundImage: "url('/flight.jpg')",
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+            }}
+        >
+            <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
             <Header type="list" />
             <div className="flex items-center justify-center flex-grow p-20">
                 <div className="flex flex-col items-center justify-center w-full max-w-md bg-white rounded-lg shadow-lg p-8 bg-opacity-90">
@@ -103,10 +142,10 @@ const ConfirmationPage = ({ loggedInUser , setLoggedInUser  }) => {
                                 strokeWidth="4"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                className={`transition-all duration-1000 ease-in-out ${isTickVisible ? 'stroke-dasharray-[60] stroke-dashoffset-0' : 'stroke-dasharray-[60] stroke-dashoffset-[60]'}`}
                                 style={{
                                     strokeDasharray: 60,
                                     strokeDashoffset: isTickVisible ? 0 : 60,
+                                    transition: 'stroke-dashoffset 1s ease-in-out',
                                 }}
                             />
                         </svg>
