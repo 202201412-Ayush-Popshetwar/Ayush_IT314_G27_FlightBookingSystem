@@ -5,16 +5,23 @@ const Featured = () => {
     const navigate = useNavigate();
 
     const featuredRoutes = [
-        { image: '/img/featured/BOM_DEL.jpg', title: 'Mumbai to Delhi' },
+        { image: '/img/featured/BOM_DEL.jpg', title: 'BOM to DEL' },
         { image: '/img/featured/BLR_DEL.jpg', title: 'BLR to DEL' },
-        { image: '/img/featured/AMD_BOM.jpg', title: 'AMD to BOM' },
+        { image: '/img/featured/AMD_BOM.jpg', title: 'HYD to BOM' },
     ];
-
+    const airportMap = {
+        BOM: 'Mumbai',
+        DEL: 'Delhi',
+        BLR: 'Bangalore',
+        HYD: 'Hyderabad',
+    };
     const handleImageClick = (title) => {
-        const [from, to] = title.split(' to ');
+        const [fromCode, toCode] = title.split(' to ');
+        const from = airportMap[fromCode] || fromCode;
+        const to = airportMap[toCode] || toCode;
         const date = [{ startDate: new Date('2023-06-26'), endDate: new Date('2023-06-26'), key: 'selection' }];
         const options = { adult: 1, children: 0 };
-        navigate('/search', { state: { from, to, date, options } });
+        navigate('/flights', { state: { from, to, date, options } });
     };
 
     return (
