@@ -6,7 +6,7 @@ import express from 'express';
 const app = express();
 dotenv.config();
 
-const uri = process.env.ATLAS_URI || "";
+const uri = process.env.ATLAS_URI;
 
 // MongoDB Node.js driver setup
 const client = new MongoClient(uri, {
@@ -17,7 +17,7 @@ const client = new MongoClient(uri, {
   },
 });
 app.use(cors());
-async function connectToDatabase() {
+export async function connectToDatabase() {
   try {
     // Connect the client to the server
     await client.connect();
@@ -25,7 +25,8 @@ async function connectToDatabase() {
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } catch (err) {
-    console.error("Connection error", err);
+    console.error("Error connecting to MongoDB");
+    throw err;
   }
 
   // Connect to the specific database
@@ -35,20 +36,25 @@ async function connectToDatabase() {
 }
 
 // Mongoose setup
-const connectMongoose = async () => {
+export const connectMongoose = async () => {
         try 
         {
             await mongoose.connect(String(uri));
             console.log("Connected to MongoDB")
+
         } 
         catch (error) 
         {
-            throw error;
+
+          console.error("Error connecting to MongoDB");
+          throw(error)
+          
         }
+        
 };
 
-mongoose.connection.on("Disconnected",()=>{console.log("MongoDB Disconnected")})
-mongoose.connection.on("Connected",()=>{console.log("MongoDB Connected")})
+mongoose.connection.on("Disconnected",()=>{console.log("Mongoose connection disconnected")})
+mongoose.connection.on("Connected",()=>{console.log("Mongoose connection established")})
 
 // Initialize connections
 const db = await connectToDatabase();

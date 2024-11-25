@@ -5,7 +5,9 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js "
   },
   "keywords": [],
   "author": "",
@@ -15,13 +17,82 @@
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "coverage": "^0.0.0",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.8.1",
+    "mongoose": "^8.8.2",
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.7",
     "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
+    "@babel/register": "^7.25.9",
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.14",
+    "babel-jest": "^29.7.0",
+    "chai": "^5.1.2",
+    "chai-http": "^5.1.1",
+    "check-code-coverage": "^1.10.5",
+    "jest": "^29.7.0",
+    "jest-html-reporter": "^3.10.2",
+    "jest-mock": "^29.7.0",
+    "mocha": "^10.8.2",
+    "mongodb-memory-server": "^10.1.2",
+    "nyc": "^17.1.0",
+    "sinon": "^19.0.2",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.2.5"
+  },
+  "nyc": {
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "include": [
+      "index.js",
+      "Controllers/BookingController.js"
+    ],
+    "exclude": [
+      "test/**/*.js",
+      "node_modules"
+    ],
+    "extension": [
+      ".js",
+      ".jsx",
+      ".mjs"
+    ],
+    "all": true,
+    "check-coverage": true
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "./coverage",
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "coverageReporters": [
+      "text",
+      "html",
+      "lcov",
+      "json"
+    ],
+    "coveragePathIgnorePatterns": [
+      "./node_modules/",
+      "./tests/"
+    ],
+    "transform": {},
+    "reporters": [
+      "default",
+      [
+        "./node_modules/jest-html-reporter",
+        {
+          "pageTitle": "Test Report"
+        }
+      ]
+    ]
   }
 }
