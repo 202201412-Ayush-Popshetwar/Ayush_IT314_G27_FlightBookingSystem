@@ -7,11 +7,14 @@
 
 # testing
 /coverage
+/mongodb-binaries
 
 # production
 /build
 
 # misc
+/.nyc_output
+node_modules
 .DS_Store
 .env.local
 .env.development.local

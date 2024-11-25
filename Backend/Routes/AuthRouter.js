@@ -3,7 +3,6 @@ import { signupValidation, loginValidation }  from '../Middlewares/AuthValidatio
 
 import express from 'express';
 const router = express.Router();
-
 router.post('/login', loginValidation,login);
 router.post('/signup', signupValidation, signup);
 
