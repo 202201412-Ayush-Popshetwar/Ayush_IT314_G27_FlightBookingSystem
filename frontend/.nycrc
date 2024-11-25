@@ -1,0 +1,8 @@
+{
+  "reporter": ["text", "html"],
+  "all": true,
+  "include": ["src/**/*.js"],
+  "exclude": ["test/**/*.js"],
+  "extension": [".js"],
+  "require": ["@babel/register"]
+}

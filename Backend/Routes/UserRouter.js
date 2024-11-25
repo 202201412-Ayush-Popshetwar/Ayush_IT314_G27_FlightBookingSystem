@@ -1,7 +1,4 @@
 import express from "express";
-
-// This will help us connect to the database
-import {db} from "../connection.js";
 import {UserModel} from "../Models/User.js";
 import cors from "cors";
 import nodemailer from 'nodemailer';
@@ -26,6 +23,7 @@ router.get('/user/:userId', (req, res) => {
 router.get('/user',(req,res)=>{
   res.json({message:"user"})
 });
+
 // Update User Profile Data
 router.put('/user/:userId', async (req, res) => {
     try {
