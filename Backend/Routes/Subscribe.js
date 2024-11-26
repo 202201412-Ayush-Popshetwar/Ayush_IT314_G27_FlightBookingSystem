@@ -64,7 +64,7 @@ router.post('/subscribe', async (req, res) => {
     // Save to database first
     const newSubscriber = new SubscriberModel({ email });
     await newSubscriber.save();
-
+    
     // Send welcome email
     await transporter.sendMail(mailOptions);
 
