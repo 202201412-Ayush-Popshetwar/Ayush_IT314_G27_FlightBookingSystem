@@ -69,6 +69,7 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
         const nameRegex = /^[A-Za-z\s]+$/;
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const phoneRegex = /^\d{10}$/;
+        const addressRegex = /^[A-Za-z0-9\s,.-]+$/; 
         
         if (!nameRegex.test(userData.name)) {
           handleError('Name must contain only alphabets and spaces.');
@@ -82,10 +83,12 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
           handleError('Phone number must be a 10-digit number.');
           return;
         }
-        if (!nameRegex.test(userData.address)) {
-          handleError('Address must contain only alphabets and spaces.');
+         
+        if (!addressRegex.test(userData.address)) {
+          handleError('Address contains invalid characters.');
           return;
         }
+        
 
         const updatedData = {
           name: userData.name,
