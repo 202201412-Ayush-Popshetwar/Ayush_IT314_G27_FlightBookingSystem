@@ -17,7 +17,7 @@ describe("Validation Middleware", () => {
   describe("Signup Validation", () => {
     it("should return 400 if 'name' is missing", async () => {
       const response = await supertest(app).post("/signup").send({
-        email: "test@example.com",
+        email: "test1@example.com",
         password: "password123",
       });
       expect(response.status).toBe(400);

@@ -33,10 +33,9 @@ afterAll(async () => {
 beforeEach(() => {
   jest.clearAllMocks();
 });
-
 describe('POST /subscribe', () => {
   it('should return 400 if email is missing', async () => {
-    const response = await request(app).post('/subscribe').send({});
+    const response = await request(app).post('/api/subscribe').send({});
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
       success: false,
@@ -50,7 +49,7 @@ describe('POST /subscribe', () => {
     // Create a subscriber
     await SubscriberModel.create({ email });
 
-    const response = await request(app).post('/subscribe').send({ email });
+    const response = await request(app).post('/api/subscribe').send({ email });
     expect(response.status).toBe(400);
     expect(response.body).toEqual({
       success: false,
@@ -65,7 +64,7 @@ describe('POST /subscribe', () => {
     const sendMailMock = jest.fn().mockResolvedValue(true);
     nodemailer.createTransport.mockReturnValue({ sendMail: sendMailMock });
 
-    const response = await request(app).post('/subscribe').send({ email });
+    const response = await request(app).post('/api/subscribe').send({ email });
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual({
@@ -94,7 +93,7 @@ describe('POST /subscribe', () => {
     const sendMailMock = jest.fn().mockRejectedValue(new Error('Mocked email error'));
     nodemailer.createTransport.mockReturnValue({ sendMail: sendMailMock });
 
-    const response = await request(app).post('/subscribe').send({ email });
+    const response = await request(app).post('/api/subscribe').send({ email });
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
@@ -115,7 +114,7 @@ describe('POST /subscribe', () => {
       throw new Error('Mocked database save error');
     });
 
-    const response = await request(app).post('/subscribe').send({ email });
+    const response = await request(app).post('/api/subscribe').send({ email });
 
     expect(response.status).toBe(500);
     expect(response.body).toEqual({
@@ -127,4 +126,15 @@ describe('POST /subscribe', () => {
     const subscriber = await SubscriberModel.findOne({ email });
     expect(subscriber).toBeFalsy();
   });
+  it('should send email and return 200 for successful subscription', async () => {
+    const email = 'testuser@example.com';
+
+    const response = await request(app).post('/api/subscribe').send({ email });
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+        success: true,
+        message: 'Successfully subscribed! Please check your email for confirmation.',
+    });
+});
 });
