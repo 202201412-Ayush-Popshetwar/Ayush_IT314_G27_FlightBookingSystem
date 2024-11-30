@@ -15,6 +15,7 @@ import {
     Search
 } from '@mui/icons-material';
 import { Pagination } from '@mui/material';
+import { getApiUrl } from '../utils/config.js';
 
 const List = ({ loggedInUser, setLoggedInUser }) => {
 

@@ -65,10 +65,20 @@ const PaymentPage = ({ loggedInUser, setLoggedInUser }) => {
                 handleError('Please enter a valid expiry date in MM/YY format.');
                 return;
             }
+
+            // Add expiry date validation
+            const [expiryMonth, expiryYear] = formData.expiryDate.split('/');
+            const expiryDate = new Date(2000 + parseInt(expiryYear), parseInt(expiryMonth) - 1);
+            const flightDate = new Date(bookingDetails.date[0].startDate);
+            
+            if (expiryDate < flightDate) {
+                handleError('Invalid card expiry date');
+                return;
+            }
         } else if (selectedPayment === 'upi') {
-            const upiRegex = /^[\w.-]+@[\w.-]+$/;
+            const upiRegex = /^[a-zA-Z0-9.-]+@[a-zA-Z]+$/;
             if (!upiRegex.test(formData.upiId)) {
-                handleError('Please enter a valid UPI ID.');
+                handleError('Please enter a valid UPI ID (e.g., user123@bank).');
                 return;
             }
         }
