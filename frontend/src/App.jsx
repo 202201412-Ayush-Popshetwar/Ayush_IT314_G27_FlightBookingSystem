@@ -1,6 +1,5 @@
 import Home from "./components/Home";
 import List from "./components/List";
-import Flight from "./components/Flight";
 import Login from "./components/login.jsx";
 import Signup from "./components/signup.jsx";
 import Profile from "./components/profile.jsx";
@@ -34,7 +33,6 @@ function App() {
       <Routes>
         <Route path="/" element={<Home loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
         <Route path="/flights" element={<List loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
-        <Route path="/flights/:id" element={<Flight loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
         <Route path="/login" element={<Login loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} /> 
         <Route path="/signup" element={<Signup loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/>} />
         <Route path="/profile" element={<Profile loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser}/> }/>
