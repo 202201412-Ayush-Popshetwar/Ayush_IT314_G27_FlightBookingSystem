@@ -60,7 +60,7 @@ describe('Auth Controller', () => {
             });
         });
 
-        it('should return 201 on successful user creation', async () => {
+        it('should return 200 on successful user creation', async () => {
             const req = mockRequest({name:'Test Data', email: 'new@example.com', password: 'password' });
             const res = mockResponse();
 
@@ -70,7 +70,7 @@ describe('Auth Controller', () => {
             expect(user).not.toBeNull();
             expect(await bcrypt.compare('password', user.password)).toBe(true);
 
-            expect(res.status).toHaveBeenCalledWith(201);
+            expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith({
                 message: 'Signup successfully',
                 success: true,

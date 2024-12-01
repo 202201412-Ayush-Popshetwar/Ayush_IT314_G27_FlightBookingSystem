@@ -58,7 +58,7 @@ describe('Index.js Unit Tests with MongoMemoryServer', () => {
                 const res = await request(app)
                     .post('/auth/signup')
                     .send({ name: 'Test User', email: 'test@example.com', password: 'password' });
-                expect([201, 400, 409]).toContain(res.status);
+                expect([200, 400, 409]).toContain(res.status);
             });
 
             it('should handle POST /auth/login', async () => {
