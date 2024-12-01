@@ -4,10 +4,10 @@ import { MongoClient } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connectToDatabase, connectMongoose } from '../connection.js';
 describe('Database Connection', () => {
-    let mongoserver,consoleSpy;
+    let mongoServer,consoleSpy;
     beforeAll(async () => {
         // Start in-memory MongoDB server
-        const mongoServer = await MongoMemoryServer.create({
+        mongoServer = await MongoMemoryServer.create({
         binary: {
             version: '5.0.0', // Match the version downloaded
             downloadDir: './mongodb-binaries', // Path to cached binaries
@@ -21,7 +21,7 @@ describe('Database Connection', () => {
     });
     afterAll(async () => {
         // Stop the in-memory server
-        if(mongoserver){
+        if(mongoServer){
             await mongoServer.stop();
         }
         await mongoose.disconnect();
