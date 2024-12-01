@@ -142,7 +142,20 @@ describe('PUT /user/:userId/passengers', () => {
         passengers: [],
       });
       userId = user._id.toString();
-    const passengers = [{ name: 'Passenger 1' }, { name: 'Passenger 2' }];
+      const passengers = [
+        {
+            designation: 'Mr',
+            firstName: 'John',
+            lastName: 'Doe',
+            dob: new Date('1990-01-01')
+        },
+        {
+            designation: 'Mrs',
+            firstName: 'Jane',
+            lastName: 'Doe',
+            dob: new Date('1992-01-01')
+        }
+    ];
 
     const res = await request(app)
       .put(`/user/${userId}/passengers`)
@@ -150,7 +163,9 @@ describe('PUT /user/:userId/passengers', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.passengers).toHaveLength(2);
-    expect(res.body.passengers[0].name).toBe('Passenger 1');
+    expect(res.body.passengers[0].firstName).toBe('John');
+    expect(res.body.passengers[0].lastName).toBe('Doe');
+    expect(res.body.passengers[0].designation).toBe('Mr');
   });
 
   it('should return 404 when the user is not found', async () => {
@@ -180,151 +195,215 @@ describe('PUT /user/:userId/passengers', () => {
 
   describe('DELETE /user/:userId/:passengerId', () => {
     it('should delete a passenger from the user\'s passengers array', async () => {
-      // Create a test user with passengers
-      const user = await UserModel.create({
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'hashedpassword123',
-        passengers: [
-          { _id: new mongoose.Types.ObjectId(), name: 'Passenger 1' },
-          { _id: new mongoose.Types.ObjectId(), name: 'Passenger 2' },
-        ],
-      });
-      userId = user._id.toString();
-      const passengerId = user.passengers[0]._id;
+        // Create a test user with passengers
+        const user = await UserModel.create({
+            name: 'John Doe',
+            email: 'john@example.com',
+            password: 'hashedpassword123',
+            passengers: [
+                {
+                    designation: 'Mr',
+                    firstName: 'John',
+                    lastName: 'Smith',
+                    dob: new Date('1990-01-01'),
+                    phone: '1234567890'
+                },
+                {
+                    designation: 'Mrs',
+                    firstName: 'Jane',
+                    lastName: 'Smith',
+                    dob: new Date('1992-01-01'),
+                    phone: '1234567891'
+                }
+            ],
+        });
+        userId = user._id.toString();
+        const passengerId = user.passengers[0]._id;
 
-      const res = await request(app).delete(`/user/${userId}/${passengerId}`);
-      expect(res.status).toBe(200);
-      expect(res.body.message).toBe('Passenger deleted successfully');
+        const res = await request(app).delete(`/user/${userId}/${passengerId}`);
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe('Passenger deleted successfully');
 
-      const updatedUser = await UserModel.findById(userId);
-      expect(updatedUser.passengers).toHaveLength(1);
-      expect(updatedUser.passengers[0]._id.toString()).not.toBe(passengerId.toString());
+        const updatedUser = await UserModel.findById(userId);
+        expect(updatedUser.passengers).toHaveLength(1);
+        expect(updatedUser.passengers[0]._id.toString()).not.toBe(passengerId.toString());
+        expect(updatedUser.passengers[0].firstName).toBe('Jane');
     });
 
     it('should return 404 if user does not exist', async () => {
-      const nonExistentUserId = new mongoose.Types.ObjectId();
-      const passengerId = new mongoose.Types.ObjectId();
-      const res = await request(app).delete(`/user/${nonExistentUserId}/${passengerId}`);
+        const nonExistentUserId = new mongoose.Types.ObjectId();
+        const passengerId = new mongoose.Types.ObjectId();
+        const res = await request(app).delete(`/user/${nonExistentUserId}/${passengerId}`);
 
-      expect(res.status).toBe(404);
-      expect(res.body.message).toBe('User not found');
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('User not found');
     });
 
     it('should return 404 if passenger does not exist', async () => {
-      const user = await UserModel.create({
-        name: 'John Doe',
-        email: 'john@example.com',
-        password: 'hashedpassword123',
-        passengers: [],
-      });
-      userId = user._id.toString();
-      const nonExistentPassengerId = new mongoose.Types.ObjectId();
-      const res = await request(app).delete(`/user/${userId}/${nonExistentPassengerId}`);
-
-      expect(res.status).toBe(404);
-      expect(res.body.message).toBe('Passenger not found');
-    });
-    it('should return 500 if user.save() throws an error', async () => {
-        // Mock user data
         const user = await UserModel.create({
-          name: 'Test User',
-          email: 'john@example.com',
-          password: 'hashedpassword123',
-          passengers: [{ _id: new mongoose.Types.ObjectId(), name: 'John Doe' }],
+            name: 'John Doe',
+            email: 'john@example.com',
+            password: 'hashedpassword123',
+            passengers: [],
         });
-        const passengerId = "randomperson123";
-    
-        // Mock the `save` function to throw an error
-        jest.spyOn(user, 'save').mockImplementationOnce(() => {
-          throw new Error('Mocked save error');
+        userId = user._id.toString();
+        const nonExistentPassengerId = new mongoose.Types.ObjectId();
+        const res = await request(app).delete(`/user/${userId}/${nonExistentPassengerId}`);
+
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe('Passenger not found');
+    });
+
+    it('should return 500 if user.save() throws an error', async () => {
+        // Create test user with proper passenger data
+        const user = await UserModel.create({
+            name: 'Test User',
+            email: 'john@example.com',
+            password: 'hashedpassword123',
+            passengers: [{
+                designation: 'Mr',
+                firstName: 'John',
+                lastName: 'Doe',
+                dob: new Date('1990-01-01'),
+                phone: '1234567890'
+            }],
         });
-    
-        const response = await request(app).delete(`/passenger/${passengerId}`);
+        const passengerId = user.passengers[0]._id;
+
+        // Mock findById to return a user with a failing save method
+        jest.spyOn(UserModel, 'findById').mockResolvedValueOnce({
+            ...user.toObject(),
+            passengers: [{
+                _id: passengerId,
+                designation: 'Mr',
+                firstName: 'John',
+                lastName: 'Doe',
+                dob: new Date('1990-01-01'),
+                phone: '1234567890'
+            }],
+            save: jest.fn().mockRejectedValueOnce(new Error('Mocked save error'))
+        });
+
+        const response = await request(app)
+            .delete(`/user/${user._id}/${passengerId}`);
+        
         expect(response.status).toBe(500);
         expect(response.body.message).toBe('Server error');
         expect(response.body.error).toBe('Mocked save error');
-      });
+    });
+
+    it('should handle invalid passenger ID format', async () => {
+        const user = await UserModel.create({
+            name: 'Test User',
+            email: 'test@example.com',
+            password: 'hashedpassword123',
+            passengers: [{
+                designation: 'Mr',
+                firstName: 'John',
+                lastName: 'Doe',
+                dob: new Date('1990-01-01'),
+                phone: '1234567890'
+            }]
+        });
+
+        // Use an invalid format passenger ID
+        const invalidPassengerId = 'invalid-id';
+        
+        const response = await request(app)
+            .delete(`/user/${user._id}/${invalidPassengerId}`);
+        
+        expect(response.status).toBe(400);
+        expect(response.body.message).toBe('Invalid passenger ID format');
+    });
   });
 
   describe('GET /user/:userId/bookings', () => {
     it('should return bookings for a user', async () => {
-      // Create a test user with bookings
-      const user = await UserModel.create({
-        name: 'Jane Doe',
-        email: 'jane@example.com',
-        password: 'hashedpassword123',
-        bookings: [],
-      });
-      userId = user._id.toString();
-      const flight = await FlightModel.create({
-        'flight date': "2023-06-26",
-        airline : "SpiceJet",
-        flight_num: "SG-9001",
-        class : "economy",
-        from : "NYC",
-        dep_time : "18:55",
-        to : "LAX",
-        arr_time : "21:05",
-        duration : "04h 10m",
-        price : "6,013",
-        stops : "non-stop",
-        availableseats: 100
-    });
-    flightId = flight._id.toString();
-      
-    const bookingData = {
-        userId ,
-        flightId,
-        from: 'NYC',
-        to: 'LAX',
-        date: '2023-06-26',
-        class: 'economy',
-        passengers: new Array(101).fill({ name: 'John Doe'}), // 101 passengers, but only 50 seats
-        status: 'Confirmed',
-        price: 6013,
-        paymentMethod: 'card',
-        addons: [],
-    };
-    const response = await request(app)
-            .post('/bookings/create')
-            .send(bookingData);
-    const bookingData1 = {
-        userId ,
-        flightId,
-        from: 'NYC',
-        to: 'LAX',
-        date: '2023-06-26',
-        class: 'economy',
-        passengers: new Array(1).fill({ name: 'John Doe'}), 
-        status: 'Confirmed',
-        price: 6013,
-        paymentMethod: 'card',
-        addons: [],
-    };
-    const response1 = await request(app)
-            .post('/bookings/create')
-            .send(bookingData);
-    const bookingData2 = {
-        userId ,
-        flightId,
-        from: 'NYC',
-        to: 'LAX',
-        date: '2023-06-26',
-        class: 'economy',
-        passengers: new Array(1).fill({ name: 'John Bow'}),
-        status: 'Confirmed',
-        price: 6013,
-        paymentMethod: 'card',
-        addons: [],
-    };
-    const response2 = await request(app)
-            .post('/bookings/create')
-            .send(bookingData);
-      
-      const res = await request(app).get(`/user/${userId}/bookings`);
-      expect(res.status).toBe(200);
-      expect(res.body).toHaveLength(2);
+        // Create a test user first
+        const user = await UserModel.create({
+            name: 'Jane Doe',
+            email: 'jane@example.com',
+            password: 'hashedpassword123',
+            bookings: []
+        });
+        userId = user._id.toString();
+
+        // Create a test flight
+        const flight = await FlightModel.create({
+            'flight date': "2023-06-26",
+            airline: "SpiceJet",
+            flight_num: "SG-9001",
+            class: "economy",
+            from: "NYC",
+            dep_time: "18:55",
+            to: "LAX",
+            arr_time: "21:05",
+            duration: "04h 10m",
+            price: "6,013",
+            stops: "non-stop",
+            availableseats: 100
+        });
+        flightId = flight._id.toString();
+
+        // Create two bookings directly in the database
+        const booking1 = await BookingModel.create({
+            userId: user._id,
+            flightId: flight._id,
+            from: 'NYC',
+            to: 'LAX',
+            date: new Date('2023-06-26'),
+            class: 'economy',
+            passengers: [{
+                designation: 'Mr',
+                firstName: 'John',
+                lastName: 'Doe',
+                dob: new Date('1990-01-01')
+            }],
+            status: 'Confirmed',
+            price: 6013,
+            paymentMethod: 'card',
+            addons: []
+        });
+
+        const booking2 = await BookingModel.create({
+            userId: user._id,
+            flightId: flight._id,
+            from: 'NYC',
+            to: 'LAX',
+            date: new Date('2023-06-26'),
+            class: 'economy',
+            passengers: [{
+                designation: 'Mr',
+                firstName: 'John',
+                lastName: 'Bow',
+                dob: new Date('1990-01-01')
+            }],
+            status: 'Confirmed',
+            price: 6013,
+            paymentMethod: 'card',
+            addons: []
+        });
+
+        // Update user with booking references
+        user.bookings = [booking1._id, booking2._id];
+        await user.save();
+
+        // Mock the populate call
+        jest.spyOn(UserModel, 'findById').mockImplementationOnce(() => ({
+            populate: jest.fn().mockResolvedValueOnce({
+                bookings: [booking1, booking2]
+            })
+        }));
+
+        const res = await request(app).get(`/user/${userId}/bookings`);
+        
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveLength(2);
+        expect(res.body[0]).toMatchObject({
+            from: 'NYC',
+            to: 'LAX',
+            status: 'Confirmed'
+        });
     });
 
     it('should return 404 if user does not exist', async () => {

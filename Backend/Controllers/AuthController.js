@@ -20,7 +20,7 @@ export const signup = async (req, res) => {
        
         await userModel.save();
         
-        res.status(201)
+        res.status(200)
             .json({
                 message: "Signup successfully",
                 success: true

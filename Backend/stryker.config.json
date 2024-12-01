@@ -5,9 +5,12 @@
     "projectType": "custom",
     "configFile": "./package.json"
   },
-  "mutate": [
-    "src/**/*.jsx","src/**/*.js"
-  ],
+  "mutate": ["Controllers/AuthController.js","Controllers/BookingController.js",
+  "Middlewares/AuthValidation.js",
+  "Models/Subscriber.js","Models/User.js","Routes/BookingRouter.js",
+  "Routes/UserRouter.js","Routes/AuthRouter.js","Routes/SearchRouter.js",
+  "Routes/Subscribe.js","index.js","server.js","connection.js"],
   "reporters": ["html", "clear-text", "progress"],
-  "coverageAnalysis": "all"
+  "coverageAnalysis": "perTest",
+  "ignoreStatic": true
 }
