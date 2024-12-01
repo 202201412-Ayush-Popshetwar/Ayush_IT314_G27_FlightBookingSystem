@@ -57,8 +57,8 @@ mongoose.connection.on("Disconnected",()=>{console.log("Mongoose connection disc
 mongoose.connection.on("Connected",()=>{console.log("Mongoose connection established")})
 
 // Initialize connections
-const db = await connectToDatabase();
-await connectMongoose();
+const db = connectToDatabase();
+connectMongoose();
 
 
 export { db, mongoose };

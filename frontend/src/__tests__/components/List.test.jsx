@@ -145,7 +145,7 @@ describe('List Component', () => {
             class: 'economy'
           },
           {
-            airline: 'IndiGo',
+            airline: 'Indigo',
             flight_num: 'IN-2002',
             price: '4,000',
             duration: '3h 00m',
@@ -177,7 +177,7 @@ describe('List Component', () => {
     fireEvent.change(priceSort, { target: { value: 'price_asc' } });
     await waitFor(() => {
       const flights = screen.getAllByTestId('mock-search-item');
-      expect(flights[0]).toHaveTextContent('IndiGo');
+      expect(flights[0]).toHaveTextContent('Indigo');
     });
 
     // Test price sorting (desc)
@@ -199,7 +199,7 @@ describe('List Component', () => {
     fireEvent.change(durationSort, { target: { value: 'duration_desc' } });
     await waitFor(() => {
       const flights = screen.getAllByTestId('mock-search-item');
-      expect(flights[0]).toHaveTextContent('IndiGo');
+      expect(flights[0]).toHaveTextContent('Indigo');
     });
 
     // Test airline filter
@@ -372,7 +372,7 @@ describe('List Component - Advanced Interactions', () => {
             class: 'economy'
           },
           {
-            airline: 'IndiGo',
+            airline: 'Indigo',
             flight_num: 'IN-2002',
             price: '4,000',
             duration: '3h 00m',
@@ -404,7 +404,7 @@ describe('List Component - Advanced Interactions', () => {
     fireEvent.change(priceSort, { target: { value: 'price_asc' } });
     await waitFor(() => {
       const flights = screen.getAllByTestId('mock-search-item');
-      expect(flights[0]).toHaveTextContent('IndiGo');
+      expect(flights[0]).toHaveTextContent('Indigo');
     });
 
     // Test duration sorting

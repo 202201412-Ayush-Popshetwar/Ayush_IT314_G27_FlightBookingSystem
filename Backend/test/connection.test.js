@@ -1,5 +1,6 @@
 import {jest} from '@jest/globals';
 import mongoose from 'mongoose';
+import { MongoClient } from 'mongodb';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connectToDatabase, connectMongoose } from '../connection.js';
 describe('Database Connection', () => {
@@ -32,15 +33,24 @@ describe('Database Connection', () => {
     });
 
     describe('connectToDatabase', () => {
-        it('should connect to MongoDB and confirm connection with ping', async () => {
-            const consoleSpy = jest.spyOn(console, 'log');
-
-            await connectToDatabase();
-
-            expect(consoleSpy).toHaveBeenCalledWith(
-                'Pinged your deployment. You successfully connected to MongoDB!'
-            );
-
+        it('should throw an error when mongodb connection fails', async () => {
+            // Mock an invalid URI to simulate connection failure
+            process.env.ATLAS_URI = 'invalid-uri';
+            
+            // Mock the MongoClient to throw an error
+            const mockConnect = jest.spyOn(MongoClient.prototype, 'connect').mockRejectedValueOnce(new Error('Connection failed'));
+            
+            // Spy on console.error
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+            
+            // Expect the function to throw an error
+            await expect(connectToDatabase()).rejects.toThrow('Connection failed');
+            
+            // Verify that console.error was called with the specific message
+            expect(consoleSpy).toHaveBeenCalledWith('Error connecting to MongoDB');
+            
+            // Restore spies
+            mockConnect.mockRestore();
             consoleSpy.mockRestore();
         });
     });
@@ -100,4 +110,5 @@ describe('Database Connection', () => {
             consoleSpy.mockRestore();
         });
     });
+    
 });

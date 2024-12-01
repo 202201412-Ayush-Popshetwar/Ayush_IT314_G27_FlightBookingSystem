@@ -427,7 +427,7 @@ const UserProfile = ({loggedInUser, setLoggedInUser}) => {
                           className= "bg-red-500 text-white p-1 rounded-md"
                           onClick={() => removePassenger(index)}
           >
-                          Cancel
+                          Delete
                         </button>
                       </div>
                     </div>
