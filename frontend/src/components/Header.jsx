@@ -42,6 +42,8 @@ const Header = ({ type }) => {
     children: 0
   });
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
   const dateRef = useRef(null);
   const containerRef = useRef(null);
@@ -54,9 +56,12 @@ const Header = ({ type }) => {
   };
 
   const handleSearch = async () => {
+    // Clear any previous error
+    setErrorMessage("");
+    
     // Basic validation
     if (!from || !to) {
-      alert("Please enter both origin and destination cities");
+      setErrorMessage("Please enter both origin and destination cities");
       return;
     }
 
@@ -122,6 +127,7 @@ const Header = ({ type }) => {
                   <FlightTakeoff className="text-gray-400" size={20} />
                 </div>
                 <select
+                  data-testid="from-input"
                   value={from}
                   onChange={(e) => setFrom(e.target.value)}
                   className="text-black w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -141,6 +147,7 @@ const Header = ({ type }) => {
                   <FlightLand className="text-gray-400" size={20} />
                 </div>
                 <select
+                  data-testid="to-input"
                   value={to}
                   onChange={(e) => setTo(e.target.value)}
                   className="text-black w-full h-full pl-12 pr-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
@@ -162,6 +169,7 @@ const Header = ({ type }) => {
                 <CalendarToday className="text-gray-400" size={20} />
             </div>
             <button
+                data-testid="date-button"
                 onClick={() => {
                 setOpenDate(!openDate);
                 }}
@@ -170,7 +178,7 @@ const Header = ({ type }) => {
                 {`${format(date[0].startDate, 'MM/dd/yyyy')} to ${format(date[0].endDate, 'MM/dd/yyyy')}`}
             </button>
             {openDate && (
-                <div className="absolute top-full left-0 z-20 mt-1">
+                <div data-testid="date-picker" className="absolute top-full left-0 z-20 mt-1">
                 <DateRange
                     editableDateInputs={true}
                     onChange={(item) => setDate([item.selection])}
@@ -189,6 +197,7 @@ const Header = ({ type }) => {
                   <People className="text-gray-400" size={20} />
                 </div>
                 <button
+                  data-testid="options-button"
                   onClick={() => {
                     setOpenOptions(!openOptions);
                     setOpenDate(false);
@@ -204,14 +213,16 @@ const Header = ({ type }) => {
                         <span className="text-gray-700">Adult</span>
                         <div className="flex items-center space-x-2">
                           <button
+                            data-testid="adult-decrement"
                             disabled={options.adult <= 1}
                             className="w-8 h-8 border border-blue-500 rounded-md flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => handleOption("adult", "d")}
                           >
                             -
                           </button>
-                          <span className="w-8 text-center text-gray-700">{options.adult}</span>
+                          <span data-testid="adult-count" className="w-8 text-center text-gray-700">{options.adult}</span>
                           <button
+                            data-testid="adult-increment"
                             disabled={options.adult >= 5}
                             className="w-8 h-8 border border-blue-500 rounded-md flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => handleOption("adult", "i")}
@@ -224,14 +235,16 @@ const Header = ({ type }) => {
                         <span className="text-gray-700">Children</span>
                         <div className="flex items-center space-x-2">
                           <button
+                            data-testid="children-decrement"
                             disabled={options.children <= 0}
                             className="w-8 h-8 border border-blue-500 rounded-md flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => handleOption("children", "d")}
                           >
                             -
                           </button>
-                          <span className="w-8 text-center text-gray-700">{options.children}</span>
+                          <span data-testid="children-count" className="w-8 text-center text-gray-700">{options.children}</span>
                           <button
+                            data-testid="children-increment"
                             disabled={options.children >= 5}
                             className="w-8 h-8 border border-blue-500 rounded-md flex items-center justify-center text-blue-500 hover:bg-blue-500 hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
                             onClick={() => handleOption("children", "i")}
@@ -245,6 +258,13 @@ const Header = ({ type }) => {
                 )}
               </div>
             </div>
+    
+            {/* Error Message */}
+            {errorMessage && (
+              <div className="text-red-500 text-sm" role="alert">
+                {errorMessage}
+              </div>
+            )}
     
             {/* Search Button */}
             <button onClick={handleSearch} className="w-full h-14 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition flex items-center justify-center space-x-2">

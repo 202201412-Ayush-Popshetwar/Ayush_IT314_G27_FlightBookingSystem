@@ -125,6 +125,18 @@ const Addons = ({ loggedInUser, setLoggedInUser }) => {
       <Navbar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
       <Header type="list" />
       
+      <div className="w-full max-w-screen-lg mx-auto px-4 mt-4">
+        <button
+          data-testid="back-button"
+          onClick={() => navigate(-1)}
+          className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition duration-300"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L4.414 9H17a1 1 0 110 2H4.414l5.293 5.293a1 1 0 010 1.414z" clipRule="evenodd" />
+          </svg>
+          Back
+        </button>
+      </div>
       
       <div className="flex flex-col w-full max-w-screen-lg mx-auto bg-white shadow-xl rounded-xl p-4 md:p-8 my-10">
         <h1 className="text-3xl md:text-4xl font-semibold text-gray-800 mb-8 text-center">Enhance Your Travel Experience</h1>
@@ -136,7 +148,11 @@ const Addons = ({ loggedInUser, setLoggedInUser }) => {
                 <div>
                   <h2 className="text-lg md:text-xl font-medium text-gray-700">{addon.name}</h2>
                   <p className="text-sm md:text-base text-gray-500">{addon.description}</p>
-                  <select className="mt-2 p-2 border rounded-lg" onChange={(e) => handleVarietyChange(addon.id, addon.varieties[e.target.selectedIndex - 1])}>
+                  <select 
+                    data-testid={`${addon.name.toLowerCase()}-variety-select`}
+                    className="mt-2 p-2 border rounded-lg" 
+                    onChange={(e) => handleVarietyChange(addon.id, addon.varieties[e.target.selectedIndex - 1])}
+                  >
                     <option value="" disabled selected>Select Variety</option>
                     {addon.varieties.map((variety, index) => (
                       <option key={index} value={variety.name}>{variety.name}</option>
@@ -149,13 +165,20 @@ const Addons = ({ loggedInUser, setLoggedInUser }) => {
                 {selectedVarieties[addon.id] ? (
                   <div className="flex items-center space-x-3">
                     <button
+                      data-testid={`${addon.name.toLowerCase()}-decrement`}
                       className="px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-gray-300 transition duration-300"
                       onClick={() => handleDecrement(addon.id)}
                     >
                       -
                     </button>
-                    <span className="text-lg font-medium text-gray-700">{addon.quantity}</span>
+                    <span 
+                      data-testid={`${addon.name.toLowerCase()}-quantity`}
+                      className="text-lg font-medium text-gray-700"
+                    >
+                      {addon.quantity}
+                    </span>
                     <button
+                      data-testid={`${addon.name.toLowerCase()}-increment`}
                       className="px-4 py-2 bg-blue-700 text-white text-sm rounded-lg hover:bg-gray-300 transition duration-300"
                       onClick={() => handleIncrement(addon.id)}
                     >
@@ -172,7 +195,10 @@ const Addons = ({ loggedInUser, setLoggedInUser }) => {
           ))}
         </div>
       </div>
-      <div className="w-full max-w-screen-lg mb-8 mx-auto bg-gray-100 p-4 rounded-lg mt-4">
+      <div 
+        data-testid="selected-addons-summary"
+        className="w-full max-w-screen-lg mb-8 mx-auto bg-gray-100 p-4 rounded-lg mt-4"
+      >
         <h2 className="text-lg md:text-2xl font-bold text-gray-800 mb-4">Selected Addons</h2>
         <ul>
           {addons.map((addon) => {
@@ -188,8 +214,14 @@ const Addons = ({ loggedInUser, setLoggedInUser }) => {
           })}
         </ul>
         <div className="mt-4 flex justify-between items-center">
-          <h2 className="text-lg font-bold text-gray-800">Total: ₹{totalPrice}</h2>
+          <h2 
+            data-testid="total-price"
+            className="text-lg font-bold text-gray-800"
+          >
+            Total: ₹{totalPrice}
+          </h2>
           <button
+            data-testid="continue-payment-button"
             type="button"
             onClick={() => {
               // Store total price and addon details in localStorage

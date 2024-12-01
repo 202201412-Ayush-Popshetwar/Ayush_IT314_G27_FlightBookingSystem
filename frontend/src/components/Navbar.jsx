@@ -24,7 +24,7 @@ const Navbar = ({ loggedInUser, setLoggedInUser  }) => {
         <div className="bg-[#003580] sticky top-0 z-50 shadow-md">
             <div className="flex justify-between items-center p-2 max-w-screen-xl mx-auto">
                 <div className="flex items-center cursor-pointer" onClick={() => { navigate("/") }}>
-                    <img src="/img/logo/SkyLynx_icon.jpg" alt="SkyLynx" className="w-[10vw] h-[10vw] md:w-[8vh] md:h-[8vh] mr-3 rounded" />
+                    <img src="/img/logo/SkyLynx_icon.jpg" alt="logo" className="w-[10vw] h-[10vw] md:w-[8vh] md:h-[8vh] mr-3 rounded" />
                     <h2 className="text-[3vw] md:text-3xl font-bold text-white">SkyLynx</h2>
                 </div>
                 <div className="flex items-center relative">

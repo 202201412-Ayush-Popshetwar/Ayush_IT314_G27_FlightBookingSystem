@@ -1,7 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Footer = () => {
+    const navigate = useNavigate();
+
     return (
         <footer className="bg-[#003580] text-white py-[5vh] w-full mt-0">
             <div className="max-w-[1024px] mx-auto px-[5vw]">
@@ -15,7 +17,6 @@ const Footer = () => {
                         <ul>
                             <li><Link to="/" className="text-white hover:text-gray-100 hover:underline">Home</Link></li>
                             <li><Link to="/aboutus" className="text-white hover:text-gray-100 hover:underline">About Us</Link></li>
-                            <li><Link to="/contactus" className="text-white hover:text-gray-100 hover:underline">Contact Us</Link></li>
                             <li><Link to="/faq" className="text-white hover:text-gray-100 hover:underline">FAQ</Link></li>
                         </ul>
                     </div>

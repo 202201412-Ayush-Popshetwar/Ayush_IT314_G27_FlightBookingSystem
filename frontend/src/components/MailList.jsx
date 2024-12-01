@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import {React, useState } from 'react';
 import { handleError, handleSuccess } from '../utils';
 
 const MailList = () => {

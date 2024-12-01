@@ -28,13 +28,19 @@ export default function AboutUs({ loggedInUser, setLoggedInUser }) {
                     className={`py-2 px-4 rounded-full text-lg font-semibold ${activeSection === "about" ? "bg-blue-600 text-white" : "text-blue-600 hover:bg-blue-100"}`}
                     onClick={() => setActiveSection("about")}
                 >
-                    About Us
+                    About
                 </button>
                 <button
                     className={`py-2 px-4 rounded-full text-lg font-semibold ${activeSection === "team" ? "bg-blue-600 text-white" : "text-blue-600 hover:bg-blue-100"}`}
                     onClick={() => setActiveSection("team")}
                 >
                     Our Team
+                </button>
+                <button
+                    className={`py-2 px-4 rounded-full text-lg font-semibold ${activeSection === "goals" ? "bg-blue-600 text-white" : "text-blue-600 hover:bg-blue-100"}`}
+                    onClick={() => setActiveSection("goals")}
+                >
+                    Our Goals
                 </button>
             </div>
 
@@ -84,6 +90,36 @@ export default function AboutUs({ loggedInUser, setLoggedInUser }) {
                                 <p className="text-sm text-gray-500 mt-1">{member.id}</p>
                             </div>
                         ))}
+                    </div>
+                </div>
+            )}
+
+            {activeSection === "goals" && (
+                <div className="bg-gray-100 bg-opacity-90 rounded-lg p-8 shadow-xl max-w-7xl mx-auto my-12">
+                    <h1 className="text-4xl font-extrabold text-center mb-12" style={{ color: "#003580" }}>
+                        Our Goals
+                    </h1>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="bg-white rounded-lg p-6 shadow-md">
+                            <h3 className="text-2xl font-bold mb-4 text-blue-600">Customer Satisfaction</h3>
+                            <p className="text-gray-700">Our primary goal is to ensure complete satisfaction with every booking and interaction.</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-6 shadow-md">
+                            <h3 className="text-2xl font-bold mb-4 text-blue-600">Reliability</h3>
+                            <p className="text-gray-700">We aim to be your most reliable travel partner with accurate and dependable service.</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-6 shadow-md">
+                            <h3 className="text-2xl font-bold mb-4 text-blue-600">Innovation</h3>
+                            <p className="text-gray-700">Continuously improving our platform with innovative solutions for better travel experiences.</p>
+                        </div>
+                        <div className="bg-white rounded-lg p-6 shadow-md">
+                            <h3 className="text-2xl font-bold mb-4 text-blue-600">Best Prices</h3>
+                            <p className="text-gray-700">Committed to offering competitive prices and exceptional value for your travels.</p>
+                        </div>
+                    </div>
+                    <div className="bg-white rounded-lg p-6 shadow-md mt-8">
+                        <h3 className="text-2xl font-bold mb-4 text-blue-600">24/7 Support</h3>
+                        <p className="text-gray-700">Round-the-clock assistance to support you throughout your journey.</p>
                     </div>
                 </div>
             )}
