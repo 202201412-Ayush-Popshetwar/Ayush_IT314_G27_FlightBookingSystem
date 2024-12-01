@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import AboutUs from '../../components/AboutUs.jsx';
+import AboutUs from '../../src/components/AboutUs.jsx';
 
 // Mock the child components
 jest.mock('../../components/Navbar', () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import Profile from '../../components/Profile';
+import Profile from '../../src/components/Profile.jsx';
 
 // Mock the child components
 jest.mock('../../components/Navbar', () => {

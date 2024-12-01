@@ -24,14 +24,18 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.8.2",
     "nodemailer": "^6.9.16",
+    "nodemailer-stub-transport": "^1.1.0",
     "nodemon": "^3.1.7",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
+    "@babel/preset-react": "^7.25.9",
     "@babel/register": "^7.25.9",
     "@jest/globals": "^29.7.0",
+    "@stryker-mutator/core": "^8.6.0",
+    "@stryker-mutator/jest-runner": "^8.6.0",
     "@types/jest": "^29.5.14",
     "babel-jest": "^29.7.0",
     "chai": "^5.1.2",
@@ -42,6 +46,7 @@
     "jest-mock": "^29.7.0",
     "mocha": "^10.8.2",
     "mongodb-memory-server": "^10.1.2",
+    "nodemailer-mock": "^2.0.6",
     "nyc": "^17.1.0",
     "sinon": "^19.0.2",
     "supertest": "^7.0.0",
@@ -80,11 +85,17 @@
       "lcov",
       "json"
     ],
+    "compilerOptions": {
+      "esModuleInterop": true
+    },
     "coveragePathIgnorePatterns": [
       "./node_modules/",
       "./tests/"
     ],
-    "transform": {},
+    "transformIgnorePatterns": [
+    "/node_modules/(?!chai|some-other-esm-library)"
+  ],
+    "transform": {"^.+\\.js$": "babel-jest"},
     "reporters": [
       "default",
       [

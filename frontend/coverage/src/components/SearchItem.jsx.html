@@ -23,30 +23,54 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
+<<<<<<< HEAD
                 <span class="strong">77.77% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>21/27</span>
+=======
+                <span class="strong">3.7% </span>
+                <span class="quiet">Statements</span>
+                <span class='fraction'>1/27</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
             </div>
         
             
             <div class='fl pad1y space-right2'>
+<<<<<<< HEAD
                 <span class="strong">87.5% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>14/16</span>
+=======
+                <span class="strong">0% </span>
+                <span class="quiet">Branches</span>
+                <span class='fraction'>0/16</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
             </div>
         
             
             <div class='fl pad1y space-right2'>
+<<<<<<< HEAD
                 <span class="strong">80% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>4/5</span>
+=======
+                <span class="strong">0% </span>
+                <span class="quiet">Functions</span>
+                <span class='fraction'>0/5</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
             </div>
         
             
             <div class='fl pad1y space-right2'>
+<<<<<<< HEAD
                 <span class="strong">77.77% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>21/27</span>
+=======
+                <span class="strong">3.7% </span>
+                <span class="quiet">Lines</span>
+                <span class='fraction'>1/27</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
             </div>
         
             
@@ -196,6 +220,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< HEAD
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
@@ -207,6 +232,19 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+=======
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -231,10 +269,23 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<<<<<<< HEAD
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
+=======
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -320,8 +371,9 @@ import { getAirlineLogo } from '../utils/airlineLogos';
 import { useNavigate } from 'react-router-dom';
 import { handleError } from '../utils';
 &nbsp;
-const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) =&gt; {
+const SearchItem = <span class="fstat-no" title="function not covered" >({</span> flight,loggedInUser, setLoggedInUser }) =&gt; {
 &nbsp;
+<<<<<<< HEAD
     const navigate = useNavigate();
     const searchParams = JSON.parse(localStorage.getItem('searchParams'))
     const getNumericPrice = (priceString) =&gt; {
@@ -333,6 +385,19 @@ const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) =&gt; {
             handleError('Please login to select flight');
             navigate('/login');
             return;
+=======
+    const navigate = <span class="cstat-no" title="statement not covered" >useNavigate();</span>
+    const searchParams = <span class="cstat-no" title="statement not covered" >JSON.parse(localStorage.getItem('searchParams'))</span>
+    const getNumericPrice = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(p</span>riceString) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        return Number(priceString.replace(/,/g, ''));</span>
+    };
+    const handleSelectFlight = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        console.log(loggedInUser);</span>
+<span class="cstat-no" title="statement not covered" >        if (!loggedInUser) {</span>
+<span class="cstat-no" title="statement not covered" >            handleError('Please login to select flight');</span>
+<span class="cstat-no" title="statement not covered" >            navigate('/login');</span>
+<span class="cstat-no" title="statement not covered" >            return;</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
         }
         <span class="missing-if-branch" title="if path not taken" >I</span>if (flight.availableseats &lt;= 0) {
 <span class="cstat-no" title="statement not covered" >            handleError("This flight is fully booked!");</span>
@@ -352,15 +417,24 @@ const SearchItem = ({ flight,loggedInUser, setLoggedInUser }) =&gt; {
         navigate('/booking');
     };
 &nbsp;
+<<<<<<< HEAD
     const handleSelect = () =&gt; {
         <span class="missing-if-branch" title="if path not taken" >I</span>if (flight.availableseats &lt;= 0) {
+=======
+    const handleSelect = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        if (flight.availableseats &lt;= 0) {</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
 <span class="cstat-no" title="statement not covered" >            handleError("This flight is fully booked!");</span>
 <span class="cstat-no" title="statement not covered" >            return;</span>
         }
         handleSelectFlight();
     };
 &nbsp;
+<<<<<<< HEAD
     return (
+=======
+<span class="cstat-no" title="statement not covered" >    return (</span>
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
         &lt;div className={`bg-white p-4 rounded-lg shadow-md ${flight.availableseats &lt;= 0 ? 'opacity-75' : ''}`}&gt;
             {/* Airline and Flight Number */}
             &lt;div className="flex justify-between items-center mb-4"&gt;
@@ -448,7 +522,11 @@ export default SearchItem;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
+<<<<<<< HEAD
                 at 2024-12-01T08:54:22.726Z
+=======
+                at 2024-11-30T15:53:24.286Z
+>>>>>>> 7a5d7b9aa745468ac2ff96bed779deb668868a15
             </div>
         <script src="../../prettify.js"></script>
         <script>
