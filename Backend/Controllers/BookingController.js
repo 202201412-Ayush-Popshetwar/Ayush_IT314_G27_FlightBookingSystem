@@ -9,7 +9,6 @@ export const Booking = async (req, res) => {
     try {
         const { name, email, password } = req.body;
         console.log(email);
-        console.log('bbb')
         const user = await UserModel.findOne({ email });
         if (user) {
             return res.status(409)
