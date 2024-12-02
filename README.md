@@ -42,7 +42,7 @@ To get started with SkyLynx, follow these simple steps:
 
 1. **Clone the Repository**:
    ```bash
-   git clone [https://github.com/yourusername/skylynx.git](https://github.com/RajShah-27/IT314_G27_FlightBookingSystem.git)
+   git clone https://github.com/RajShah-27/IT314_G27_FlightBookingSystem.git
    ```
 
 2. **Install Dependencies**:
