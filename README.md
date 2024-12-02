@@ -70,6 +70,9 @@ To get started with SkyLynx, follow these simple steps:
      ```
 
 4. **Open your browser** and navigate to `http://localhost:5173` to see SkyLynx in action!
+
+## Site Deployed On: [skylynx.vercel.app](https://skylynx.vercel.app)  
+## Demo Video: [Watch on YouTube](https://youtu.be/dmp-p4WXkUM)
 ## Contact
 
 For any inquiries or support, feel free to reach out to us at [skylynx.booking@gmail.com](mailto:skylynx.booking@gmail.com).
